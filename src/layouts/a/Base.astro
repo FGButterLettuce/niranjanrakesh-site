@@ -1,0 +1,119 @@
+---
+import Seo from '../../components/Seo.astro';
+import { withBase } from '../../lib/url';
+import '../../styles/a.css';
+
+interface Props {
+  title: string;
+  description: string;
+  /** true on the home page — nav links become in-page anchors */
+  home?: boolean;
+}
+
+const { title, description, home = false } = Astro.props;
+const homeHref = withBase('a/');
+const anchor = (id: string) => (home ? `#${id}` : `${homeHref}#${id}`);
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <Seo title={title} description={description} />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700;900&family=Instrument+Sans:ital,wght@0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@400;500&display=swap"
+    />
+  </head>
+  <body>
+    <div id="cursor-glow" aria-hidden="true"></div>
+
+    <header class="nav">
+      <div class="nav-inner">
+        <a class="nav-logo" href={homeHref}>NIRANJAN<span class="bolt">⚡</span>RAKESH</a>
+        <nav class="nav-links" aria-label="Site">
+          <a href={anchor('work')}>Work</a>
+          <a href={anchor('about')} class="hide-sm">About</a>
+          <a href={anchor('archive')} class="hide-sm">Archive</a>
+          <a href={anchor('contact')}>Contact</a>
+        </nav>
+      </div>
+    </header>
+
+    <slot />
+
+    <nav class="switcher" aria-label="Design direction switcher">
+      <a href={withBase('')} title="Direction chooser">⌂</a>
+      <a href={withBase('a/')} class="active" aria-current="page" title="Direction A — Voltage">A</a>
+      <a href={withBase('b/')} title="Direction B">B</a>
+      <a href={withBase('c/')} title="Direction C">C</a>
+    </nav>
+
+    <script>
+      const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      /* ---- scroll reveals ---- */
+      const revealables = document.querySelectorAll('[data-reveal]');
+      if (reduced || !('IntersectionObserver' in window)) {
+        revealables.forEach((el) => el.classList.add('is-in'));
+      } else {
+        const io = new IntersectionObserver(
+          (entries) => {
+            for (const e of entries) {
+              if (e.isIntersecting) {
+                e.target.classList.add('is-in');
+                io.unobserve(e.target);
+              }
+            }
+          },
+          { threshold: 0.12, rootMargin: '0px 0px -8% 0px' }
+        );
+        revealables.forEach((el) => io.observe(el));
+      }
+
+      /* ---- cursor-following glow (desktop, motion-ok) ---- */
+      const glow = document.getElementById('cursor-glow');
+      const fine = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+      if (glow && fine && !reduced) {
+        let tx = innerWidth / 2, ty = innerHeight / 3;
+        let x = tx, y = ty;
+        let running = false;
+        const tick = () => {
+          x += (tx - x) * 0.09;
+          y += (ty - y) * 0.09;
+          glow.style.transform = `translate(${x}px, ${y}px)`;
+          if (Math.abs(tx - x) > 0.3 || Math.abs(ty - y) > 0.3) {
+            requestAnimationFrame(tick);
+          } else {
+            running = false;
+          }
+        };
+        addEventListener('pointermove', (e) => {
+          tx = e.clientX; ty = e.clientY;
+          if (!running) { running = true; requestAnimationFrame(tick); }
+        }, { passive: true });
+      }
+
+      /* ---- magnetic tilt + spotlight on cards ---- */
+      if (fine && !reduced) {
+        document.querySelectorAll('.pcard, .theme-card, .hl-card').forEach((card) => {
+          const el = card as HTMLElement;
+          el.addEventListener('pointermove', (e) => {
+            const r = el.getBoundingClientRect();
+            const px = ((e.clientX - r.left) / r.width) * 100;
+            const py = ((e.clientY - r.top) / r.height) * 100;
+            el.style.setProperty('--mx', `${px}%`);
+            el.style.setProperty('--my', `${py}%`);
+            if (el.classList.contains('pcard')) {
+              const dx = (px - 50) / 50, dy = (py - 50) / 50;
+              el.style.transform = `translate(${dx * 5}px, ${dy * 5}px)`;
+            }
+          }, { passive: true });
+          el.addEventListener('pointerleave', () => {
+            el.style.transform = '';
+          });
+        });
+      }
+    </script>
+  </body>
+</html>

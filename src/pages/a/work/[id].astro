@@ -1,0 +1,120 @@
+---
+import { getCollection, render } from 'astro:content';
+import Base from '../../../layouts/a/Base.astro';
+import { withBase } from '../../../lib/url';
+
+export async function getStaticPaths() {
+  const projects = (await getCollection('projects')).sort(
+    (x, y) => x.data.order - y.data.order
+  );
+  return projects.map((entry, i) => ({
+    params: { id: entry.id },
+    props: {
+      entry,
+      index: i,
+      prev: projects[(i - 1 + projects.length) % projects.length],
+      next: projects[(i + 1) % projects.length],
+    },
+  }));
+}
+
+const { entry, index, prev, next } = Astro.props;
+const { Content, headings } = await render(entry);
+const d = entry.data;
+const chapters = headings.filter((h) => h.depth === 2);
+
+// Char-count-aware title size so long single words ("WatchTogether")
+// never overflow narrow viewports. Unbounded 900 uppercase advance ≈ 0.93em.
+const longestWord = Math.max(...d.title.split(/\s+/).map((w) => w.length));
+const titleSize = `min(clamp(2.25rem, 9vw, 7.5rem), calc((100vw - 3.5rem) / ${longestWord}))`;
+---
+<Base
+  title={`${d.title} — Niranjan Rakesh`}
+  description={d.tagline}
+>
+  <main>
+    <!-- ============ CASE HERO ============ -->
+    <section class="cs-hero">
+      <div class="hero-bg" aria-hidden="true">
+        <div class={`hero-orb ${index % 2 === 0 ? 'violet' : 'cyan'}`}></div>
+      </div>
+      <div class="wrap">
+        <a class="cs-back" href={withBase('a/')}>
+          <span class="arr" aria-hidden="true">←</span> All work
+        </a>
+        <div class="cs-meta-row">
+          <span>{String(index + 1).padStart(2, '0')} / {d.year}</span>
+          <span class="status-pill">
+            <span class="dot" aria-hidden="true"></span>
+            {d.status}
+          </span>
+          <span>{d.flavor}</span>
+        </div>
+        <h1 class="cs-title" style={`font-size:${titleSize}`}>
+          <span class="grad-text">{d.title}</span>
+        </h1>
+        <p class="cs-tagline">{d.tagline}</p>
+        {d.liveUrl && (
+          <div class="cs-actions">
+            <a class="btn-live" href={d.liveUrl} target="_blank" rel="noopener noreferrer">
+              Visit live site <span aria-hidden="true">↗</span>
+            </a>
+          </div>
+        )}
+        <div class="cs-stack">
+          {d.stack.map((s) => <span class="chip">{s}</span>)}
+        </div>
+      </div>
+    </section>
+
+    <hr class="hairline" />
+
+    <!-- ============ HIGHLIGHTS ============ -->
+    <section class="wrap">
+      <div class="cs-highlights">
+        {d.highlights.map((h, i) => (
+          <div class="hl-card" data-reveal style={`--d:${i * 0.06}s`}>
+            <span class="zap" aria-hidden="true">⚡</span>
+            <p>{h}</p>
+          </div>
+        ))}
+      </div>
+
+      <!-- ============ BODY ============ -->
+      <div class="cs-layout">
+        <article class="prose" data-reveal>
+          <Content />
+        </article>
+        {chapters.length > 0 && (
+          <aside class="cs-toc" aria-label="Chapters">
+            <div class="cs-toc-inner">
+              <p class="toc-label">Chapters</p>
+              <ol>
+                {chapters.map((h, i) => (
+                  <li>
+                    <a href={`#${h.slug}`}>
+                      <span class="n">{String(i + 1).padStart(2, '0')}</span>
+                      {h.text}
+                    </a>
+                  </li>
+                ))}
+              </ol>
+            </div>
+          </aside>
+        )}
+      </div>
+    </section>
+
+    <!-- ============ PREV / NEXT ============ -->
+    <nav class="cs-nav" aria-label="Project navigation">
+      <a href={withBase(`a/work/${prev.id}`)}>
+        <span class="dir">← Previous</span>
+        <span class="name">{prev.data.title}</span>
+      </a>
+      <a href={withBase(`a/work/${next.id}`)} class="next-link">
+        <span class="dir">Next →</span>
+        <span class="name">{next.data.title}</span>
+      </a>
+    </nav>
+  </main>
+</Base>

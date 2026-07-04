@@ -1,0 +1,222 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../../layouts/a/Base.astro';
+import { withBase } from '../../lib/url';
+import site from '../../data/site.json';
+
+const projects = (await getCollection('projects')).sort(
+  (x, y) => x.data.order - y.data.order
+);
+
+const marqueeItems = [
+  'Full-stack products',
+  'Native iOS',
+  'Zero-dependency backends',
+  'Buffer-aware video sync',
+  'Design → Engineering',
+  'systemd + Caddy',
+  'SwiftUI',
+  'Real production infra',
+  'PWA',
+  'Whisper on-box',
+];
+
+// headline split for the two-row treatment; last word gets the voltage
+const title = `${site.name} — ${site.role}`;
+const description = site.hero.subline;
+---
+<Base title={title} description={description} home>
+  <main>
+    <!-- ============ HERO ============ -->
+    <section class="hero">
+      <div class="hero-bg" aria-hidden="true">
+        <div class="hero-orb violet"></div>
+        <div class="hero-orb cyan"></div>
+      </div>
+      <div class="wrap">
+        <p class="hero-kicker stage stage-1">
+          <span class="dot" aria-hidden="true"></span>
+          {site.hero.kicker}
+        </p>
+        <h1 class="stage stage-2">
+          <span class="row">Builds things</span>
+          <span class="row">that <span class="grad-text">ship.</span></span>
+        </h1>
+        <p class="hero-sub stage stage-3">{site.hero.subline}</p>
+        <div class="hero-meta stage stage-4">
+          <a class="hero-cta" href="#work">
+            See the work <span class="arr" aria-hidden="true">↓</span>
+          </a>
+          <span class="hero-loc">{site.location}</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ MARQUEE ============ -->
+    <div class="marquee" aria-hidden="true">
+      <div class="marquee-track">
+        {[0, 1].map(() => (
+          <div class="marquee-seq">
+            {marqueeItems.map((item) => (
+              <>
+                <span>{item}</span>
+                <span class="zap">⚡</span>
+              </>
+            ))}
+          </div>
+        ))}
+      </div>
+    </div>
+
+    <!-- ============ WORK ============ -->
+    <section class="section" id="work">
+      <div class="wrap">
+        <div class="sec-head" data-reveal>
+          <span class="sec-num">01</span>
+          <h2>Selected <span class="grad-text">work</span></h2>
+        </div>
+        <div class="work-list">
+          {projects.map((p, i) => (
+            <a
+              href={withBase(`a/work/${p.id}`)}
+              class={`pcard ${i % 2 === 1 ? 'alt' : ''}`}
+              data-reveal
+            >
+              <div class="pcard-body">
+                <div class="pcard-topline">
+                  <span class="idx">{String(i + 1).padStart(2, '0')}</span>
+                  <span>{p.data.year}</span>
+                  <span class="status">{p.data.status}</span>
+                </div>
+                <h3>{p.data.title}</h3>
+                <p class="pcard-tagline">{p.data.tagline}</p>
+                <div class="pcard-chips">
+                  {p.data.stack.slice(0, 4).map((s) => <span>{s}</span>)}
+                  {p.data.stack.length > 4 && <span>+{p.data.stack.length - 4} more</span>}
+                </div>
+                <span class="pcard-more">
+                  Read the case study <span class="arr" aria-hidden="true">→</span>
+                </span>
+              </div>
+              <div class="pcard-visual" aria-hidden="true">
+                <div class={`field field-${p.data.flavor}`}></div>
+                <span class="big-num">{String(i + 1).padStart(2, '0')}</span>
+                <span class="glyph">{p.data.flavor} / {p.data.year}</span>
+              </div>
+            </a>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <hr class="hairline" />
+
+    <!-- ============ SMALLER BUILDS ============ -->
+    <section class="section" id="builds">
+      <div class="wrap">
+        <div class="sec-head" data-reveal>
+          <span class="sec-num">02</span>
+          <h2>Smaller <span class="grad-text">builds</span></h2>
+        </div>
+        <div class="builds" data-reveal>
+          {site.smallerBuilds.map((b) => (
+            <div class="build-row">
+              <span class="year">{b.year}</span>
+              <span class="name">{b.name}</span>
+              <span class="line">{b.line}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <hr class="hairline" />
+
+    <!-- ============ ABOUT ============ -->
+    <section class="section" id="about">
+      <div class="wrap">
+        <div class="sec-head" data-reveal>
+          <span class="sec-num">03</span>
+          <h2>About</h2>
+        </div>
+        <div class="about-grid">
+          <div data-reveal>
+            <p class="about-lead">
+              I build <span class="hl">complete things.</span> Not demos, not
+              prototypes that die in a folder — products with users, uptime,
+              and edges that have been sanded by real use.
+            </p>
+            <div class="about-body">
+              {site.about.body.map((para) => <p>{para}</p>)}
+            </div>
+          </div>
+          <div class="themes">
+            {site.about.themes.map((t, i) => (
+              <div class="theme-card" data-reveal style={`--d:${i * 0.08}s`}>
+                <span class="t-num">{String(i + 1).padStart(2, '0')}</span>
+                <h4>{t.title}</h4>
+                <p>{t.detail}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <hr class="hairline" />
+
+    <!-- ============ ARCHIVE ============ -->
+    <section class="section" id="archive">
+      <div class="wrap">
+        <div class="sec-head" data-reveal>
+          <span class="sec-num">04</span>
+          <h2>Design <span class="grad-text">archive</span></h2>
+        </div>
+        <p class="archive-note" data-reveal>
+          Design was the first language — posters, branding, editorial, 3D.
+          Twelve pieces from the years before the code took over.
+        </p>
+        <div class="masonry">
+          {site.archive.map((piece, i) => (
+            <figure class="arch-item" data-reveal style={`--d:${(i % 3) * 0.07}s`}>
+              <img
+                src={withBase(piece.image)}
+                alt={`${piece.title} — ${piece.category}`}
+                loading="lazy"
+                decoding="async"
+              />
+              <figcaption class="arch-cap">
+                <span class="t">{piece.title}</span>
+                <span class="m">{piece.category} · {piece.year}</span>
+              </figcaption>
+            </figure>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ CONTACT / FOOTER ============ -->
+    <footer class="contact" id="contact">
+      <div class="wrap contact-inner">
+        <p class="mono" style="color: var(--cyan); margin-bottom: 1.5rem;" data-reveal>
+          05 — Contact
+        </p>
+        <h2 class="contact-cta" data-reveal>
+          Have something <span class="grad-text">worth building?</span>
+        </h2>
+        <div data-reveal style="--d:0.1s">
+          <a class="contact-email" href={`mailto:${site.contact.email}`}>
+            {site.contact.email}
+          </a>
+          <a class="contact-phone" href={`tel:${site.contact.phone.replace(/\s/g, '')}`}>
+            {site.contact.phone}
+          </a>
+        </div>
+        <div class="footer-bar">
+          <span>{site.footer.line}</span>
+          <span><span class="grad-dot">⚡</span> {site.name} · {site.location}</span>
+        </div>
+      </div>
+    </footer>
+  </main>
+</Base>
