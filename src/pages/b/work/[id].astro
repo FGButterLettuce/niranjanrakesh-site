@@ -1,0 +1,127 @@
+---
+import { getCollection, render } from 'astro:content';
+import Base from '../../../layouts/b/Base.astro';
+import Masthead from '../../../components/b/Masthead.astro';
+import { withBase } from '../../../lib/url';
+import site from '../../../data/site.json';
+
+export async function getStaticPaths() {
+  const projects = (await getCollection('projects')).sort(
+    (x, y) => x.data.order - y.data.order
+  );
+  return projects.map((entry, i) => ({
+    params: { id: entry.id },
+    props: {
+      entry,
+      index: i,
+      total: projects.length,
+      prev: projects[(i - 1 + projects.length) % projects.length],
+      next: projects[(i + 1) % projects.length],
+    },
+  }));
+}
+
+const { entry, index, total, prev, next } = Astro.props;
+const { Content } = await render(entry);
+
+const pad = (n: number) => String(n).padStart(2, '0');
+const flavorLabel: Record<string, string> = {
+  product: 'A product feature',
+  engineering: 'An engineering feature',
+  tool: 'A tooling feature',
+};
+---
+<Base
+  title={`${entry.data.title} — Niranjan Rakesh`}
+  description={entry.data.tagline}
+>
+  <Masthead variant="article" slug={`Case study № ${pad(index + 1)} / ${pad(total)}`} />
+
+  <!-- ============ ARTICLE HEAD ============ -->
+  <header class="b-articlehead">
+    <div class="b-wrap">
+      <p class="kick b-meta r">
+        <strong>{flavorLabel[entry.data.flavor] ?? 'A feature'}</strong>
+      </p>
+      <h1 class="r" style="--d:.08s">{entry.data.title}</h1>
+      <p class="standfirst r" style="--d:.16s">{entry.data.tagline}</p>
+    </div>
+  </header>
+
+  <!-- ============ BYLINE ============ -->
+  <div class="b-wrap">
+    <div class="b-byline r">
+      <div class="cells">
+        <div class="cell">
+          <span class="lbl b-meta">Year</span>
+          <span class="val">{entry.data.year}</span>
+        </div>
+        <div class="cell">
+          <span class="lbl b-meta">Status</span>
+          <span class="val">{entry.data.status}</span>
+        </div>
+        <div class="cell">
+          <span class="lbl b-meta">Author</span>
+          <span class="val">{site.name}, solo</span>
+        </div>
+        {entry.data.liveUrl && (
+          <a class="b-live" href={entry.data.liveUrl} target="_blank" rel="noopener noreferrer">
+            Visit live site <span aria-hidden="true">↗</span>
+          </a>
+        )}
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ ARTICLE BODY + MARGIN ============ -->
+  <div class="b-wrap">
+    <div class="b-articlegrid">
+      <article class="b-body r">
+        <Content />
+      </article>
+      <aside class="b-margin">
+        <div class="inner">
+          <div class="r">
+            <p class="b-meta hd">In brief</p>
+            <ul class="b-pulls">
+              {entry.data.highlights.map((h) => <li>{h}</li>)}
+            </ul>
+          </div>
+          <div class="r" style="--d:.08s">
+            <p class="b-meta hd">Built with</p>
+            <ul class="stack" style="margin-top:.9rem">
+              {entry.data.stack.map((s) => <li>{s}</li>)}
+            </ul>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </div>
+
+  <!-- ============ PREV / NEXT ============ -->
+  <nav class="b-pn" aria-label="More case studies">
+    <div class="b-wrap">
+      <div class="cells">
+        <a href={withBase(`b/work/${prev.id}`)}>
+          <span class="lbl b-meta">← Previous</span>
+          <span class="ttl">{prev.data.title}</span>
+        </a>
+        <a href={withBase(`b/work/${next.id}`)}>
+          <span class="lbl b-meta">Next →</span>
+          <span class="ttl">{next.data.title}</span>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <footer class="b-backfoot">
+    <div class="b-wrap">
+      <div class="row">
+        <a class="b-cta" href={withBase('b/')}>
+          <span class="arr" aria-hidden="true">←</span> Back to the front page
+        </a>
+        <span class="b-meta">{site.footer.line}</span>
+      </div>
+    </div>
+  </footer>
+</Base>

@@ -1,0 +1,76 @@
+---
+import Seo from '../../components/Seo.astro';
+import Switcher from '../../components/b/Switcher.astro';
+import '../../styles/b.css';
+
+interface Props {
+  title: string;
+  description: string;
+}
+
+const { title, description } = Astro.props;
+---
+<html lang="en">
+  <head>
+    <Seo title={title} description={description} />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&family=DM+Sans:ital,opsz,wght@0,9..40,300..700;1,9..40,300..700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <slot />
+    <Switcher />
+    <script>
+      document.documentElement.classList.add('js');
+      const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      // reveal on scroll
+      const revealables = Array.from(document.querySelectorAll('.r'));
+      if (reduced || !('IntersectionObserver' in window)) {
+        revealables.forEach((el) => el.classList.add('is-in'));
+      } else {
+        const io = new IntersectionObserver(
+          (entries) => {
+            for (const e of entries) {
+              if (e.isIntersecting) {
+                e.target.classList.add('is-in');
+                io.unobserve(e.target);
+              }
+            }
+          },
+          { threshold: 0.1, rootMargin: '0px 0px -7% 0px' }
+        );
+        revealables.forEach((el) => io.observe(el));
+      }
+
+      // gentle parallax on archive plates
+      const plates = Array.from(document.querySelectorAll<HTMLElement>('[data-parallax]'));
+      if (!reduced && plates.length) {
+        let ticking = false;
+        const update = () => {
+          ticking = false;
+          const vh = window.innerHeight;
+          for (const p of plates) {
+            const r = p.getBoundingClientRect();
+            if (r.bottom < -60 || r.top > vh + 60) continue;
+            const t = (r.top + r.height / 2 - vh / 2) / vh;
+            const depth = Number(p.dataset.parallax || 14);
+            p.style.transform = `translateY(${(t * -depth).toFixed(2)}px)`;
+          }
+        };
+        const onScroll = () => {
+          if (!ticking) {
+            ticking = true;
+            requestAnimationFrame(update);
+          }
+        };
+        window.addEventListener('scroll', onScroll, { passive: true });
+        window.addEventListener('resize', onScroll, { passive: true });
+        update();
+      }
+    </script>
+  </body>
+</html>

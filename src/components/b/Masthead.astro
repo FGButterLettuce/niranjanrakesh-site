@@ -1,0 +1,39 @@
+---
+import { withBase } from '../../lib/url';
+import site from '../../data/site.json';
+
+interface Props {
+  /** "home" shows anchor nav; "article" shows a back link */
+  variant?: 'home' | 'article';
+  /** right-hand slug shown on article pages, e.g. "Case study № 01" */
+  slug?: string;
+}
+
+const { variant = 'home', slug } = Astro.props;
+---
+<div class="b-topline">
+  <div class="b-wrap">
+    <span class="b-meta">Vol. 01 — MMXXVI</span>
+    <span class="b-meta">{site.location}</span>
+    <a class="b-meta u-draw" href={`mailto:${site.contact.email}`}>{site.contact.email}</a>
+  </div>
+</div>
+<header class="b-masthead">
+  <div class="b-wrap">
+    <a class="b-wordmark" href={withBase('b/')}>Niranjan Rakesh<span class="dot">.</span></a>
+    {variant === 'home' ? (
+      <nav class="b-nav" aria-label="Sections">
+        <a class="u-draw" href="#work">Work</a>
+        <a class="u-draw" href="#builds">Builds</a>
+        <a class="u-draw" href="#about">About</a>
+        <a class="u-draw" href="#archive">Archive</a>
+        <a class="u-draw" href="#contact">Contact</a>
+      </nav>
+    ) : (
+      <nav class="b-nav" aria-label="Breadcrumb">
+        <a class="u-draw" href={withBase('b/') + '#work'}>← All work</a>
+        {slug && <span class="b-meta" style="letter-spacing:.18em">{slug}</span>}
+      </nav>
+    )}
+  </div>
+</header>

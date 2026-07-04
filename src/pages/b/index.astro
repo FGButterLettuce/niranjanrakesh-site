@@ -1,0 +1,210 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../../layouts/b/Base.astro';
+import Masthead from '../../components/b/Masthead.astro';
+import { withBase } from '../../lib/url';
+import site from '../../data/site.json';
+
+const projects = (await getCollection('projects')).sort(
+  (x, y) => x.data.order - y.data.order
+);
+
+// hero: italicise the final word for editorial emphasis
+const heroWords = site.hero.headline.split(' ');
+const heroLast = heroWords.pop();
+const heroLead = heroWords.join(' ');
+
+// ticker: union of every project's stack, parentheticals trimmed
+const ticker = [
+  ...new Set(
+    projects.flatMap((p) => p.data.stack.map((s) => s.replace(/\s*\(.*\)$/, '')))
+  ),
+];
+
+const flavorAccent: Record<string, string> = {
+  product: 'var(--verm)',
+  engineering: 'var(--ochre)',
+  tool: 'var(--ink)',
+};
+
+const roman = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X', 'XI', 'XII'];
+
+const pad = (n: number) => String(n).padStart(2, '0');
+---
+<Base
+  title="Niranjan Rakesh — Builder & Engineer"
+  description={site.hero.subline}
+>
+  <Masthead variant="home" />
+
+  <!-- ============ HERO ============ -->
+  <section class="b-hero">
+    <div class="b-wrap">
+      <p class="kicker b-meta r"><strong>{site.hero.kicker}</strong></p>
+      <h1 class="r" style="--d:.08s">{heroLead} <em>{heroLast}</em></h1>
+      <div class="sub-row r" style="--d:.18s">
+        <div class="scrollcue">
+          <span class="ornament" aria-hidden="true">✳</span>
+          <a class="b-meta u-draw" href="#work">Scroll — the work below</a>
+        </div>
+        <p class="subline">{site.hero.subline}</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ SKILLS TICKER ============ -->
+  <aside class="b-ticker" aria-label="Technologies">
+    <div class="lane">
+      <ul>{ticker.map((t) => <li>{t}</li>)}</ul>
+      <ul aria-hidden="true">{ticker.map((t) => <li>{t}</li>)}</ul>
+    </div>
+  </aside>
+
+  <!-- ============ FEATURED WORK ============ -->
+  <section class="b-work" id="work">
+    <div class="b-wrap">
+      <div class="b-sechead r">
+        <span class="no">№ 01</span>
+        <h2>Selected Work</h2>
+        <span class="tail" aria-hidden="true"></span>
+        <span class="aside">Three case studies, shipped &amp; in use</span>
+      </div>
+
+      {projects.map((p, i) => (
+        <article
+          class={`b-spread ${i % 2 === 0 ? 'b-spread--odd' : 'b-spread--even'} r`}
+          style={`--acc:${flavorAccent[p.data.flavor] ?? 'var(--verm)'}`}
+        >
+          <div class="ghost" aria-hidden="true">{pad(i + 1)}</div>
+          <div class="main">
+            <span class="kick b-meta">
+              <span class="st">{p.data.year}</span> — {p.data.status}
+            </span>
+            <h3><a href={withBase(`b/work/${p.id}`)}>{p.data.title}</a></h3>
+            <p class="standfirst">{p.data.tagline}</p>
+          </div>
+          <div class="aside">
+            <ul class="stacklist">
+              {p.data.stack.slice(0, 4).map((s) => <li>{s.replace(/\s*\(.*\)$/, '')}</li>)}
+              {p.data.stack.length > 4 && <li>+ {p.data.stack.length - 4} more</li>}
+            </ul>
+            <a class="b-cta" href={withBase(`b/work/${p.id}`)}>
+              Read the case study <span class="arr" aria-hidden="true">→</span>
+            </a>
+          </div>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <!-- ============ SMALLER BUILDS ============ -->
+  <section class="b-builds" id="builds">
+    <div class="b-wrap">
+      <div class="b-sechead r">
+        <span class="no">№ 02</span>
+        <h2>Marginalia</h2>
+        <span class="tail" aria-hidden="true"></span>
+        <span class="aside">Smaller builds, still real</span>
+      </div>
+      <div class="rows">
+        {site.smallerBuilds.map((b, i) => (
+          <div class="b-buildrow r" style={`--d:${i * 0.07}s`}>
+            <span class="idx">{pad(i + 1)}</span>
+            <span class="name">{b.name}</span>
+            <span class="line">{b.line}</span>
+            <span class="yr b-meta">{b.year}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ ABOUT ============ -->
+  <section class="b-about" id="about">
+    <div class="b-wrap">
+      <div class="b-sechead r">
+        <span class="no">№ 03</span>
+        <h2>About</h2>
+        <span class="tail" aria-hidden="true"></span>
+        <span class="aside">{site.role} · {site.location}</span>
+      </div>
+      <p class="lead r">{site.about.lead}</p>
+      <div class="cols r" style="--d:.1s">
+        {site.about.body.map((para) => <p>{para}</p>)}
+      </div>
+      <ul class="b-themes">
+        {site.about.themes.map((t, i) => (
+          <li class="r" style={`--d:${i * 0.08}s`}>
+            <h3>{t.title}</h3>
+            <p>{t.detail}</p>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <!-- ============ DESIGN ARCHIVE ============ -->
+  <section class="b-archive" id="archive">
+    <div class="b-wrap">
+      <div class="b-sechead r">
+        <span class="no">№ 04</span>
+        <h2>The Design Archive</h2>
+        <span class="tail" aria-hidden="true"></span>
+        <span class="aside">Twelve plates, 2021–2024</span>
+      </div>
+      <p class="intro r">
+        Design was my first language — posters, editorial layouts, branding,
+        renders. The archive below is where the eye was trained before the
+        engineering took over.
+      </p>
+      <div class="b-plates">
+        {site.archive.map((piece, i) => (
+          <figure class="b-plate r" style={`--d:${(i % 3) * 0.07}s`}>
+            <div class="mount" data-parallax={10 + (i % 3) * 5}>
+              <div class="frame">
+                <img
+                  src={withBase(piece.image)}
+                  alt={`${piece.title} — ${piece.category}`}
+                  loading={i < 3 ? 'eager' : 'lazy'}
+                  decoding="async"
+                />
+              </div>
+              <figcaption>
+                <span class="pl"><i>Pl. {roman[i]}</i>{piece.title}</span>
+                <span class="cat b-meta">{piece.category} · {piece.year}</span>
+              </figcaption>
+            </div>
+          </figure>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ COLOPHON / CONTACT ============ -->
+  <footer class="b-colophon" id="contact">
+    <div class="b-wrap">
+      <div class="b-sechead r">
+        <span class="no">№ 05</span>
+        <h2>Colophon</h2>
+        <span class="tail" aria-hidden="true"></span>
+        <span class="aside">Correspondence welcome</span>
+      </div>
+      <p class="cta-line r">{site.contact.cta}</p>
+      <a class="email u-draw r" style="--d:.08s" href={`mailto:${site.contact.email}`}>
+        {site.contact.email}
+      </a>
+      <div class="also r" style="--d:.14s">
+        <a class="b-meta u-drawn" href={`tel:${site.contact.phone.replace(/\s/g, '')}`}>
+          {site.contact.phone}
+        </a>
+        <span class="b-meta">{site.location}</span>
+      </div>
+      <div class="b-foot">
+        <div class="row">
+          <span class="line">{site.footer.line}</span>
+          <span class="set b-meta">Set in Fraunces &amp; DM Sans · MMXXVI</span>
+        </div>
+      </div>
+    </div>
+  </footer>
+</Base>
