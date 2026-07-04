@@ -1,0 +1,49 @@
+{
+  "name": "Niranjan Rakesh",
+  "role": "Builder · Engineer",
+  "location": "Sharjah, United Arab Emirates",
+  "hero": {
+    "headline": "Builds things that ship.",
+    "subline": "Full-stack products, native apps, and the infrastructure under them — taken from idea to something real people use.",
+    "kicker": "Niranjan Rakesh — engineer, based in the UAE"
+  },
+  "about": {
+    "lead": "I build complete things. Not demos, not prototypes that die in a folder — products with users, uptime, and edges that have been sanded by real use.",
+    "body": [
+      "Trained in Computer Science, comfortable at the layer below the framework: I've shipped a production backend with zero npm dependencies, hand-rolled drag-and-drop from raw pointer events, and tuned video sync algorithms for connections that don't behave.",
+      "The through-line is judgment about how things should feel — inputs that never bounce, apps that boot straight into the point, tools that meet you where you already are. Design was my first language; engineering is how I make it real."
+    ],
+    "themes": [
+      { "title": "Ships complete things", "detail": "Idea → product → production infrastructure, end to end, solo." },
+      { "title": "Depth over glue", "detail": "Zero-dependency servers, custom sync logic, raw pointer events — building below the framework when it's better." },
+      { "title": "Product judgment", "detail": "Decisions driven by how the thing feels to use, not by what's easiest to wire together." }
+    ]
+  },
+  "smallerBuilds": [
+    { "name": "Mac Transcoder", "year": "2026", "line": "Native macOS drag-and-drop video transcoder using hardware VideoToolbox encoding — MP4s out, zero settings." },
+    { "name": "PerfectTasks", "year": "2026", "line": "Full-stack task manager (Next.js, Drizzle, Clerk) designed, planned, and built test-first in a single day." },
+    { "name": "orbit-core", "year": "2025", "line": "NestJS + Prisma backend for time management — OAuth, Google Calendar sync, multi-device conflict resolution, BullMQ jobs." }
+  ],
+  "archive": [
+    { "title": "Football Magazine", "category": "Editorial design", "year": "2022", "image": "images/work-football.png" },
+    { "title": "The Studio", "category": "3D & interior", "year": "2024", "image": "images/work-the-studio.png" },
+    { "title": "Stardust", "category": "Branding", "year": "2022", "image": "images/work-stardust.png" },
+    { "title": "Product Souq", "category": "Landing page", "year": "2022", "image": "images/work-product-souq.png" },
+    { "title": "Fairlady Aiko", "category": "Videography", "year": "2022", "image": "images/work-fairlady.png" },
+    { "title": "NHK PSA", "category": "Poster", "year": "2021", "image": "images/nhk-psa.png" },
+    { "title": "MBDTF", "category": "Poster", "year": "2021", "image": "images/mbdtf.png" },
+    { "title": "Picasso", "category": "Apparel", "year": "2021", "image": "images/picasso.png" },
+    { "title": "E30", "category": "Automotive art", "year": "2021", "image": "images/e30-rear.png" },
+    { "title": "Paradigm", "category": "Poster", "year": "2021", "image": "images/paradigm.png" },
+    { "title": "Slice", "category": "App UI", "year": "2022", "image": "images/thumb-slice.png" },
+    { "title": "3D Printed Computer Case", "category": "Industrial design", "year": "2021", "image": "images/thumb-3d-case.png" }
+  ],
+  "contact": {
+    "email": "niranjanrakesh64@gmail.com",
+    "phone": "+971 55 668 7534",
+    "cta": "Have something worth building?"
+  },
+  "footer": {
+    "line": "Designed and built by Niranjan Rakesh — no templates, no site builder."
+  }
+}

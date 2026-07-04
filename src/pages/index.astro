@@ -1,0 +1,119 @@
+---
+import Seo from '../components/Seo.astro';
+import { withBase } from '../lib/url';
+
+const directions = [
+  {
+    key: 'a',
+    name: 'Voltage',
+    line: 'Electric dark. Kinetic type, chromatic gradients, motion everywhere.',
+    hue: '#7c3aed',
+    hue2: '#22d3ee',
+  },
+  {
+    key: 'b',
+    name: 'Ink & Ochre',
+    line: 'Suave editorial. Huge serif display, warm paper, magazine confidence.',
+    hue: '#c2410c',
+    hue2: '#eab308',
+  },
+  {
+    key: 'c',
+    name: 'Machine',
+    line: 'Precision engineering. Grid-locked, mono details, one loud accent.',
+    hue: '#16a34a',
+    hue2: '#a3e635',
+  },
+];
+---
+<html lang="en">
+  <head>
+    <Seo
+      title="Niranjan Rakesh — pick a direction"
+      description="Three complete design directions for niranjanrakesh.me. Pick your favourite."
+    />
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      body {
+        min-height: 100vh;
+        background: #0a0a0a;
+        color: #f5f5f4;
+        font-family: ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        padding: clamp(1.5rem, 4vw, 4rem);
+      }
+      .kicker {
+        font-size: 0.8rem;
+        letter-spacing: 0.22em;
+        text-transform: uppercase;
+        color: #a8a29e;
+        margin-bottom: 0.75rem;
+      }
+      h1 {
+        font-size: clamp(1.8rem, 4.5vw, 3.2rem);
+        font-weight: 800;
+        letter-spacing: -0.02em;
+        margin-bottom: 2.5rem;
+        max-width: 22ch;
+        line-height: 1.05;
+      }
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+        gap: 1rem;
+      }
+      a.card {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        gap: 0.6rem;
+        padding: 1.6rem 1.4rem 1.8rem;
+        border: 1px solid #292524;
+        border-radius: 18px;
+        text-decoration: none;
+        color: inherit;
+        background: linear-gradient(180deg, #141414, #0d0d0d);
+        overflow: hidden;
+        transition: transform 0.25s ease, border-color 0.25s ease;
+      }
+      a.card::before {
+        content: '';
+        position: absolute;
+        inset: -40% -20% auto;
+        height: 70%;
+        background: radial-gradient(60% 100% at 50% 0%, var(--hue), transparent 70%);
+        opacity: 0.22;
+        transition: opacity 0.25s ease;
+      }
+      a.card:hover { transform: translateY(-4px); border-color: #44403c; }
+      a.card:hover::before { opacity: 0.45; }
+      .key {
+        font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+        font-size: 0.75rem;
+        color: var(--hue2);
+        letter-spacing: 0.15em;
+      }
+      .name { font-size: 1.5rem; font-weight: 750; letter-spacing: -0.01em; }
+      .line { font-size: 0.92rem; color: #a8a29e; line-height: 1.5; }
+      .go { margin-top: 0.9rem; font-size: 0.85rem; color: #e7e5e4; }
+      footer { margin-top: 3rem; font-size: 0.8rem; color: #57534e; }
+    </style>
+  </head>
+  <body>
+    <p class="kicker">niranjanrakesh.me — overnight build</p>
+    <h1>Three complete directions. Pick the one that feels like you.</h1>
+    <div class="grid">
+      {directions.map((d) => (
+        <a class="card" href={withBase(`${d.key}/`)} style={`--hue:${d.hue};--hue2:${d.hue2}`}>
+          <span class="key">DIRECTION /{d.key.toUpperCase()}</span>
+          <span class="name">{d.name}</span>
+          <span class="line">{d.line}</span>
+          <span class="go">Open →</span>
+        </a>
+      ))}
+    </div>
+    <footer>Same content in all three — only the design changes. The winner becomes the root of niranjanrakesh.me.</footer>
+  </body>
+</html>
