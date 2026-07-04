@@ -1,0 +1,129 @@
+---
+import Seo from '../../components/Seo.astro';
+import { withBase } from '../../lib/url';
+import '../../styles/c.css';
+
+interface Props {
+  title: string;
+  description: string;
+}
+const { title, description } = Astro.props;
+---
+<html lang="en">
+  <head>
+    <Seo title={title} description={description} />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Archivo:ital,wdth,wght@0,75..125,400..900;1,75..125,400..900&family=JetBrains+Mono:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body class="c-body">
+    <div class="c-frame" aria-hidden="true"></div>
+
+    <slot />
+
+    <nav class="switcher" aria-label="Design direction switcher">
+      <a href={withBase('')} title="Direction chooser">⌂</a>
+      <a href={withBase('a/')} title="Direction A">A</a>
+      <a href={withBase('b/')} title="Direction B">B</a>
+      <a href={withBase('c/')} class="active" aria-current="page" title="Direction C — Machine">C</a>
+    </nav>
+
+    <script>
+      // Staggered reveals — mechanical, exact, once.
+      const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const revealed = document.querySelectorAll('[data-reveal]');
+      if (!reduce && 'IntersectionObserver' in window) {
+        const io = new IntersectionObserver(
+          (entries) => {
+            for (const e of entries) {
+              if (e.isIntersecting) {
+                (e.target as HTMLElement).classList.add('is-in');
+                io.unobserve(e.target);
+              }
+            }
+          },
+          { threshold: 0.12, rootMargin: '0px 0px -6% 0px' }
+        );
+        revealed.forEach((el) => io.observe(el));
+      } else {
+        revealed.forEach((el) => el.classList.add('is-in'));
+      }
+
+      // Counters tick up when visible.
+      const counters = document.querySelectorAll<HTMLElement>('[data-count]');
+      const runCount = (el: HTMLElement) => {
+        const target = parseInt(el.dataset.count || '0', 10);
+        const pad = (el.dataset.pad || '').length > 0;
+        const dur = 900;
+        const t0 = performance.now();
+        const step = (t: number) => {
+          const p = Math.min(1, (t - t0) / dur);
+          const eased = 1 - Math.pow(1 - p, 3);
+          const v = Math.round(target * eased);
+          el.textContent = pad ? String(v).padStart(2, '0') : String(v);
+          if (p < 1) requestAnimationFrame(step);
+        };
+        requestAnimationFrame(step);
+      };
+      if (!reduce && 'IntersectionObserver' in window) {
+        const cio = new IntersectionObserver(
+          (entries) => {
+            for (const e of entries) {
+              if (e.isIntersecting) {
+                runCount(e.target as HTMLElement);
+                cio.unobserve(e.target);
+              }
+            }
+          },
+          { threshold: 0.5 }
+        );
+        counters.forEach((el) => cio.observe(el));
+      } else {
+        counters.forEach((el) => {
+          const pad = (el.dataset.pad || '').length > 0;
+          const v = el.dataset.count || '0';
+          el.textContent = pad ? v.padStart(2, '0') : v;
+        });
+      }
+
+      // Terminal-print typewriter for kicker lines.
+      document.querySelectorAll<HTMLElement>('[data-type]').forEach((el) => {
+        const text = el.textContent || '';
+        if (reduce) return;
+        el.textContent = '';
+        el.classList.add('typing');
+        let i = 0;
+        const tick = () => {
+          i += 1;
+          el.textContent = text.slice(0, i);
+          if (i < text.length) {
+            setTimeout(tick, 17);
+          } else {
+            setTimeout(() => el.classList.remove('typing'), 2200);
+          }
+        };
+        setTimeout(tick, 250);
+      });
+
+      // Local clock — Gulf Standard Time.
+      const clock = document.querySelector<HTMLElement>('[data-clock]');
+      if (clock) {
+        const fmt = new Intl.DateTimeFormat('en-GB', {
+          hour: '2-digit',
+          minute: '2-digit',
+          second: '2-digit',
+          hour12: false,
+          timeZone: 'Asia/Dubai',
+        });
+        const tick = () => {
+          clock.textContent = `SHJ ${fmt.format(new Date())} GST`;
+        };
+        tick();
+        setInterval(tick, 1000);
+      }
+    </script>
+  </body>
+</html>

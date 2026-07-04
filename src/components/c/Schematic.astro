@@ -1,0 +1,132 @@
+---
+/**
+ * Technical figure drawn per project — spec-sheet style schematic
+ * rendered inside a graphite panel. Pure inline SVG, no assets.
+ */
+interface Props {
+  id: string;
+  figNo: string; // e.g. "1"
+  caption: string;
+}
+const { id, figNo, caption } = Astro.props;
+
+const mono = 'JetBrains Mono, monospace';
+const faint = 'rgba(244,244,242,0.10)';
+const dim = 'rgba(244,244,242,0.38)';
+const lit = 'rgba(244,244,242,0.78)';
+const orange = '#ff4d00';
+---
+<div class="fig-panel">
+  {id === 'twogether' && (
+    <svg viewBox="0 0 500 400" role="img" aria-label="Schematic: two pins syncing into one shared map">
+      <!-- grid -->
+      {Array.from({ length: 9 }, (_, i) => (
+        <line x1={50 * (i + 1)} y1="0" x2={50 * (i + 1)} y2="400" stroke={faint} stroke-width="1" />
+      ))}
+      {Array.from({ length: 7 }, (_, i) => (
+        <line x1="0" y1={50 * (i + 1)} x2="500" y2={50 * (i + 1)} stroke={faint} stroke-width="1" />
+      ))}
+      <!-- dashed route between pins -->
+      <path d="M120 268 C 190 160, 300 130, 382 118" fill="none" stroke={orange} stroke-width="1.5" stroke-dasharray="5 6" />
+      <!-- pin A -->
+      <circle cx="120" cy="268" r="26" fill="none" stroke={lit} stroke-width="1.5" />
+      <circle cx="120" cy="268" r="6" fill={orange} />
+      <line x1="120" y1="230" x2="120" y2="246" stroke={dim} stroke-width="1" />
+      <line x1="120" y1="290" x2="120" y2="306" stroke={dim} stroke-width="1" />
+      <line x1="82" y1="268" x2="98" y2="268" stroke={dim} stroke-width="1" />
+      <line x1="142" y1="268" x2="158" y2="268" stroke={dim} stroke-width="1" />
+      <text x="120" y="326" text-anchor="middle" font-family={mono} font-size="10" letter-spacing="2" fill={dim}>USER·A</text>
+      <!-- pin B -->
+      <circle cx="382" cy="118" r="26" fill="none" stroke={lit} stroke-width="1.5" />
+      <circle cx="382" cy="118" r="6" fill={orange} />
+      <line x1="382" y1="80" x2="382" y2="96" stroke={dim} stroke-width="1" />
+      <line x1="382" y1="140" x2="382" y2="156" stroke={dim} stroke-width="1" />
+      <line x1="344" y1="118" x2="360" y2="118" stroke={dim} stroke-width="1" />
+      <line x1="404" y1="118" x2="420" y2="118" stroke={dim} stroke-width="1" />
+      <text x="382" y="176" text-anchor="middle" font-family={mono} font-size="10" letter-spacing="2" fill={dim}>USER·B</text>
+      <!-- saved place markers -->
+      <rect x="216" y="196" width="8" height="8" fill={orange} />
+      <rect x="268" y="152" width="8" height="8" fill="none" stroke={lit} stroke-width="1.2" />
+      <rect x="170" y="120" width="8" height="8" fill="none" stroke={lit} stroke-width="1.2" />
+      <rect x="318" y="236" width="8" height="8" fill="none" stroke={lit} stroke-width="1.2" />
+      <text x="236" y="205" font-family={mono} font-size="9" letter-spacing="1.5" fill={lit}>PINNED</text>
+      <!-- ingestion labels -->
+      <text x="36" y="44" font-family={mono} font-size="10" letter-spacing="2" fill={dim}>IN: MAPS·REELS·URL·TEXT</text>
+      <text x="36" y="62" font-family={mono} font-size="10" letter-spacing="2" fill={orange}>REJECTED: 0</text>
+    </svg>
+  )}
+
+  {id === 'watchtogether' && (
+    <svg viewBox="0 0 500 400" role="img" aria-label="Schematic: two playback tracks locked in sync">
+      {Array.from({ length: 9 }, (_, i) => (
+        <line x1={50 * (i + 1)} y1="0" x2={50 * (i + 1)} y2="400" stroke={faint} stroke-width="1" />
+      ))}
+      <!-- track 1 -->
+      <text x="40" y="118" font-family={mono} font-size="10" letter-spacing="2" fill={dim}>VIEWER·01</text>
+      <line x1="40" y1="150" x2="460" y2="150" stroke={dim} stroke-width="1" />
+      {[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20].map((i) => (
+        <rect x={44 + i * 13} y={150 - (6 + ((i * 37) % 26))} width="6" height={6 + ((i * 37) % 26)} fill={i < 14 ? lit : 'rgba(244,244,242,0.18)'} />
+      ))}
+      <!-- track 2 -->
+      <text x="40" y="238" font-family={mono} font-size="10" letter-spacing="2" fill={dim}>VIEWER·02</text>
+      <line x1="40" y1="270" x2="460" y2="270" stroke={dim} stroke-width="1" />
+      {[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20].map((i) => (
+        <rect x={44 + i * 13} y={270 - (6 + ((i * 53) % 26))} width="6" height={6 + ((i * 53) % 26)} fill={i < 14 ? lit : 'rgba(244,244,242,0.18)'} />
+      ))}
+      <!-- sync playhead -->
+      <line x1="226" y1="76" x2="226" y2="300" stroke={orange} stroke-width="1.5" />
+      <rect x="220" y="70" width="12" height="12" fill={orange} />
+      <text x="240" y="80" font-family={mono} font-size="10" letter-spacing="2" fill={orange}>T=00:47:12 · LOCKED</text>
+      <!-- buffer readout -->
+      <text x="40" y="340" font-family={mono} font-size="10" letter-spacing="2" fill={dim}>BUF·01 ▸ 8.2s</text>
+      <text x="200" y="340" font-family={mono} font-size="10" letter-spacing="2" fill={dim}>BUF·02 ▸ 7.9s</text>
+      <text x="360" y="340" font-family={mono} font-size="10" letter-spacing="2" fill={orange}>Δ 0.3s OK</text>
+    </svg>
+  )}
+
+  {id === 'thought-pipeline' && (
+    <svg viewBox="0 0 500 400" role="img" aria-label="Schematic: voice notes flowing through a pipeline into drafts">
+      {Array.from({ length: 7 }, (_, i) => (
+        <line x1="0" y1={50 * (i + 1)} x2="500" y2={50 * (i + 1)} stroke={faint} stroke-width="1" />
+      ))}
+      <!-- stage 1: voice -->
+      <rect x="40" y="80" width="120" height="72" fill="none" stroke={lit} stroke-width="1.5" />
+      {[0,1,2,3,4,5,6,7,8,9,10].map((i) => (
+        <line x1={58 + i * 8} y1={116 - (4 + ((i * 29) % 18))} x2={58 + i * 8} y2={116 + (4 + ((i * 29) % 18))} stroke={orange} stroke-width="2" />
+      ))}
+      <text x="100" y="172" text-anchor="middle" font-family={mono} font-size="10" letter-spacing="2" fill={dim}>VOICE·IN</text>
+      <!-- arrow -->
+      <line x1="160" y1="116" x2="205" y2="116" stroke={dim} stroke-width="1.5" />
+      <path d="M205 116 l-8 -4 v8 z" fill={dim} />
+      <!-- stage 2: whisper -->
+      <rect x="210" y="80" width="120" height="72" fill="none" stroke={lit} stroke-width="1.5" />
+      <text x="270" y="112" text-anchor="middle" font-family={mono} font-size="11" letter-spacing="2" fill={lit}>WHISPER</text>
+      <text x="270" y="130" text-anchor="middle" font-family={mono} font-size="9" letter-spacing="1.5" fill={orange}>LOCAL·ONLY</text>
+      <text x="270" y="172" text-anchor="middle" font-family={mono} font-size="10" letter-spacing="2" fill={dim}>TRANSCRIBE</text>
+      <!-- arrow -->
+      <line x1="330" y1="116" x2="375" y2="116" stroke={dim} stroke-width="1.5" />
+      <path d="M375 116 l-8 -4 v8 z" fill={dim} />
+      <!-- stage 3: cluster -->
+      <rect x="380" y="80" width="80" height="72" fill="none" stroke={lit} stroke-width="1.5" />
+      <circle cx="404" cy="106" r="4" fill={orange} />
+      <circle cx="424" cy="118" r="4" fill={orange} />
+      <circle cx="410" cy="130" r="4" fill={orange} />
+      <circle cx="438" cy="100" r="4" fill="none" stroke={lit} stroke-width="1.2" />
+      <circle cx="442" cy="132" r="4" fill="none" stroke={lit} stroke-width="1.2" />
+      <text x="420" y="172" text-anchor="middle" font-family={mono} font-size="10" letter-spacing="2" fill={dim}>CLUSTER</text>
+      <!-- vertical drop to drafts -->
+      <line x1="420" y1="152" x2="420" y2="216" stroke={dim} stroke-width="1.5" stroke-dasharray="4 5" />
+      <path d="M420 220 l-4 -8 h8 z" fill={dim} />
+      <!-- drafts calendar -->
+      <text x="40" y="240" font-family={mono} font-size="10" letter-spacing="2" fill={dim}>OUT ▸ DRAFT CALENDAR</text>
+      {[0,1,2,3,4,5,6].map((i) => (
+        <rect x={40 + i * 60} y="256" width="48" height="60" fill={i === 1 || i === 4 ? orange : 'none'} stroke={i === 1 || i === 4 ? orange : dim} stroke-width="1.2" />
+      ))}
+      <text x="124" y="292" text-anchor="middle" font-family={mono} font-size="9" letter-spacing="1" fill="#18181b" font-weight="700">PUB</text>
+      <text x="304" y="292" text-anchor="middle" font-family={mono} font-size="9" letter-spacing="1" fill="#18181b" font-weight="700">PUB</text>
+      <text x="40" y="348" font-family={mono} font-size="10" letter-spacing="2" fill={dim}>COMMUTE → KEYBOARD · LOSS: 0 THOUGHTS</text>
+    </svg>
+  )}
+
+  <span class="fig-cap"><b>FIG. {figNo}</b> — {caption}</span>
+</div>

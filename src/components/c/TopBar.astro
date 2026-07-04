@@ -1,0 +1,27 @@
+---
+import { withBase } from '../../lib/url';
+
+interface Props {
+  /** show section anchor nav (home page only) */
+  nav?: boolean;
+}
+const { nav = false } = Astro.props;
+---
+<header class="topbar">
+  <div class="wrap topbar-in">
+    <a class="brand" href={withBase('c/')}>
+      <span class="dot" aria-hidden="true"></span>
+      N.RAKESH / MACHINE
+    </a>
+    {nav && (
+      <nav aria-label="Sections">
+        <a href="#work">01/ Work</a>
+        <a href="#builds">02/ Builds</a>
+        <a href="#about">03/ About</a>
+        <a href="#archive">04/ Archive</a>
+        <a href="#contact">05/ Contact</a>
+      </nav>
+    )}
+    <span class="mono clock" data-clock>SHJ --:--:-- GST</span>
+  </div>
+</header>

@@ -1,0 +1,152 @@
+---
+import { getCollection, render } from 'astro:content';
+import Base from '../../../layouts/c/Base.astro';
+import TopBar from '../../../components/c/TopBar.astro';
+import Schematic from '../../../components/c/Schematic.astro';
+import { withBase } from '../../../lib/url';
+import site from '../../../data/site.json';
+
+export async function getStaticPaths() {
+  const projects = (await getCollection('projects')).sort(
+    (x, y) => x.data.order - y.data.order
+  );
+  return projects.map((entry, i) => ({
+    params: { id: entry.id },
+    props: {
+      entry,
+      prev: projects[(i - 1 + projects.length) % projects.length],
+      next: projects[(i + 1) % projects.length],
+    },
+  }));
+}
+
+const { entry, prev, next } = Astro.props;
+const { Content } = await render(entry);
+const d = entry.data;
+const pad = (n: number) => String(n).padStart(2, '0');
+---
+<Base
+  title={`${d.title} — Niranjan Rakesh`}
+  description={d.tagline}
+>
+  <TopBar />
+
+  <main>
+    <!-- ============ DOSSIER HEAD ============ -->
+    <header class="cs-head wrap">
+      <nav class="crumbs mono" aria-label="Breadcrumb">
+        <a href={withBase('c/')}>INDEX</a>
+        <span class="sep" aria-hidden="true">/</span>
+        <a href={withBase('c/') + '#work'}>WORK</a>
+        <span class="sep" aria-hidden="true">/</span>
+        <span class="here">PRJ-{pad(d.order)} · {d.title.toUpperCase()}</span>
+      </nav>
+
+      <h1 class="cs-title display" data-reveal>{d.title}</h1>
+      <p class="cs-tagline" data-reveal style="--i:1">{d.tagline}</p>
+
+      <table class="spec-table" data-reveal style="--i:2">
+        <tbody>
+          <tr>
+            <th scope="row">Status</th>
+            <td><span class="status-cell">{d.status}</span></td>
+          </tr>
+          <tr>
+            <th scope="row">Year</th>
+            <td>{d.year}</td>
+          </tr>
+          <tr>
+            <th scope="row">Class</th>
+            <td style="text-transform:uppercase;">{d.flavor}</td>
+          </tr>
+          <tr>
+            <th scope="row">Stack</th>
+            <td>
+              <ul class="stack-list">
+                {d.stack.map((s) => <li>{s}</li>)}
+              </ul>
+            </td>
+          </tr>
+          {d.liveUrl && (
+            <tr>
+              <th scope="row">Deployment</th>
+              <td>
+                <a class="live-link" href={d.liveUrl} target="_blank" rel="noopener noreferrer">
+                  <span class="led" aria-hidden="true"></span>
+                  Live — {d.liveUrl.replace(/^https?:\/\//, '')} ↗
+                </a>
+              </td>
+            </tr>
+          )}
+        </tbody>
+      </table>
+    </header>
+
+    <!-- ============ FINDINGS ============ -->
+    <section class="section wrap" style="padding-block: clamp(2.5rem, 6vh, 4rem) 0;">
+      <div class="section-head" data-reveal style="margin-bottom:0;">
+        <span class="xh" aria-hidden="true"></span>
+        <span class="idx">A/</span>
+        <h2>Key findings</h2>
+        <span class="tail">
+          <span class="mono">{pad(d.highlights.length)} verified claims</span>
+          <span class="xh" aria-hidden="true"></span>
+        </span>
+      </div>
+      <div class="hl-grid" data-reveal>
+        {d.highlights.map((h, i) => (
+          <div class="hl">
+            <span class="hl-mark" aria-hidden="true"></span>
+            <span class="hl-idx">HL-{pad(i + 1)}</span>
+            <p>{h}</p>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <!-- ============ BODY ============ -->
+    <section class="cs-body wrap">
+      <article class="prose" data-reveal>
+        <Content />
+      </article>
+
+      <aside class="cs-aside" data-reveal style="--i:1">
+        <div class="aside-in">
+          <Schematic id={entry.id} figNo={String(d.order)} caption={`${d.title} — system diagram`} />
+          <div class="aside-note">
+            <span class="k mono">Doc ref</span>
+            <p>
+              Dossier PRJ-{pad(d.order)} of {pad(3)}. Compiled from production
+              source, deploy logs, and daily use — not a mockup archive.
+            </p>
+          </div>
+          <div class="aside-note">
+            <span class="k mono">Contact</span>
+            <p>
+              Questions about this build? <a href={`mailto:${site.contact.email}`} style="color:var(--ink); text-decoration-color:var(--accent); text-decoration-thickness:2px; text-underline-offset:3px;">{site.contact.email}</a>
+            </p>
+          </div>
+        </div>
+      </aside>
+    </section>
+
+    <!-- ============ PREV / NEXT ============ -->
+    <nav class="pn wrap" aria-label="Project navigation" data-reveal>
+      <a href={withBase(`c/work/${prev.id}`)} class="prevl">
+        <span class="pn-k mono">← Prev · PRJ-{pad(prev.data.order)}</span>
+        <span class="pn-t">{prev.data.title}</span>
+      </a>
+      <a href={withBase(`c/work/${next.id}`)} class="next">
+        <span class="pn-k mono">Next · PRJ-{pad(next.data.order)} →</span>
+        <span class="pn-t">{next.data.title}</span>
+      </a>
+    </nav>
+
+    <footer class="cs-footer wrap">
+      <a class="back" href={withBase('c/')}>
+        <span style="color:var(--accent);" aria-hidden="true">←</span> Return to index
+      </a>
+      <span class="mono f-right">© 2026 · {site.name} · Direction C</span>
+    </footer>
+  </main>
+</Base>

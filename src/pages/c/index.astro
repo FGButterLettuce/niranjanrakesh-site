@@ -1,0 +1,247 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../../layouts/c/Base.astro';
+import TopBar from '../../components/c/TopBar.astro';
+import Schematic from '../../components/c/Schematic.astro';
+import { withBase } from '../../lib/url';
+import site from '../../data/site.json';
+
+const projects = (await getCollection('projects')).sort(
+  (x, y) => x.data.order - y.data.order
+);
+
+const pad = (n: number) => String(n).padStart(2, '0');
+---
+<Base
+  title="Niranjan Rakesh — Builds Things That Ship"
+  description={site.hero.subline}
+>
+  <TopBar nav />
+
+  <main>
+    <!-- ============ HERO ============ -->
+    <section class="hero wrap">
+      <div class="hero-dial" aria-hidden="true">
+        <svg viewBox="0 0 240 240">
+          {Array.from({ length: 60 }, (_, i) => {
+            const a = (i * 6 * Math.PI) / 180;
+            const r1 = i % 5 === 0 ? 96 : 102;
+            const x1 = 120 + r1 * Math.sin(a);
+            const y1 = 120 - r1 * Math.cos(a);
+            const x2 = 120 + 110 * Math.sin(a);
+            const y2 = 120 - 110 * Math.cos(a);
+            return (
+              <line
+                x1={x1} y1={y1} x2={x2} y2={y2}
+                stroke={i % 5 === 0 ? 'rgba(18,18,21,0.55)' : 'rgba(18,18,21,0.22)'}
+                stroke-width={i % 5 === 0 ? 1.5 : 1}
+              />
+            );
+          })}
+          <circle cx="120" cy="120" r="110" fill="none" stroke="rgba(18,18,21,0.28)" stroke-width="1" />
+          <line x1="120" y1="34" x2="120" y2="70" stroke="rgba(18,18,21,0.35)" stroke-width="1" />
+          <line x1="120" y1="170" x2="120" y2="206" stroke="rgba(18,18,21,0.35)" stroke-width="1" />
+          <line x1="34" y1="120" x2="70" y2="120" stroke="rgba(18,18,21,0.35)" stroke-width="1" />
+          <line x1="170" y1="120" x2="206" y2="120" stroke="rgba(18,18,21,0.35)" stroke-width="1" />
+          <circle cx="120" cy="120" r="4" fill="#ff4d00" />
+          <line class="dial-needle" x1="120" y1="120" x2="120" y2="28" stroke="#ff4d00" stroke-width="2" />
+        </svg>
+        <span class="mono dial-note">DOC. C — SPEC SHEET<br />REV 2026.07 · SHARJAH</span>
+      </div>
+      <p class="kicker mono">
+        <span class="tick" aria-hidden="true"></span>
+        <span class="type-line" data-type>{site.hero.kicker.toUpperCase()}</span>
+      </p>
+      <h1 class="display" data-reveal>
+        Builds things that <span class="shipped">ship.</span>
+      </h1>
+      <p class="subline" data-reveal style="--i:1">{site.hero.subline}</p>
+
+      <div class="hero-spec" data-reveal style="--i:2">
+        <div class="cell">
+          <span class="num"><span data-count="3" data-pad="1">00</span><span class="unit">/</span></span>
+          <span class="lbl mono">Products shipped</span>
+        </div>
+        <div class="cell">
+          <span class="num"><span data-count="12" data-pad="1">00</span><span class="unit">/</span></span>
+          <span class="lbl mono">Design figures on file</span>
+        </div>
+        <div class="cell">
+          <span class="num">00<span class="unit">/</span></span>
+          <span class="lbl mono">npm deps — flagship backend</span>
+        </div>
+        <div class="cell">
+          <span class="num" style="font-size:clamp(0.95rem,1.6vw,1.2rem); line-height:1.8;">25.35°N 55.42°E</span>
+          <span class="lbl mono">{site.location}</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ 01 / WORK ============ -->
+    <section class="section wrap" id="work">
+      <div class="section-head" data-reveal>
+        <span class="xh" aria-hidden="true"></span>
+        <span class="idx">01/</span>
+        <h2>Selected work</h2>
+        <span class="tail">
+          <span class="mono">{pad(projects.length)} dossiers · full spec inside</span>
+          <span class="xh" aria-hidden="true"></span>
+        </span>
+      </div>
+
+      {projects.map((p, i) => (
+        <a class="dossier" href={withBase(`c/work/${p.id}`)} data-reveal>
+          <div class="d-copy">
+            <p class="d-no">
+              PRJ-{pad(p.data.order)}
+              <span class="flavor">[{p.data.flavor.toUpperCase()}]</span>
+              <span class="xh" aria-hidden="true"></span>
+            </p>
+            <h3>{p.data.title}</h3>
+            <p class="d-tag">{p.data.tagline}</p>
+            <table class="d-spec">
+              <tbody>
+                <tr><th scope="row">Status</th><td>{p.data.status}</td></tr>
+                <tr><th scope="row">Year</th><td>{p.data.year}</td></tr>
+                <tr>
+                  <th scope="row">Stack</th>
+                  <td>{p.data.stack.slice(0, 4).join(' · ')}{p.data.stack.length > 4 ? ` · +${p.data.stack.length - 4}` : ''}</td>
+                </tr>
+              </tbody>
+            </table>
+            <span class="d-open">Open dossier <span class="arrow" aria-hidden="true">→</span></span>
+          </div>
+          <Schematic id={p.id} figNo={String(i + 1)} caption={`${p.data.title} — system diagram`} />
+        </a>
+      ))}
+    </section>
+
+    <!-- ============ 02 / SMALLER BUILDS ============ -->
+    <section class="section wrap" id="builds">
+      <div class="section-head" data-reveal>
+        <span class="xh" aria-hidden="true"></span>
+        <span class="idx">02/</span>
+        <h2>Smaller builds</h2>
+        <span class="tail">
+          <span class="mono">Bench log · {pad(site.smallerBuilds.length)} entries</span>
+          <span class="xh" aria-hidden="true"></span>
+        </span>
+      </div>
+
+      <div class="ledger" data-reveal>
+        {site.smallerBuilds.map((b, i) => (
+          <div class="ledger-row">
+            <span class="l-no">B-{pad(i + 1)}</span>
+            <span class="l-name">{b.name}</span>
+            <span class="l-line">{b.line}</span>
+            <span class="l-year">{b.year}</span>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <!-- ============ 03 / ABOUT ============ -->
+    <section class="section wrap" id="about">
+      <div class="section-head" data-reveal>
+        <span class="xh" aria-hidden="true"></span>
+        <span class="idx">03/</span>
+        <h2>Operator notes</h2>
+        <span class="tail">
+          <span class="mono">{site.name} · {site.role}</span>
+          <span class="xh" aria-hidden="true"></span>
+        </span>
+      </div>
+
+      <div class="about-grid">
+        <p class="about-lead" data-reveal>
+          I build <span class="mark">complete</span> things. Not demos, not prototypes
+          that die in a folder — products with users, uptime, and edges that
+          have been sanded by real use.
+        </p>
+        <div class="about-body" data-reveal style="--i:1">
+          {site.about.body.map((para) => <p>{para}</p>)}
+        </div>
+      </div>
+
+      <div class="themes" data-reveal>
+        {site.about.themes.map((t, i) => (
+          <div class="theme">
+            <span class="t-idx">SPEC {pad(i + 1)}</span>
+            <h3>{t.title}</h3>
+            <p>{t.detail}</p>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <!-- ============ 04 / DESIGN ARCHIVE ============ -->
+    <section class="section wrap" id="archive">
+      <div class="section-head" data-reveal>
+        <span class="xh" aria-hidden="true"></span>
+        <span class="idx">04/</span>
+        <h2>Design archive</h2>
+        <span class="tail">
+          <span class="mono">Contact sheet · 2021–2024 · design was the first language</span>
+          <span class="xh" aria-hidden="true"></span>
+        </span>
+      </div>
+
+      <div class="arc-grid" data-reveal>
+        {site.archive.map((a, i) => (
+          <figure class="arc-item">
+            <div class="arc-img">
+              <img src={withBase(a.image)} alt={`${a.title} — ${a.category}`} loading="lazy" width="600" height="600" />
+            </div>
+            <figcaption>
+              <span class="arc-cap">
+                <span class="fig">FIG. {pad(i + 4)}</span>
+                <span class="yr">{a.year}</span>
+              </span>
+              <span class="arc-title">{a.title}</span>
+              <span class="arc-cat">{a.category}</span>
+            </figcaption>
+          </figure>
+        ))}
+      </div>
+    </section>
+
+    <!-- ============ 05 / CONTACT ============ -->
+    <section class="section wrap" id="contact" style="padding-bottom:0;">
+      <div class="section-head" data-reveal>
+        <span class="xh" aria-hidden="true"></span>
+        <span class="idx">05/</span>
+        <h2>Transmission</h2>
+        <span class="tail">
+          <span class="mono">Channel open · response guaranteed</span>
+          <span class="xh" aria-hidden="true"></span>
+        </span>
+      </div>
+
+      <div class="contact-block" data-reveal>
+        <p class="c-kick mono">
+          <span class="tick" aria-hidden="true"></span>
+          Direct line — no forms, no middlemen
+        </p>
+        <h2 class="display">{site.contact.cta}</h2>
+        <div class="contact-rows">
+          <a href={`mailto:${site.contact.email}`}>
+            <span class="k">Email</span>
+            <span class="v">{site.contact.email}</span>
+            <span class="arr" aria-hidden="true">↗</span>
+          </a>
+          <a href={`tel:${site.contact.phone.replace(/\s/g, '')}`}>
+            <span class="k">Phone</span>
+            <span class="v">{site.contact.phone}</span>
+            <span class="arr" aria-hidden="true">↗</span>
+          </a>
+        </div>
+      </div>
+
+      <footer class="footer-strip">
+        <span class="barcode" aria-hidden="true"></span>
+        <span class="mono f-line">{site.footer.line}</span>
+        <span class="mono f-right">© 2026 · {site.name} · Direction C</span>
+      </footer>
+    </section>
+  </main>
+</Base>
