@@ -576,25 +576,28 @@ html.js [data-reveal].is-in {
   box-decoration-break: clone;
   -webkit-box-decoration-break: clone;
 }
-.archive-grid {
+/* poster wall — the featured pieces, every tile is a link */
+.archive-wall {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  grid-auto-flow: dense;
+  grid-template-columns: repeat(6, 1fr);
   gap: clamp(1rem, 2vw, 1.75rem);
   list-style: none;
 }
+.archive-wall > li { grid-column: span 2; }
+.archive-wall > li:nth-child(-n + 2) { grid-column: span 3; }
 .tile { --tc: var(--yellow); }
 .tile.c1 { --tc: var(--yellow); }
 .tile.c2 { --tc: var(--pink); }
 .tile.c3 { --tc: var(--red); }
 .tile.c4 { --tc: var(--white); }
-.tile.featured { grid-column: span 2; }
 .tile-frame {
   border: 4px solid var(--tc);
   background: var(--ink);
   height: 100%;
   display: flex;
   flex-direction: column;
+  color: inherit;
+  text-decoration: none;
   transition: transform 0.15s var(--snap);
 }
 .tile-frame:hover { transform: translate(-3px, -3px); }
@@ -612,7 +615,7 @@ html.js [data-reveal].is-in {
   letter-spacing: 0.04em;
   color: var(--tc);
 }
-.tile.featured .tile-top .no { font-size: 1.35rem; }
+.archive-wall > li:nth-child(-n + 2) .tile-top .no { font-size: 1.35rem; }
 .tile-top .yr {
   font-weight: 800;
   font-size: 0.62rem;
@@ -624,11 +627,11 @@ html.js [data-reveal].is-in {
   white-space: nowrap;
 }
 .tile-img {
-  aspect-ratio: 4 / 5;
+  aspect-ratio: 4 / 3;
   overflow: hidden;
   border-bottom: 4px solid var(--tc);
 }
-.tile.featured .tile-img { aspect-ratio: 8 / 5; }
+.archive-wall > li:nth-child(-n + 2) .tile-img { aspect-ratio: 8 / 5; }
 .tile-img img {
   width: 100%;
   height: 100%;
@@ -652,12 +655,12 @@ html.js [data-reveal].is-in {
 .tile-frame:hover .tile-cap { background: var(--tc); color: var(--ink); }
 .tile-cap .t {
   font-family: var(--display);
-  font-size: 0.95rem;
+  font-size: clamp(1rem, 1.6vw, 1.3rem);
   line-height: 1.15;
   text-transform: uppercase;
   letter-spacing: 0.03em;
 }
-.tile.featured .tile-cap .t { font-size: clamp(1.1rem, 2vw, 1.5rem); }
+.archive-wall > li:nth-child(-n + 2) .tile-cap .t { font-size: clamp(1.1rem, 2vw, 1.5rem); }
 .tile-cap .m {
   font-weight: 700;
   font-size: 0.66rem;
@@ -665,12 +668,92 @@ html.js [data-reveal].is-in {
   letter-spacing: 0.12em;
   opacity: 0.9;
 }
-@media (max-width: 1024px) { .archive-grid { grid-template-columns: repeat(3, 1fr); } }
-@media (max-width: 760px)  {
-  .archive-grid { grid-template-columns: repeat(2, 1fr); gap: 0.9rem; }
-  .tile-top { padding: 0.35rem 0.55rem; }
-  .tile-top .no { font-size: 0.9rem; }
-  .tile-cap .t { font-size: 0.82rem; }
+@media (max-width: 1024px) {
+  .archive-wall { grid-template-columns: repeat(2, 1fr); }
+  .archive-wall > li,
+  .archive-wall > li:nth-child(-n + 2) { grid-column: span 1; }
+  .archive-wall > li:last-child { grid-column: span 2; }
+}
+@media (max-width: 560px) {
+  .archive-wall { grid-template-columns: 1fr; gap: 1rem; }
+  .archive-wall > li,
+  .archive-wall > li:last-child { grid-column: span 1; }
+}
+
+/* stamped index — all pieces, ledger rows */
+.archive-index { margin-top: clamp(3.5rem, 7vw, 5.5rem); }
+.archive-index-label {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.6rem;
+  margin-bottom: clamp(1.25rem, 2.5vw, 1.75rem);
+}
+.index-list {
+  list-style: none;
+  border-top: 4px solid var(--white);
+}
+.index-row {
+  display: grid;
+  grid-template-columns: auto 1fr auto auto auto;
+  align-items: baseline;
+  column-gap: clamp(1rem, 2.5vw, 2rem);
+  padding: clamp(0.85rem, 1.8vw, 1.15rem) 0.35rem;
+  border-bottom: 4px solid var(--white);
+  color: var(--white);
+  text-decoration: none;
+  transition: background 0.12s var(--snap), color 0.12s var(--snap);
+}
+.index-row:hover { background: var(--yellow); color: var(--ink); }
+.index-row:hover .ix-no,
+.index-row:hover .ix-arrow { color: var(--ink); }
+.ix-no {
+  font-family: var(--display);
+  font-size: clamp(0.85rem, 1.4vw, 1.05rem);
+  letter-spacing: 0.05em;
+  color: var(--yellow);
+}
+.ix-title {
+  font-family: var(--display);
+  font-size: clamp(1.05rem, 2.4vw, 1.7rem);
+  line-height: 1.05;
+  text-transform: uppercase;
+  letter-spacing: 0.01em;
+  overflow-wrap: anywhere;
+}
+.ix-cat {
+  font-weight: 700;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  opacity: 0.9;
+  white-space: nowrap;
+}
+.ix-yr {
+  font-weight: 800;
+  font-size: 0.66rem;
+  letter-spacing: 0.12em;
+  border: 2px solid currentColor;
+  padding: 0.15rem 0.4rem;
+  white-space: nowrap;
+}
+.ix-arrow {
+  font-family: var(--display);
+  font-size: 1.1rem;
+  color: var(--yellow);
+}
+@media (max-width: 640px) {
+  .index-row {
+    grid-template-columns: auto 1fr auto;
+    grid-template-rows: auto auto;
+    row-gap: 0.25rem;
+    column-gap: 0.9rem;
+  }
+  .ix-no { grid-row: 1 / span 2; align-self: baseline; }
+  .ix-title { grid-column: 2; }
+  .ix-yr { grid-column: 3; grid-row: 1; justify-self: end; }
+  .ix-cat { grid-column: 2; grid-row: 2; }
+  .ix-arrow { display: none; }
 }
 
 /* ------------------------------------------------------------
@@ -920,4 +1003,86 @@ html.js [data-reveal].is-in {
 @media (max-width: 640px) {
   .cs-nav { grid-template-columns: 1fr; }
   .cs-nav .next { border-left: none; border-top: var(--rule) solid var(--ink); }
+}
+
+/* ============================================================
+   DESIGN ARCHIVE — DETAIL PAGES
+   ============================================================ */
+.dd-kicker {
+  font-family: var(--accent);
+  font-style: italic;
+  font-size: clamp(1.2rem, 2.6vw, 1.8rem);
+  line-height: 1.3;
+  max-width: 38rem;
+  margin-top: clamp(1.25rem, 2.5vw, 2rem);
+}
+
+/* main plate — the piece itself, framed thick on black */
+.dd-plate-band { padding-block: clamp(3rem, 6vw, 5rem); }
+.dd-plate {
+  max-width: 62rem;
+  margin: 0 auto;
+  border: var(--rule) solid var(--plate, var(--yellow));
+  background: var(--ink);
+}
+.dd-plate img { width: 100%; height: auto; }
+.dd-plate figcaption {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.25rem 1.25rem;
+  background: var(--plate, var(--yellow));
+  color: var(--plate-ink, var(--ink));
+  padding: 0.65rem 0.9rem 0.75rem;
+  font-weight: 800;
+  font-size: 0.74rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+}
+.dd-plate figcaption .no {
+  font-family: var(--display);
+  font-size: 1rem;
+  letter-spacing: 0.05em;
+}
+
+/* process figures — bordered, captioned blocks on the paper surface */
+.dd-figures {
+  max-width: 62rem;
+  margin: clamp(3.5rem, 7vw, 5.5rem) auto 0;
+}
+.dd-figures-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: clamp(1.5rem, 3vw, 2.25rem);
+}
+.dd-fig {
+  border: 4px solid var(--ink);
+  background: var(--white);
+  box-shadow: 8px 8px 0 var(--ink);
+  display: flex;
+  flex-direction: column;
+}
+.dd-fig img {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  border-bottom: 4px solid var(--ink);
+}
+.dd-fig figcaption {
+  padding: 0.8rem 0.9rem 0.9rem;
+  font-weight: 600;
+  font-size: 0.92rem;
+  line-height: 1.5;
+}
+.dd-fig .fig-n {
+  display: block;
+  font-family: var(--accent);
+  font-style: italic;
+  font-size: 1.2rem;
+  color: var(--csx, var(--red));
+  margin-bottom: 0.3rem;
+}
+@media (max-width: 700px) {
+  .dd-figures-grid { grid-template-columns: 1fr; }
 }

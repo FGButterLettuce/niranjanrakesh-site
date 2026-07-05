@@ -1,0 +1,145 @@
+---
+import { getCollection, render } from 'astro:content';
+import Base from '../../../layouts/d/Base.astro';
+import Marquee from '../../../components/d/Marquee.astro';
+import { withBase } from '../../../lib/url';
+
+export async function getStaticPaths() {
+  const designs = (await getCollection('designs')).sort(
+    (x, y) => x.data.order - y.data.order
+  );
+  return designs.map((entry, i) => ({
+    params: { id: entry.id },
+    props: {
+      entry,
+      index: i,
+      prev: designs[(i - 1 + designs.length) % designs.length],
+      prevIndex: (i - 1 + designs.length) % designs.length,
+      next: designs[(i + 1) % designs.length],
+      nextIndex: (i + 1) % designs.length,
+    },
+  }));
+}
+
+const { entry, index, prev, prevIndex, next, nextIndex } = Astro.props;
+const { Content } = await render(entry);
+const d = entry.data;
+
+// Rotate through the frame palette by archive order — every design piece
+// gets its own poster color, cycling the full field set.
+const cycle = ['f-blue', 'f-yellow', 'f-pink', 'f-purple', 'f-red'];
+const fieldFor = (i: number) => cycle[i % cycle.length];
+const field = fieldFor(index);
+const prevField = fieldFor(prevIndex);
+const nextField = fieldFor(nextIndex);
+
+// Accent color used inside the article (chapter numerals) — dark enough
+// for ≥4.5:1 on the paper reading surface.
+const accentFor: Record<string, string> = {
+  'f-blue': '#1020eb',
+  'f-yellow': '#8a5a00',
+  'f-pink': '#c2003a',
+  'f-purple': '#46109e',
+  'f-red': '#b3241a',
+};
+
+// Raw field color — used for the plate frame on the black image band.
+const plateFor: Record<string, string> = {
+  'f-blue': '#1020eb',
+  'f-yellow': '#ffe600',
+  'f-pink': '#ff2e63',
+  'f-purple': '#46109e',
+  'f-red': '#e63b2e',
+};
+
+// Text on the plate caption strip — white on the dark plates, ink otherwise.
+const plateInk = field === 'f-blue' || field === 'f-purple' ? '#ffffff' : '#101010';
+
+const num = String(d.order).padStart(2, '0');
+
+// Char-count-aware title size — "3D PRINTED COMPUTER CASE" must survive 390px.
+const longest = Math.max(...d.title.split(/\s+/).map((w) => w.length));
+const titleSize = `min(clamp(2.5rem, 10vw, 8.5rem), calc((100vw - 2 * var(--pad-x)) / ${(longest * 0.82).toFixed(2)}))`;
+---
+<Base
+  title={`${d.title} — ${d.category} — Niranjan Rakesh`}
+  description={`${d.title}: ${d.category.toLowerCase()}, ${d.year}. Piece № ${num} from the design archive.`}
+>
+  <main>
+    <!-- ============ POSTER HEADER ============ -->
+    <section class={`field cs-hero ${field}`}>
+      <div class="halftone br" aria-hidden="true"></div>
+      <div class="wrap">
+        <a class="cs-back" href={`${withBase('d/')}#archive`}>← Design archive</a>
+        <span class="wb-num" aria-hidden="true">{num}</span>
+        <div class="cs-meta" data-reveal>
+          <span class="cs-index" aria-hidden="true">№ {num}</span>
+          <span class="stamp-chip solid">{d.category}</span>
+          <span class="stamp-chip">{d.year}</span>
+        </div>
+        <h1 class="cs-title" style={`font-size:${titleSize};--d:.06s`} data-reveal>{d.title}</h1>
+        <p class="dd-kicker" data-reveal style="--d:.12s">
+          From the archive — design before the code.
+        </p>
+      </div>
+    </section>
+
+    <!-- ============ MAIN PLATE ============ -->
+    <section class="field f-black dd-plate-band" aria-label="Main image">
+      <div class="wrap">
+        <figure class="dd-plate" style={`--plate:${plateFor[field]};--plate-ink:${plateInk}`} data-reveal>
+          <img
+            src={withBase(d.image)}
+            alt={`${d.title} — ${d.category}`}
+            width="1200"
+            height="750"
+          />
+          <figcaption>
+            <span class="no" aria-hidden="true">№ {num}</span>
+            <span>{d.title} · {d.category} · {d.year}</span>
+          </figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <!-- ============ ARTICLE — readable core ============ -->
+    <section class="field f-paper cs-body">
+      <div class="wrap">
+        <article class="prose" style={`--csx:${accentFor[field] ?? '#c22a1e'}`}>
+          <Content />
+        </article>
+
+        {d.figures.length > 0 && (
+          <div class="dd-figures" style={`--csx:${accentFor[field] ?? '#c22a1e'}`}>
+            <h2 class="sec-label"><span>Process</span></h2>
+            <div class="dd-figures-grid">
+              {d.figures.map((f, i) => (
+                <figure class="dd-fig" data-reveal style={`--d:${(i % 2) * 0.07}s`}>
+                  <img src={withBase(f.src)} alt={f.caption} loading="lazy" width="900" height="600" />
+                  <figcaption>
+                    <span class="fig-n" aria-hidden="true">Fig. {String(i + 1).padStart(2, '0')}</span>
+                    {f.caption}
+                  </figcaption>
+                </figure>
+              ))}
+            </div>
+          </div>
+        )}
+      </div>
+    </section>
+
+    <Marquee items={['Design archive', d.title, d.category]} speed="24s" />
+
+    <!-- ============ PREV / NEXT ============ -->
+    <nav class="cs-nav" aria-label="Design archive navigation">
+      <a class={`field ${prevField} prev`} href={withBase(`d/design/${prev.id}`)}>
+        <span class="dir">← Previous</span>
+        <span class="cs-nav-name">{prev.data.title}</span>
+      </a>
+      <a class={`field ${nextField} next`} href={withBase(`d/design/${next.id}`)}>
+        <span class="dir">Next →</span>
+        <span class="cs-nav-name">{next.data.title}</span>
+      </a>
+    </nav>
+  </main>
+</Base>
