@@ -12,7 +12,8 @@ src/pages/index.astro   ← chooser page (temporary, until a winner is picked)
 src/pages/a/            ← direction A: "Voltage"   (electric dark, kinetic)
 src/pages/b/            ← direction B: "Ink & Ochre" (suave editorial)
 src/pages/c/            ← direction C: "Machine"   (precision engineering)
-src/styles/{a,b,c}.css  ← per-direction styling
+src/pages/d/            ← direction D: "Chroma"    (color-block poster energy)
+src/styles/{a,b,c,d}.css ← per-direction styling
 src/lib/url.ts          ← withBase() — ALL internal links/assets go through it
 ```
 
@@ -22,7 +23,7 @@ rebuilds and deploys automatically.
 ## Preview URL (now)
 
 https://fgbutterlettuce.github.io/niranjanrakesh-site/ — chooser page linking
-to `/a/`, `/b/`, `/c/`.
+to `/a/`, `/b/`, `/c/`, `/d/`.
 
 ## Going live on niranjanrakesh.me (manual steps, after picking a winner)
 

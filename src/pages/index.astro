@@ -24,6 +24,13 @@ const directions = [
     hue: '#16a34a',
     hue2: '#a3e635',
   },
+  {
+    key: 'd',
+    name: 'Chroma',
+    line: 'Poster energy. Full-bleed color blocks, chunky type, zero apologies.',
+    hue: '#ff2e63',
+    hue2: '#ffe600',
+  },
 ];
 ---
 <html lang="en">
@@ -109,7 +116,7 @@ const directions = [
   <body>
     <main>
     <p class="kicker">niranjanrakesh.me — overnight build</p>
-    <h1>Three complete directions. Pick the one that feels like you.</h1>
+    <h1>Four complete directions. Pick the one that feels like you.</h1>
     <div class="grid">
       {directions.map((d) => (
         <a class="card" href={withBase(`${d.key}/`)} style={`--hue:${d.hue};--hue2:${d.hue2}`}>
@@ -120,7 +127,7 @@ const directions = [
         </a>
       ))}
     </div>
-    <footer>Same content in all three — only the design changes. The winner becomes the root of niranjanrakesh.me.</footer>
+    <footer>Same content in all four — only the design changes. The winner becomes the root of niranjanrakesh.me.</footer>
     </main>
   </body>
 </html>
