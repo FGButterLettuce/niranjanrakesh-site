@@ -1,0 +1,34 @@
+---
+/**
+ * Poster marquee strip. Purely decorative (aria-hidden) — every
+ * marquee doubles a real section heading that exists in the DOM.
+ */
+interface Props {
+  items: string[];
+  inverted?: boolean;
+  speed?: string;
+}
+const { items, inverted = false, speed = '22s' } = Astro.props;
+// Repeat enough times that one half-track always overfills the viewport.
+const chunk = Array.from({ length: 6 }, () => items).flat();
+---
+<div class={`marquee${inverted ? ' inverted' : ''}`} aria-hidden="true" style={`--speed:${speed}`}>
+  <div class="marquee-track">
+    <div class="marquee-chunk">
+      {chunk.map((it) => (
+        <>
+          <span>{it}</span>
+          <span class="sep">★</span>
+        </>
+      ))}
+    </div>
+    <div class="marquee-chunk">
+      {chunk.map((it) => (
+        <>
+          <span>{it}</span>
+          <span class="sep">★</span>
+        </>
+      ))}
+    </div>
+  </div>
+</div>

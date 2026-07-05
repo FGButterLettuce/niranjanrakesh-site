@@ -154,7 +154,7 @@ const description = site.hero.subline;
             {site.about.themes.map((t, i) => (
               <div class="theme-card" data-reveal style={`--d:${i * 0.08}s`}>
                 <span class="t-num">{String(i + 1).padStart(2, '0')}</span>
-                <h4>{t.title}</h4>
+                <h3>{t.title}</h3>
                 <p>{t.detail}</p>
               </div>
             ))}

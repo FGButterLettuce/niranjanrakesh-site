@@ -25,17 +25,17 @@
     { "name": "orbit-core", "year": "2025", "line": "NestJS + Prisma backend for time management — OAuth, Google Calendar sync, multi-device conflict resolution, BullMQ jobs." }
   ],
   "archive": [
-    { "title": "Football Magazine", "category": "Editorial design", "year": "2022", "image": "images/work-football.png" },
+    { "title": "Football Magazine", "category": "Editorial design", "year": "2022", "image": "images/work-football.webp" },
     { "title": "The Studio", "category": "3D & interior", "year": "2024", "image": "images/work-the-studio.png" },
-    { "title": "Stardust", "category": "Branding", "year": "2022", "image": "images/work-stardust.png" },
-    { "title": "Product Souq", "category": "Landing page", "year": "2022", "image": "images/work-product-souq.png" },
-    { "title": "Fairlady Aiko", "category": "Videography", "year": "2022", "image": "images/work-fairlady.png" },
-    { "title": "NHK PSA", "category": "Poster", "year": "2021", "image": "images/nhk-psa.png" },
-    { "title": "MBDTF", "category": "Poster", "year": "2021", "image": "images/mbdtf.png" },
-    { "title": "Picasso", "category": "Apparel", "year": "2021", "image": "images/picasso.png" },
-    { "title": "E30", "category": "Automotive art", "year": "2021", "image": "images/e30-rear.png" },
+    { "title": "Stardust", "category": "Branding", "year": "2022", "image": "images/work-stardust.webp" },
+    { "title": "Product Souq", "category": "Landing page", "year": "2022", "image": "images/work-product-souq.webp" },
+    { "title": "Fairlady Aiko", "category": "Videography", "year": "2022", "image": "images/work-fairlady.webp" },
+    { "title": "NHK PSA", "category": "Poster", "year": "2021", "image": "images/nhk-psa.webp" },
+    { "title": "MBDTF", "category": "Poster", "year": "2021", "image": "images/mbdtf.webp" },
+    { "title": "Picasso", "category": "Apparel", "year": "2021", "image": "images/picasso.webp" },
+    { "title": "E30", "category": "Automotive art", "year": "2021", "image": "images/e30-rear.webp" },
     { "title": "Paradigm", "category": "Poster", "year": "2021", "image": "images/paradigm.png" },
-    { "title": "Slice", "category": "App UI", "year": "2022", "image": "images/thumb-slice.png" },
+    { "title": "Slice", "category": "App UI", "year": "2022", "image": "images/thumb-slice.webp" },
     { "title": "3D Printed Computer Case", "category": "Industrial design", "year": "2021", "image": "images/thumb-3d-case.png" }
   ],
   "contact": {

@@ -1,0 +1,190 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../../layouts/d/Base.astro';
+import Marquee from '../../components/d/Marquee.astro';
+import { withBase } from '../../lib/url';
+import site from '../../data/site.json';
+
+const projects = (await getCollection('projects')).sort(
+  (x, y) => x.data.order - y.data.order
+);
+
+// Poster field per project — mapped from frontmatter flavor, with a
+// harmonized fallback cycle so a fourth project still gets a block.
+const flavorField: Record<string, string> = {
+  product: 'f-yellow',
+  engineering: 'f-pink',
+  tool: 'f-purple',
+};
+const cycle = ['f-yellow', 'f-pink', 'f-purple', 'f-red'];
+const fieldFor = (flavor: string, i: number) =>
+  flavorField[flavor] ?? cycle[i % cycle.length];
+
+// Char-count-aware title size so WATCHTOGETHER survives 390px.
+const titleSize = (title: string) => {
+  const longest = Math.max(...title.split(/\s+/).map((w) => w.length));
+  return `min(clamp(2.5rem, 9.5vw, 7.5rem), calc((100vw - 2 * var(--pad-x)) / ${(longest * 0.82).toFixed(2)}))`;
+};
+
+// 16-point starburst polygon
+const burstPoints = Array.from({ length: 32 }, (_, i) => {
+  const r = i % 2 === 0 ? 50 : 38;
+  const a = (Math.PI * i) / 16;
+  return `${(50 + r * Math.sin(a)).toFixed(2)},${(50 - r * Math.cos(a)).toFixed(2)}`;
+}).join(' ');
+
+const heroTitle = ['Builds', 'things', 'that ship.'];
+---
+<Base
+  home
+  title="Niranjan Rakesh — Builder · Engineer"
+  description={site.hero.subline}
+>
+  <main>
+    <!-- ============ HERO ============ -->
+    <section class="field f-blue hero" aria-label="Intro">
+      <div class="halftone br" aria-hidden="true"></div>
+      <div class="wrap">
+        <p class="hero-kicker" data-reveal>{site.hero.kicker}</p>
+        <div class="starburst" aria-hidden="true">
+          <svg viewBox="0 0 100 100"><polygon points={burstPoints} fill="#ffe600" /></svg>
+          <span class="burst-label">Ships<br />complete<br />things</span>
+        </div>
+        <h1 class="hero-title">
+          <span class="row" data-reveal style="--d:.05s">{heroTitle[0]}</span>
+          <span class="row outline" data-reveal style="--d:.12s">{heroTitle[1]}</span>
+          <span class="row" data-reveal style="--d:.19s">that <span class="accent">ship</span><span class="punct">.</span></span>
+        </h1>
+        <p class="hero-sub" data-reveal style="--d:.28s">{site.hero.subline}</p>
+        <div class="hero-ctas" data-reveal style="--d:.36s">
+          <a class="stamp-btn on-dark" href="#work">See the work ↓</a>
+          <a class="stamp-btn on-dark" href="#contact">Get in touch</a>
+        </div>
+        <span class="edge-label" aria-hidden="true">{site.location}</span>
+      </div>
+    </section>
+
+    <Marquee items={['Featured work', 'Three case studies', 'Idea → production']} />
+
+    <!-- ============ FEATURED WORK ============ -->
+    <section id="work" aria-label="Featured work">
+      <h2 class="sr-only">Featured work</h2>
+      {projects.map((p, i) => (
+        <article class={`field work-block ${fieldFor(p.data.flavor, i)}`}>
+          <div class="halftone tl" aria-hidden="true"></div>
+          <div class="wrap">
+            <span class="wb-num" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
+            <div class="wb-meta" data-reveal>
+              <span class="stamp-chip solid">№ {String(i + 1).padStart(2, '0')}</span>
+              <span class="stamp-chip">{p.data.year}</span>
+              <span class="stamp-chip">{p.data.status}</span>
+            </div>
+            <h3 class="wb-title" style={`font-size:${titleSize(p.data.title)}`} data-reveal>
+              <a href={withBase(`d/work/${p.id}`)}>{p.data.title}</a>
+            </h3>
+            <p class="wb-tagline" data-reveal style="--d:.08s">{p.data.tagline}</p>
+            <p class="wb-stack" data-reveal style="--d:.14s">
+              {p.data.stack.map((s, j) => (
+                <>
+                  {j > 0 && <span class="dot" aria-hidden="true">●</span>}
+                  <span>{s}</span>
+                </>
+              ))}
+            </p>
+            <div class="wb-cta" data-reveal style="--d:.2s">
+              <a
+                class={`stamp-btn ${fieldFor(p.data.flavor, i) === 'f-purple' ? 'on-dark' : ''}`}
+                href={withBase(`d/work/${p.id}`)}
+              >
+                Read case study →
+              </a>
+            </div>
+          </div>
+        </article>
+      ))}
+    </section>
+
+    <!-- ============ SMALLER BUILDS ============ -->
+    <section class="field f-red" id="builds" aria-label="Smaller builds">
+      <div class="wrap">
+        <h2 class="sec-label"><span>Smaller builds</span></h2>
+        <div class="builds-list">
+          {site.smallerBuilds.map((b) => (
+            <div class="build-row" data-reveal>
+              <h3 class="build-name">{b.name}<span class="yr">{b.year}</span></h3>
+              <p class="build-line">{b.line}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ ABOUT ============ -->
+    <section class="field f-paper" id="about" aria-label="About">
+      <div class="halftone br" aria-hidden="true"></div>
+      <div class="wrap">
+        <h2 class="sec-label"><span>About</span></h2>
+        <p class="about-lead" data-reveal>
+          <span class="mark">{site.about.lead}</span>
+        </p>
+        <div class="about-body" data-reveal style="--d:.1s">
+          {site.about.body.map((para) => <p>{para}</p>)}
+        </div>
+        <ul class="themes">
+          {site.about.themes.map((t, i) => (
+            <li class="theme-card" data-reveal style={`--d:${i * 0.07}s`}>
+              <span class="idx" aria-hidden="true">№ {i + 1}</span>
+              <h3>{t.title}</h3>
+              <p>{t.detail}</p>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+
+    <Marquee items={['Design archive', 'Posters', 'Branding', 'Apparel', 'UI']} inverted speed="26s" />
+
+    <!-- ============ DESIGN ARCHIVE ============ -->
+    <section class="field f-black" id="archive" aria-label="Design archive">
+      <div class="wrap">
+        <div class="archive-intro">
+          <h2 class="sec-label"><span>Design archive</span></h2>
+          <p data-reveal>Design was the first language — twelve pieces from the years before the code.</p>
+        </div>
+        <ul class="archive-grid">
+          {site.archive.map((a, i) => (
+            <li class={`tile c${(i % 4) + 1}`} data-reveal style={`--d:${(i % 4) * 0.06}s`}>
+              <div class="tile-frame">
+                <div class="tile-img">
+                  <img src={withBase(a.image)} alt={`${a.title} — ${a.category}`} loading="lazy" width="400" height="500" />
+                </div>
+                <div class="tile-cap">
+                  <span class="t">{a.title}</span>
+                  <span class="m">{a.category} · {a.year}</span>
+                </div>
+              </div>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+
+    <!-- ============ CONTACT / FOOTER ============ -->
+    <footer class="field f-blue contact" id="contact" aria-label="Contact">
+      <div class="halftone tl" aria-hidden="true"></div>
+      <div class="wrap">
+        <h2 class="contact-cta" data-reveal>
+          {site.contact.cta.replace(/\?$/, '')}<span class="q">?</span>
+        </h2>
+        <div class="contact-links" data-reveal style="--d:.1s">
+          <a class="contact-email" href={`mailto:${site.contact.email}`}>{site.contact.email}</a>
+          <a class="contact-phone" href={`tel:${site.contact.phone.replace(/\s+/g, '')}`}>{site.contact.phone}</a>
+        </div>
+        <div class="foot">
+          <span>{site.footer.line}</span>
+          <span class="loc">{site.name} ★ {site.location}</span>
+        </div>
+      </div>
+    </footer>
+  </main>
+</Base>

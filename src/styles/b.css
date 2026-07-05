@@ -10,7 +10,7 @@
   --paper-3: #ece3cd;
   --ink: #1c1917;
   --ink-soft: #57534e;
-  --ink-faint: #8a8378;
+  --ink-faint: #6e675c; /* ≥4.5:1 on paper & paper-2 (was #8a8378 @ 3.5:1) */
   --verm: #c2410c;
   --ochre: #a16207;
   --hair: rgba(28, 25, 23, 0.18);
@@ -52,6 +52,12 @@ body {
 img { max-width: 100%; display: block; height: auto; }
 
 a { color: inherit; }
+
+/* Visible keyboard focus — vermilion rule */
+:focus-visible {
+  outline: 2px solid var(--verm);
+  outline-offset: 3px;
+}
 
 /* ---------- shared furniture ---------- */
 

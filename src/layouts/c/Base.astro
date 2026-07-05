@@ -11,7 +11,7 @@ const { title, description } = Astro.props;
 ---
 <html lang="en">
   <head>
-    <Seo title={title} description={description} />
+    <Seo title={title} description={description} themeColor="#f4f4f2" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -25,13 +25,14 @@ const { title, description } = Astro.props;
     <slot />
 
     <nav class="switcher" aria-label="Design direction switcher">
-      <a href={withBase('')} title="Direction chooser">⌂</a>
-      <a href={withBase('a/')} title="Direction A">A</a>
-      <a href={withBase('b/')} title="Direction B">B</a>
-      <a href={withBase('c/')} class="active" aria-current="page" title="Direction C — Machine">C</a>
+      <a href={withBase('')} title="Direction chooser" aria-label="Direction chooser">⌂</a>
+      <a href={withBase('a/')} title="Direction A — Voltage" aria-label="Direction A — Voltage">A</a>
+      <a href={withBase('b/')} title="Direction B — Ink &amp; Ochre" aria-label="Direction B — Ink and Ochre">B</a>
+      <a href={withBase('c/')} class="active" aria-current="page" title="Direction C — Machine" aria-label="Direction C — Machine (current)">C</a>
     </nav>
 
     <script>
+      document.documentElement.classList.add('js');
       // Staggered reveals — mechanical, exact, once.
       const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
       const revealed = document.querySelectorAll('[data-reveal]');

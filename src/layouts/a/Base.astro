@@ -17,7 +17,7 @@ const anchor = (id: string) => (home ? `#${id}` : `${homeHref}#${id}`);
 <!doctype html>
 <html lang="en">
   <head>
-    <Seo title={title} description={description} />
+    <Seo title={title} description={description} themeColor="#0a0a0c" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -43,13 +43,14 @@ const anchor = (id: string) => (home ? `#${id}` : `${homeHref}#${id}`);
     <slot />
 
     <nav class="switcher" aria-label="Design direction switcher">
-      <a href={withBase('')} title="Direction chooser">⌂</a>
-      <a href={withBase('a/')} class="active" aria-current="page" title="Direction A — Voltage">A</a>
-      <a href={withBase('b/')} title="Direction B">B</a>
-      <a href={withBase('c/')} title="Direction C">C</a>
+      <a href={withBase('')} title="Direction chooser" aria-label="Direction chooser">⌂</a>
+      <a href={withBase('a/')} class="active" aria-current="page" title="Direction A — Voltage" aria-label="Direction A — Voltage (current)">A</a>
+      <a href={withBase('b/')} title="Direction B — Ink &amp; Ochre" aria-label="Direction B — Ink and Ochre">B</a>
+      <a href={withBase('c/')} title="Direction C — Machine" aria-label="Direction C — Machine">C</a>
     </nav>
 
     <script>
+      document.documentElement.classList.add('js');
       const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
       /* ---- scroll reveals ---- */

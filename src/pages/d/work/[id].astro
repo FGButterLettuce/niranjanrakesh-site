@@ -1,0 +1,128 @@
+---
+import { getCollection, render } from 'astro:content';
+import Base from '../../../layouts/d/Base.astro';
+import Marquee from '../../../components/d/Marquee.astro';
+import { withBase } from '../../../lib/url';
+
+export async function getStaticPaths() {
+  const projects = (await getCollection('projects')).sort(
+    (x, y) => x.data.order - y.data.order
+  );
+  return projects.map((entry, i) => ({
+    params: { id: entry.id },
+    props: {
+      entry,
+      index: i,
+      prev: projects[(i - 1 + projects.length) % projects.length],
+      prevIndex: (i - 1 + projects.length) % projects.length,
+      next: projects[(i + 1) % projects.length],
+      nextIndex: (i + 1) % projects.length,
+    },
+  }));
+}
+
+const { entry, index, prev, prevIndex, next, nextIndex } = Astro.props;
+const { Content } = await render(entry);
+const d = entry.data;
+
+// Same flavor → color-field mapping as the home page.
+const flavorField: Record<string, string> = {
+  product: 'f-yellow',
+  engineering: 'f-pink',
+  tool: 'f-purple',
+};
+const cycle = ['f-yellow', 'f-pink', 'f-purple', 'f-red'];
+const fieldFor = (flavor: string, i: number) =>
+  flavorField[flavor] ?? cycle[i % cycle.length];
+const field = fieldFor(d.flavor, index);
+const prevField = fieldFor(prev.data.flavor, prevIndex);
+const nextField = fieldFor(next.data.flavor, nextIndex);
+
+// Accent color used inside the article (chapter numerals)
+const accentFor: Record<string, string> = {
+  'f-yellow': '#8a5a00',
+  'f-pink': '#c2003a',
+  'f-purple': '#46109e',
+  'f-red': '#b3241a',
+};
+
+// Char-count-aware title size — WATCHTOGETHER must survive 390px.
+const longest = Math.max(...d.title.split(/\s+/).map((w) => w.length));
+const titleSize = `min(clamp(2.5rem, 10vw, 8.5rem), calc((100vw - 2 * var(--pad-x)) / ${(longest * 0.82).toFixed(2)}))`;
+---
+<Base
+  title={`${d.title} — Niranjan Rakesh`}
+  description={d.tagline}
+>
+  <main>
+    <!-- ============ POSTER HEADER ============ -->
+    <section class={`field cs-hero ${field}`}>
+      <div class="halftone br" aria-hidden="true"></div>
+      <div class="wrap">
+        <a class="cs-back" href={withBase('d/')}>← All work</a>
+        <span class="wb-num" aria-hidden="true">{String(index + 1).padStart(2, '0')}</span>
+        <div class="cs-meta" data-reveal>
+          <span class="cs-index" aria-hidden="true">№ {String(index + 1).padStart(2, '0')}</span>
+          <span class="stamp-chip solid">{d.year}</span>
+          <span class="stamp-chip">{d.status}</span>
+          <span class="stamp-chip">{d.flavor}</span>
+        </div>
+        <h1 class="cs-title" style={`font-size:${titleSize};--d:.06s`} data-reveal>{d.title}</h1>
+        <p class="cs-tagline" data-reveal style="--d:.12s">{d.tagline}</p>
+        {d.liveUrl && (
+          <div class="cs-actions" data-reveal style="--d:.18s">
+            <a
+              class={`stamp-btn ${field === 'f-purple' ? 'on-dark' : 'filled'}`}
+              href={d.liveUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Visit live site ↗
+            </a>
+          </div>
+        )}
+        <ul class="cs-stack" data-reveal style="--d:.24s">
+          {d.stack.map((s) => <li class="stamp-chip">{s}</li>)}
+        </ul>
+      </div>
+    </section>
+
+    <!-- ============ HIGHLIGHTS ============ -->
+    <section class="field f-black cs-highlights" aria-label="Highlights">
+      <div class="wrap">
+        <h2 class="sec-label"><span>Highlights</span></h2>
+        <ul class="cs-highlights-grid">
+          {d.highlights.map((h, i) => (
+            <li class="hl-stamp" data-reveal style={`--d:${i * 0.06}s`}>
+              <span class="hl-n" aria-hidden="true">★ {String(i + 1).padStart(2, '0')}</span>
+              {h}
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+
+    <!-- ============ ARTICLE — readable core ============ -->
+    <section class="field f-paper cs-body">
+      <div class="wrap">
+        <article class="prose" style={`--csx:${accentFor[field] ?? '#c22a1e'}`}>
+          <Content />
+        </article>
+      </div>
+    </section>
+
+    <Marquee items={['More work', d.title, 'Case studies']} speed="24s" />
+
+    <!-- ============ PREV / NEXT ============ -->
+    <nav class="cs-nav" aria-label="Project navigation">
+      <a class={`field ${prevField} prev`} href={withBase(`d/work/${prev.id}`)}>
+        <span class="dir">← Previous</span>
+        <span class="cs-nav-name">{prev.data.title}</span>
+      </a>
+      <a class={`field ${nextField} next`} href={withBase(`d/work/${next.id}`)}>
+        <span class="dir">Next →</span>
+        <span class="cs-nav-name">{next.data.title}</span>
+      </a>
+    </nav>
+  </main>
+</Base>

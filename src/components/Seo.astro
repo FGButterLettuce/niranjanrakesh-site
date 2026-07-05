@@ -5,9 +5,10 @@ interface Props {
   title: string;
   description: string;
   ogImage?: string; // path under public/, e.g. "images/og.png"
+  themeColor?: string; // browser-chrome tint; should match the page background
 }
 
-const { title, description, ogImage = 'images/og.png' } = Astro.props;
+const { title, description, ogImage = 'images/og.png', themeColor = '#0a0a0a' } = Astro.props;
 const ogUrl = new URL(withBase(ogImage), Astro.site);
 ---
 <meta charset="utf-8" />
@@ -20,4 +21,4 @@ const ogUrl = new URL(withBase(ogImage), Astro.site);
 <meta property="og:description" content={description} />
 <meta property="og:image" content={ogUrl} />
 <meta name="twitter:card" content="summary_large_image" />
-<meta name="theme-color" content="#0a0a0a" />
+<meta name="theme-color" content={themeColor} />
