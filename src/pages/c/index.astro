@@ -64,7 +64,7 @@ const pad = (n: number) => String(n).padStart(2, '0');
         </div>
         <div class="cell">
           <span class="num"><span data-count="12" data-pad="1">00</span><span class="unit">/</span></span>
-          <span class="lbl mono">Design figures on file</span>
+          <span class="lbl mono">Design projects on file</span>
         </div>
         <div class="cell">
           <span class="num">00<span class="unit">/</span></span>
@@ -174,34 +174,41 @@ const pad = (n: number) => String(n).padStart(2, '0');
       </div>
     </section>
 
-    <!-- ============ 04 / DESIGN ARCHIVE ============ -->
+    <!-- ============ 04 / DESIGN PROJECTS ============ -->
     <section class="section wrap" id="archive">
       <div class="section-head" data-reveal>
         <span class="xh" aria-hidden="true"></span>
         <span class="idx">04/</span>
-        <h2>Design archive</h2>
+        <h2>Design projects</h2>
         <span class="tail">
-          <span class="mono">Contact sheet · 2021–2024 · design was the first language</span>
+          <span class="mono">DSN-01 → DSN-12 · 2021–2024</span>
           <span class="xh" aria-hidden="true"></span>
         </span>
       </div>
 
-      <div class="arc-grid" data-reveal>
-        {site.archive.map((a, i) => (
-          <figure class="arc-item">
-            <div class="arc-img">
-              <img src={withBase(a.image)} alt={`${a.title} — ${a.category}`} loading="lazy" width="600" height="600" />
-            </div>
-            <figcaption>
-              <span class="arc-cap">
-                <span class="fig">FIG. {pad(i + 4)}</span>
-                <span class="yr">{a.year}</span>
-              </span>
+      <p class="arc-intro" data-reveal>
+        The practice started here: twelve design projects across editorial,
+        branding, 3D, film, and apparel — the years that trained the eye the
+        engineering now answers to.
+      </p>
+
+      <div class="arc-grid">
+        {site.archive.map((a, i) => {
+          const wide = i === 1 || i === 3 || i === 8;
+          return (
+            <figure class={`arc-item${wide ? ' wide' : ''}`} data-reveal style={`--i:${i % 3}`}>
+              <figcaption class="arc-head">
+                <span class="no">DSN-{pad(i + 1)}</span>
+                <span class="meta">{a.category} · {a.year}</span>
+              </figcaption>
+              <div class="arc-img">
+                <img src={withBase(a.image)} alt={`${a.title} — ${a.category}`} loading="lazy" width="600" height="600" />
+                <span class="fig-tag" aria-hidden="true"><b>FIG. {pad(i + 4)}</b> — {a.title}</span>
+              </div>
               <span class="arc-title">{a.title}</span>
-              <span class="arc-cat">{a.category}</span>
-            </figcaption>
-          </figure>
-        ))}
+            </figure>
+          );
+        })}
       </div>
     </section>
 
