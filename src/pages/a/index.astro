@@ -24,6 +24,10 @@ const marqueeItems = [
 // headline split for the two-row treatment; last word gets the voltage
 const title = `${site.name} — ${site.role}`;
 const description = site.hero.subline;
+
+const pad = (n: number) => String(n).padStart(2, '0');
+// archive pieces whose art suits a double-width crop
+const wideArchive = new Set([1, 3, 8]);
 ---
 <Base title={title} description={description} home>
   <main>
@@ -173,22 +177,31 @@ const description = site.hero.subline;
           <h2>Design <span class="grad-text">archive</span></h2>
         </div>
         <p class="archive-note" data-reveal>
-          Design was the first language — posters, branding, editorial, 3D.
-          Twelve pieces from the years before the code took over.
+          Design was the first discipline — twelve full projects across editorial,
+          branding, 3D, film, and apparel. This is where the eye got its voltage;
+          the engineering just gave it somewhere to run.
         </p>
-        <div class="masonry">
+        <div class="arc-grid">
           {site.archive.map((piece, i) => (
-            <figure class="arch-item" data-reveal style={`--d:${(i % 3) * 0.07}s`}>
-              <img
-                src={withBase(piece.image)}
-                alt={`${piece.title} — ${piece.category}`}
-                loading="lazy"
-                decoding="async"
-              />
-              <figcaption class="arch-cap">
-                <span class="t">{piece.title}</span>
-                <span class="m">{piece.category} · {piece.year}</span>
-              </figcaption>
+            <figure
+              class={`arc-entry${wideArchive.has(i) ? ' wide' : ''}`}
+              data-reveal
+              style={`--d:${(i % 3) * 0.07}s`}
+            >
+              <div class="arc-top">
+                <span class="no">{pad(i + 1)}/12</span>
+                <span class="rule" aria-hidden="true"></span>
+                <span class="meta">{piece.category} · {piece.year}</span>
+              </div>
+              <div class="arc-frame">
+                <img
+                  src={withBase(piece.image)}
+                  alt={`${piece.title} — ${piece.category}`}
+                  loading="lazy"
+                  decoding="async"
+                />
+              </div>
+              <figcaption class="arc-name">{piece.title}</figcaption>
             </figure>
           ))}
         </div>
