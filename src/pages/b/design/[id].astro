@@ -1,0 +1,164 @@
+---
+import { getCollection, render } from 'astro:content';
+import Base from '../../../layouts/b/Base.astro';
+import Masthead from '../../../components/b/Masthead.astro';
+import { withBase } from '../../../lib/url';
+import site from '../../../data/site.json';
+
+export async function getStaticPaths() {
+  const designs = (await getCollection('designs')).sort(
+    (x, y) => x.data.order - y.data.order
+  );
+  return designs.map((entry, i) => ({
+    params: { id: entry.id },
+    props: {
+      entry,
+      index: i,
+      total: designs.length,
+      prev: designs[(i - 1 + designs.length) % designs.length],
+      next: designs[(i + 1) % designs.length],
+    },
+  }));
+}
+
+const { entry, total, prev, next } = Astro.props;
+const { Content } = await render(entry);
+
+const roman = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X', 'XI', 'XII'];
+const pl = roman[entry.data.order - 1] ?? String(entry.data.order);
+const plTotal = roman[total - 1] ?? String(total);
+const figures = entry.data.figures;
+---
+<Base
+  title={`${entry.data.title} — ${entry.data.category} · Ink & Ochre — Niranjan Rakesh`}
+  description={`${entry.data.title} — ${entry.data.category}, ${entry.data.year}. Plate ${pl} of ${plTotal} from the design archive, a catalogue raisonné of earlier design work.`}
+>
+  <Masthead
+    variant="article"
+    slug={`Pl. ${pl} / ${plTotal}`}
+    backHref={withBase('b/') + '#archive'}
+    backLabel="← The archive"
+  />
+
+  <!-- ============ ENTRY HEAD ============ -->
+  <header class="b-articlehead">
+    <div class="b-wrap">
+      <p class="kick b-meta r">
+        <strong>From the design archive</strong>
+      </p>
+      <h1 class="r" style="--d:.08s">{entry.data.title}</h1>
+    </div>
+  </header>
+
+  <!-- ============ CATALOGUE META ============ -->
+  <div class="b-wrap">
+    <div class="b-byline r">
+      <div class="cells">
+        <div class="cell">
+          <span class="lbl b-meta">Plate</span>
+          <span class="val">Pl. {pl}</span>
+        </div>
+        <div class="cell">
+          <span class="lbl b-meta">Category</span>
+          <span class="val">{entry.data.category}</span>
+        </div>
+        <div class="cell">
+          <span class="lbl b-meta">Year</span>
+          <span class="val">{entry.data.year}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ THE PLATE ============ -->
+  <div class="b-wrap">
+    <figure class="b-plate r">
+      <div class="mount">
+        <div class="frame">
+          <img
+            src={withBase(entry.data.image)}
+            alt={`${entry.data.title} — ${entry.data.category}`}
+            loading="eager"
+            decoding="async"
+            width="1200"
+            height="800"
+          />
+        </div>
+      </div>
+      <figcaption>
+        <span class="no">Pl. {pl}</span>
+        <span class="cap">{entry.data.title} · {entry.data.category}, {entry.data.year}</span>
+      </figcaption>
+    </figure>
+  </div>
+
+  <!-- ============ ENTRY TEXT ============ -->
+  <div class="b-wrap">
+    <article class="b-body b-designbody r">
+      <Content />
+    </article>
+  </div>
+
+  <!-- ============ FIGURES ============ -->
+  {figures.length > 0 && (
+    <section class="b-figs">
+      <div class="b-wrap">
+        <div class="b-sechead r">
+          <span class="no">Fig. 1–{figures.length}</span>
+          <h2>The Figures</h2>
+          <span class="tail" aria-hidden="true"></span>
+          <span class="aside">Process, in order of making</span>
+        </div>
+        <div class="b-figgrid">
+          {figures.map((f, i) => (
+            <figure class="b-fig r" style={`--d:${(i % 2) * 0.08}s`}>
+              <div class="mount">
+                <div class="frame">
+                  <img
+                    src={withBase(f.src)}
+                    alt={f.caption}
+                    loading="lazy"
+                    decoding="async"
+                    width="900"
+                    height="620"
+                  />
+                </div>
+              </div>
+              <figcaption>
+                <span class="no">Fig. {i + 1}</span>
+                <span class="cap">{f.caption}</span>
+              </figcaption>
+            </figure>
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+
+  <!-- ============ PREV / NEXT ============ -->
+  <nav class="b-pn" aria-label="More plates">
+    <div class="b-wrap">
+      <div class="cells">
+        <a href={withBase(`b/design/${prev.id}`)}>
+          <span class="lbl b-meta">← Previous plate</span>
+          <span class="ttl">{prev.data.title}</span>
+        </a>
+        <a href={withBase(`b/design/${next.id}`)}>
+          <span class="lbl b-meta">Next plate →</span>
+          <span class="ttl">{next.data.title}</span>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <footer class="b-backfoot">
+    <div class="b-wrap">
+      <div class="row">
+        <a class="b-cta" href={withBase('b/') + '#archive'}>
+          <span class="arr" aria-hidden="true">←</span> Back to the archive
+        </a>
+        <span class="b-meta">{site.footer.line}</span>
+      </div>
+    </div>
+  </footer>
+</Base>

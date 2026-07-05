@@ -9,6 +9,11 @@ const projects = (await getCollection('projects')).sort(
   (x, y) => x.data.order - y.data.order
 );
 
+const designs = (await getCollection('designs')).sort(
+  (x, y) => x.data.order - y.data.order
+);
+const featured = designs.filter((d) => d.data.featured);
+
 // hero: italicise the final word for editorial emphasis
 const heroWords = site.hero.headline.split(' ');
 const heroLast = heroWords.pop();
@@ -155,39 +160,66 @@ const pad = (n: number) => String(n).padStart(2, '0');
       <p class="intro r">
         Design was the first practice. Twelve plates — editorial, branding,
         3D, film, and apparel, 2021–2024 — catalogued here as the
-        apprenticeship every build since has had to answer to.
+        apprenticeship every build since has had to answer to. Each plate
+        opens its own entry.
       </p>
       <div class="b-cat">
-        {site.archive.map((piece, i) => {
-          const wide = i === 1 || i === 3 || i === 8;
+        {featured.map((piece, i) => {
+          const wide = i === 1 || i === 3;
+          const full = i === 4;
           return (
-            <figure
-              class={`b-entry${wide ? ' b-entry--wide' : ''} r`}
+            <a
+              class={`b-entry${wide ? ' b-entry--wide' : ''}${full ? ' b-entry--full' : ''} r`}
               style={`--d:${(i % 3) * 0.07}s`}
+              href={withBase(`b/design/${piece.id}`)}
             >
-              <div class="entry-head">
-                <span class="pl">Pl. {roman[i]}</span>
+              <span class="entry-head">
+                <span class="pl">Pl. {roman[piece.data.order - 1]}</span>
                 <span class="tail" aria-hidden="true"></span>
-                <span class="spec b-meta">{piece.category} · {piece.year}</span>
-              </div>
-              <div class="mount">
-                <div class="frame">
+                <span class="spec b-meta">{piece.data.category} · {piece.data.year}</span>
+              </span>
+              <span class="mount">
+                <span class="frame">
                   <img
-                    src={withBase(piece.image)}
-                    alt={`${piece.title} — ${piece.category}`}
+                    src={withBase(piece.data.image)}
+                    alt={`${piece.data.title} — ${piece.data.category}`}
                     loading="lazy"
                     decoding="async"
-                    width={wide ? 1000 : 600}
-                    height={wide ? 600 : 750}
+                    width={full ? 1200 : wide ? 1000 : 600}
+                    height={full ? 515 : wide ? 600 : 750}
                   />
-                </div>
-              </div>
-              <figcaption class="entry-caption">
-                <h3 class="entry-title">{piece.title}</h3>
-              </figcaption>
-            </figure>
+                </span>
+              </span>
+              <span class="entry-caption">
+                <h3 class="entry-title">{piece.data.title}</h3>
+                <span class="entry-arr" aria-hidden="true">→</span>
+              </span>
+            </a>
           );
         })}
+      </div>
+
+      <!-- complete catalogue index — every plate, ruled-table style -->
+      <div class="b-catindex r">
+        <div class="idx-head b-doubles">
+          <span class="b-meta">Plate</span>
+          <span class="b-meta">Title</span>
+          <span class="b-meta cat">Category</span>
+          <span class="b-meta yr">Year</span>
+        </div>
+        {designs.map((d, i) => (
+          <a
+            class="b-idxrow r"
+            style={`--d:${i * 0.035}s`}
+            href={withBase(`b/design/${d.id}`)}
+          >
+            <span class="pl">Pl. {roman[d.data.order - 1]}</span>
+            <span class="name">{d.data.title}</span>
+            <span class="cat">{d.data.category}</span>
+            <span class="yr b-meta">{d.data.year}</span>
+            <span class="arr" aria-hidden="true">→</span>
+          </a>
+        ))}
       </div>
     </div>
   </section>

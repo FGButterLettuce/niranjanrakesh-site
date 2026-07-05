@@ -7,9 +7,12 @@ interface Props {
   variant?: 'home' | 'article';
   /** right-hand slug shown on article pages, e.g. "Case study № 01" */
   slug?: string;
+  /** override the article back link (defaults to the work anchor) */
+  backHref?: string;
+  backLabel?: string;
 }
 
-const { variant = 'home', slug } = Astro.props;
+const { variant = 'home', slug, backHref, backLabel } = Astro.props;
 ---
 <div class="b-topline">
   <div class="b-wrap">
@@ -31,7 +34,7 @@ const { variant = 'home', slug } = Astro.props;
       </nav>
     ) : (
       <nav class="b-nav" aria-label="Breadcrumb">
-        <a class="u-draw" href={withBase('b/') + '#work'}>← All work</a>
+        <a class="u-draw" href={backHref ?? withBase('b/') + '#work'}>{backLabel ?? '← All work'}</a>
         {slug && <span class="b-meta" style="letter-spacing:.18em">{slug}</span>}
       </nav>
     )}
