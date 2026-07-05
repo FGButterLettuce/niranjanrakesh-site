@@ -17,4 +17,21 @@ const projects = defineCollection({
   }),
 });
 
-export const collections = { projects };
+const designs = defineCollection({
+  loader: glob({ pattern: '**/*.md', base: './src/content/designs' }),
+  schema: z.object({
+    title: z.string(),
+    category: z.string(),
+    year: z.string(),
+    order: z.number(),
+    image: z.string(), // path under public/, e.g. "images/work-football.webp"
+    // showcase pieces get large cards in the archive section; the rest appear in the index list
+    featured: z.boolean().default(false),
+    // optional gallery rendered by each direction's detail template after the body
+    figures: z
+      .array(z.object({ src: z.string(), caption: z.string() }))
+      .default([]),
+  }),
+});
+
+export const collections = { projects, designs };
