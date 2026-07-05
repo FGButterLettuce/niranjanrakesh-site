@@ -1,0 +1,162 @@
+---
+import { getCollection, render } from 'astro:content';
+import Base from '../../../layouts/c/Base.astro';
+import TopBar from '../../../components/c/TopBar.astro';
+import { withBase } from '../../../lib/url';
+import site from '../../../data/site.json';
+
+export async function getStaticPaths() {
+  const designs = (await getCollection('designs')).sort(
+    (x, y) => x.data.order - y.data.order
+  );
+  return designs.map((entry, i) => ({
+    params: { id: entry.id },
+    props: {
+      entry,
+      total: designs.length,
+      prev: designs[(i - 1 + designs.length) % designs.length],
+      next: designs[(i + 1) % designs.length],
+    },
+  }));
+}
+
+const { entry, prev, next, total } = Astro.props;
+const { Content } = await render(entry);
+const d = entry.data;
+const pad = (n: number) => String(n).padStart(2, '0');
+---
+<Base
+  title={`${d.title} · Machine — Niranjan Rakesh`}
+  description={`${d.title} — ${d.category}, ${d.year}. Design file DSN-${pad(d.order)} from the archive.`}
+>
+  <TopBar />
+
+  <main>
+    <!-- ============ DESIGN FILE HEAD ============ -->
+    <header class="cs-head wrap">
+      <nav class="crumbs mono" aria-label="Breadcrumb">
+        <a href={withBase('c/')}>INDEX</a>
+        <span class="sep" aria-hidden="true">/</span>
+        <a href={withBase('c/') + '#archive'}>DESIGN</a>
+        <span class="sep" aria-hidden="true">/</span>
+        <span class="here">DSN-{pad(d.order)} · {d.title.toUpperCase()}</span>
+      </nav>
+
+      <h1 class="cs-title display" data-reveal>{d.title}</h1>
+      <p class="cs-tagline" data-reveal style="--i:1">
+        Design file DSN-{pad(d.order)} — {d.category}, {d.year}.
+      </p>
+
+      <table class="spec-table" data-reveal style="--i:2">
+        <tbody>
+          <tr>
+            <th scope="row">Category</th>
+            <td><span class="status-cell">{d.category}</span></td>
+          </tr>
+          <tr>
+            <th scope="row">Year</th>
+            <td>{d.year}</td>
+          </tr>
+          <tr>
+            <th scope="row">Class</th>
+            <td style="text-transform:uppercase;">DSN — Design archive</td>
+          </tr>
+          <tr>
+            <th scope="row">File</th>
+            <td>DSN-{pad(d.order)} of {pad(total)}</td>
+          </tr>
+          <tr>
+            <th scope="row">Plates</th>
+            <td>{pad(d.figures.length + 1)} — primary{d.figures.length > 0 ? ` + ${pad(d.figures.length)} process figures` : ' plate only'}</td>
+          </tr>
+        </tbody>
+      </table>
+    </header>
+
+    <!-- ============ PRIMARY PLATE ============ -->
+    <section class="dsn-plate wrap" data-reveal>
+      <figure class="fig-frame plate">
+        <img
+          src={withBase(d.image)}
+          alt={`${d.title} — ${d.category}`}
+          loading="eager"
+        />
+        <span class="fig-tag" aria-hidden="true"><b>FIG. 01</b> — {d.title} · primary plate</span>
+      </figure>
+    </section>
+
+    <!-- ============ BODY ============ -->
+    <section class="cs-body wrap">
+      <article class="prose" data-reveal>
+        <Content />
+      </article>
+
+      <aside class="cs-aside" data-reveal style="--i:1">
+        <div class="aside-in">
+          <div class="aside-note">
+            <span class="k mono">Doc ref</span>
+            <p>
+              Design file DSN-{pad(d.order)} of {pad(total)}. {d.category},
+              {d.year} — from the archive years that trained the eye the
+              engineering now answers to.
+            </p>
+          </div>
+          <div class="aside-note">
+            <span class="k mono">Contact</span>
+            <p>
+              Questions about this piece? <a href={`mailto:${site.contact.email}`} style="color:var(--ink); text-decoration-color:var(--accent); text-decoration-thickness:2px; text-underline-offset:3px;">{site.contact.email}</a>
+            </p>
+          </div>
+        </div>
+      </aside>
+    </section>
+
+    <!-- ============ PROCESS FIGURES ============ -->
+    {d.figures.length > 0 && (
+      <section class="section wrap" style="padding-top:0;">
+        <div class="section-head" data-reveal>
+          <span class="xh" aria-hidden="true"></span>
+          <span class="idx">FIG/</span>
+          <h2>Process figures</h2>
+          <span class="tail">
+            <span class="mono">{pad(d.figures.length)} plates on file</span>
+            <span class="xh" aria-hidden="true"></span>
+          </span>
+        </div>
+        <div class="dsn-figs">
+          {d.figures.map((f, i) => (
+            <figure class="dsn-fig" data-reveal style={`--i:${i % 2}`}>
+              <span class="fig-head mono" aria-hidden="true">
+                <b>FIG. {pad(i + 2)}</b>
+                <span class="fh-meta">PLATE {pad(i + 2)}/{pad(d.figures.length + 1)}</span>
+              </span>
+              <div class="fig-frame">
+                <img src={withBase(f.src)} alt={f.caption} loading="lazy" />
+              </div>
+              <figcaption class="fig-note">{f.caption}</figcaption>
+            </figure>
+          ))}
+        </div>
+      </section>
+    )}
+
+    <!-- ============ PREV / NEXT ============ -->
+    <nav class="pn wrap" aria-label="Design file navigation" data-reveal>
+      <a href={withBase(`c/design/${prev.id}`)} class="prevl">
+        <span class="pn-k mono">← Prev · DSN-{pad(prev.data.order)}</span>
+        <span class="pn-t">{prev.data.title}</span>
+      </a>
+      <a href={withBase(`c/design/${next.id}`)} class="next">
+        <span class="pn-k mono">Next · DSN-{pad(next.data.order)} →</span>
+        <span class="pn-t">{next.data.title}</span>
+      </a>
+    </nav>
+
+    <footer class="cs-footer wrap">
+      <a class="back" href={withBase('c/') + '#archive'}>
+        <span style="color:var(--accent);" aria-hidden="true">←</span> Return to archive
+      </a>
+      <span class="mono f-right">© 2026 · {site.name} · Direction C</span>
+    </footer>
+  </main>
+</Base>

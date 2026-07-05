@@ -611,6 +611,7 @@ section[id] { scroll-margin-top: 4rem; }
   position: relative;
   display: flex;
   flex-direction: column;
+  text-decoration: none;
 }
 .arc-item.wide { grid-column: span 2; }
 .arc-head {
@@ -638,6 +639,7 @@ section[id] { scroll-margin-top: 4rem; }
   text-align: right;
 }
 .arc-item .arc-img {
+  display: block;
   aspect-ratio: 1 / 1;
   overflow: hidden;
   background: var(--graphite);
@@ -698,6 +700,34 @@ section[id] { scroll-margin-top: 4rem; }
   line-height: 1.2;
 }
 .arc-item.wide .arc-title { font-size: 1.375rem; }
+.arc-item:hover .arc-title { color: var(--accent); }
+.arc-open {
+  margin-top: 0.7rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--mono);
+  font-size: 0.625rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--meta);
+  transition: color 0.25s var(--ease);
+}
+.arc-open .arrow { color: var(--accent); transition: transform 0.35s var(--ease); }
+.arc-item:hover .arc-open { color: var(--ink); }
+.arc-item:hover .arc-open .arrow { transform: translateX(5px); }
+
+/* full-index subhead + design ledger */
+.arc-subhead {
+  margin-top: clamp(2rem, 5vh, 3rem);
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+}
+a.ledger-row { text-decoration: none; color: inherit; }
+.dsn-index .l-line { color: var(--ink-soft); }
 @media (max-width: 1000px) {
   .arc-grid { grid-template-columns: repeat(2, 1fr); }
   .arc-item.wide { grid-column: span 1; }
@@ -1052,6 +1082,102 @@ section[id] { scroll-margin-top: 4rem; }
 .cs-footer .f-right { margin-left: auto; }
 
 /* ============================================================
+   DESIGN FILE — DSN detail page
+   ============================================================ */
+.fig-frame {
+  position: relative;
+  overflow: hidden;
+  background: var(--graphite);
+  border: 1px solid var(--graphite);
+  margin: 0;
+}
+.fig-frame img { width: 100%; display: block; }
+.fig-frame .fig-tag {
+  position: absolute;
+  left: 0.7rem;
+  bottom: 0.55rem;
+  right: 0.7rem;
+  width: fit-content;
+  z-index: 2;
+  font-family: var(--mono);
+  font-size: 0.6rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(244, 244, 242, 0.92);
+  background: rgba(24, 24, 27, 0.72);
+  padding: 0.25rem 0.45rem;
+  pointer-events: none;
+}
+.fig-frame .fig-tag b { color: var(--accent); font-weight: 700; }
+/* scan-line sweep — same instrument as the dossiers */
+.fig-frame::after {
+  content: "";
+  position: absolute;
+  inset-inline: 0;
+  top: -40%;
+  height: 36%;
+  background: linear-gradient(180deg, transparent, rgba(255, 77, 0, 0.16) 45%, rgba(255, 255, 255, 0.08) 50%, transparent);
+  opacity: 0;
+  pointer-events: none;
+  z-index: 1;
+}
+.fig-frame:hover::after { animation: scan 0.9s var(--ease) forwards; }
+
+/* primary plate */
+.dsn-plate { padding-top: clamp(2rem, 5vh, 3rem); }
+.dsn-plate .fig-frame.plate img {
+  max-height: 74vh;
+  object-fit: contain;
+  background: var(--graphite);
+}
+
+/* process figures grid */
+.dsn-figs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1px;
+  background: var(--line);
+  border: 1px solid var(--line);
+}
+.dsn-fig {
+  background: var(--paper);
+  padding: 1.1rem 1.1rem 1.3rem;
+  display: flex;
+  flex-direction: column;
+}
+.dsn-fig .fig-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-bottom: 0.85rem;
+}
+.dsn-fig .fig-head b {
+  color: var(--accent);
+  font-weight: 700;
+  letter-spacing: 0.1em;
+}
+.dsn-fig .fig-head .fh-meta { font-size: 0.6rem; }
+.dsn-fig .fig-frame { aspect-ratio: 4 / 3; }
+.dsn-fig .fig-frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+.dsn-fig .fig-note {
+  margin-top: 0.85rem;
+  font-weight: 600;
+  font-size: 0.9063rem;
+  line-height: 1.45;
+  color: var(--ink);
+}
+@media (max-width: 720px) {
+  .dsn-figs { grid-template-columns: 1fr; }
+  .dsn-fig { padding: 0.9rem 0.9rem 1.1rem; }
+}
+
+/* ============================================================
    DIRECTION SWITCHER
    ============================================================ */
 .switcher {
@@ -1096,5 +1222,5 @@ section[id] { scroll-margin-top: 4rem; }
 }
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
-  .fig-panel::after { display: none; }
+  .fig-panel::after, .fig-frame::after, .arc-img::after { display: none; }
 }
