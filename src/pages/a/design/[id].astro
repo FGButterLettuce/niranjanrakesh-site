@@ -1,0 +1,122 @@
+---
+import { getCollection, render } from 'astro:content';
+import Base from '../../../layouts/a/Base.astro';
+import { withBase } from '../../../lib/url';
+
+export async function getStaticPaths() {
+  const designs = (await getCollection('designs')).sort(
+    (x, y) => x.data.order - y.data.order
+  );
+  return designs.map((entry, i) => ({
+    params: { id: entry.id },
+    props: {
+      entry,
+      index: i,
+      total: designs.length,
+      prev: designs[(i - 1 + designs.length) % designs.length],
+      next: designs[(i + 1) % designs.length],
+    },
+  }));
+}
+
+const { entry, index, total, prev, next } = Astro.props;
+const { Content } = await render(entry);
+const d = entry.data;
+
+const pad = (n: number) => String(n).padStart(2, '0');
+
+// Char-count-aware title size so long single words never overflow
+// narrow viewports (same treatment as the engineering case studies).
+const longestWord = Math.max(...d.title.split(/\s+/).map((w) => w.length));
+const titleSize = `min(clamp(2.25rem, 9vw, 7.5rem), calc((100vw - 3.5rem) / ${longestWord}))`;
+---
+<Base
+  title={`${d.title} · Voltage — Niranjan Rakesh`}
+  description={`${d.title} — ${d.category}, ${d.year}. A piece from the design archive.`}
+>
+  <main>
+    <!-- ============ DESIGN HERO ============ -->
+    <section class="cs-hero">
+      <div class="hero-bg" aria-hidden="true">
+        <div class={`hero-orb ${index % 2 === 0 ? 'violet' : 'cyan'}`}></div>
+      </div>
+      <div class="wrap">
+        <a class="cs-back" href={`${withBase('a/')}#archive`}>
+          <span class="arr" aria-hidden="true">←</span> Design archive
+        </a>
+        <div class="cs-meta-row">
+          <span>{pad(index + 1)} / {pad(total)}</span>
+          <span class="cat-pill">{d.category}</span>
+          <span>{d.year}</span>
+        </div>
+        <h1 class="cs-title" style={`font-size:${titleSize}`}>
+          <span class="grad-text">{d.title}</span>
+        </h1>
+      </div>
+    </section>
+
+    <!-- ============ COVER ============ -->
+    <section class="wrap">
+      <figure class="ds-cover" data-reveal>
+        <img
+          src={withBase(d.image)}
+          alt={`${d.title} — ${d.category}`}
+          decoding="async"
+        />
+        <figcaption class="ds-cover-tag" aria-hidden="true">
+          {pad(index + 1)}/{pad(total)} · {d.category} · {d.year}
+        </figcaption>
+      </figure>
+    </section>
+
+    <!-- ============ BODY ============ -->
+    <section class="wrap">
+      <div class="ds-body">
+        <article class="prose" data-reveal>
+          <Content />
+        </article>
+      </div>
+    </section>
+
+    <!-- ============ PROCESS FIGURES ============ -->
+    {d.figures.length > 0 && (
+      <section class="wrap ds-figs-sec">
+        <div class="ds-figs-head" data-reveal>
+          <span class="mono ds-figs-label">Process</span>
+          <span class="rule" aria-hidden="true"></span>
+          <span class="mono ds-figs-count">{pad(d.figures.length)} figures</span>
+        </div>
+        <div class="ds-figs">
+          {d.figures.map((fig, i) => (
+            <figure class="ds-fig" data-reveal style={`--d:${(i % 2) * 0.08}s`}>
+              <div class="ds-fig-frame">
+                <img
+                  src={withBase(fig.src)}
+                  alt={fig.caption}
+                  loading="lazy"
+                  decoding="async"
+                />
+              </div>
+              <figcaption>
+                <span class="fig-no">Fig. {pad(i + 1)}</span>
+                {fig.caption}
+              </figcaption>
+            </figure>
+          ))}
+        </div>
+      </section>
+    )}
+
+    <!-- ============ PREV / NEXT ============ -->
+    <nav class="cs-nav" aria-label="Design archive navigation">
+      <a href={withBase(`a/design/${prev.id}`)}>
+        <span class="dir">← Previous</span>
+        <span class="name">{prev.data.title}</span>
+      </a>
+      <a href={withBase(`a/design/${next.id}`)} class="next-link">
+        <span class="dir">Next →</span>
+        <span class="name">{next.data.title}</span>
+      </a>
+    </nav>
+  </main>
+</Base>

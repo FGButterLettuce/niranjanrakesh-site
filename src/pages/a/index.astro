@@ -8,6 +8,11 @@ const projects = (await getCollection('projects')).sort(
   (x, y) => x.data.order - y.data.order
 );
 
+const designs = (await getCollection('designs')).sort(
+  (x, y) => x.data.order - y.data.order
+);
+const featuredDesigns = designs.filter((d) => d.data.featured);
+
 const marqueeItems = [
   'Full-stack products',
   'Native iOS',
@@ -26,8 +31,9 @@ const title = `${site.name} — ${site.role}`;
 const description = site.hero.subline;
 
 const pad = (n: number) => String(n).padStart(2, '0');
-// archive pieces whose art suits a double-width crop
-const wideArchive = new Set([1, 3, 8]);
+// showcase piece whose art suits a double-width crop — with it in slot 2
+// of five, both 3-col rows sum to exactly 3 cells
+const wideArchive = new Set(['the-studio']);
 ---
 <Base title={title} description={description} home>
   <main>
@@ -182,27 +188,49 @@ const wideArchive = new Set([1, 3, 8]);
           the engineering just gave it somewhere to run.
         </p>
         <div class="arc-grid">
-          {site.archive.map((piece, i) => (
-            <figure
-              class={`arc-entry${wideArchive.has(i) ? ' wide' : ''}`}
+          {featuredDesigns.map((piece, i) => (
+            <a
+              href={withBase(`a/design/${piece.id}`)}
+              class={`arc-entry${wideArchive.has(piece.id) ? ' wide' : ''}`}
               data-reveal
               style={`--d:${(i % 3) * 0.07}s`}
             >
-              <div class="arc-top">
-                <span class="no">{pad(i + 1)}/12</span>
+              <span class="arc-top">
+                <span class="no">{pad(designs.indexOf(piece) + 1)}/{pad(designs.length)}</span>
                 <span class="rule" aria-hidden="true"></span>
-                <span class="meta">{piece.category} · {piece.year}</span>
-              </div>
-              <div class="arc-frame">
+                <span class="meta">{piece.data.category} · {piece.data.year}</span>
+              </span>
+              <span class="arc-frame">
                 <img
-                  src={withBase(piece.image)}
-                  alt={`${piece.title} — ${piece.category}`}
+                  src={withBase(piece.data.image)}
+                  alt={`${piece.data.title} — ${piece.data.category}`}
                   loading="lazy"
                   decoding="async"
                 />
-              </div>
-              <figcaption class="arc-name">{piece.title}</figcaption>
-            </figure>
+              </span>
+              <span class="arc-name">
+                {piece.data.title}
+                <span class="arc-arr" aria-hidden="true">→</span>
+              </span>
+            </a>
+          ))}
+        </div>
+
+        <!-- full archive ledger — every piece, one row each -->
+        <div class="arc-index" data-reveal>
+          <div class="arc-index-head mono" aria-hidden="true">
+            <span>Full archive</span>
+            <span class="rule"></span>
+            <span>{pad(designs.length)} pieces</span>
+          </div>
+          {designs.map((piece, i) => (
+            <a class="arc-row" href={withBase(`a/design/${piece.id}`)}>
+              <span class="no">{pad(i + 1)}</span>
+              <span class="name">{piece.data.title}</span>
+              <span class="cat">{piece.data.category}</span>
+              <span class="year">{piece.data.year}</span>
+              <span class="arr" aria-hidden="true">→</span>
+            </a>
           ))}
         </div>
       </div>

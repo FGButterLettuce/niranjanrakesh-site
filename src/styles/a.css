@@ -737,9 +737,10 @@ html.js [data-reveal].is-in { opacity: 1; transform: none; }
 }
 
 /* ------------------------------------------------------------
-   Archive — numbered design projects, modular grid.
-   3 cols; entries 02, 04, 09 span two (wide crops). With that
-   placement every row sums to exactly 3 cells — no holes.
+   Archive — 5 featured showcase cards, modular grid.
+   3 cols; the wide entry sits in slot 2, so row one is
+   single + wide (3 cells) and row two is 3 singles — no holes.
+   Below the grid, an index ledger lists all 12 pieces.
    ------------------------------------------------------------ */
 .archive-note {
   color: var(--muted);
@@ -848,6 +849,9 @@ html.js [data-reveal].is-in { opacity: 1; transform: none; }
 
 /* bold title under the image */
 .arc-name {
+  display: flex;
+  align-items: baseline;
+  gap: 0.7rem;
   margin-top: 0.9rem;
   font-family: var(--font-display);
   font-weight: 700;
@@ -862,24 +866,134 @@ html.js [data-reveal].is-in { opacity: 1; transform: none; }
   background-clip: text;
   color: transparent;
 }
+.arc-name .arc-arr {
+  font-family: var(--font-mono);
+  font-weight: 400;
+  font-size: 0.875em;
+  color: var(--cyan-hi);
+  transition: transform 0.3s;
+}
+.arc-entry:hover .arc-name .arc-arr {
+  -webkit-text-fill-color: var(--cyan-hi);
+  transform: translateX(5px);
+}
 
 @media (max-width: 980px) {
-  /* two columns: wide entries take a full row; dense flow backfills
-     so rows stay locked. Last entry also goes full-width — that
-     leaves 8 singles (4 rows) + 4 full rows, zero holes. */
+  /* two columns: the wide entry takes a full row; dense flow backfills
+     so the 4 singles pair up — zero holes. */
   .arc-grid { grid-template-columns: repeat(2, 1fr); grid-auto-flow: dense; }
-  .arc-entry.wide, .arc-entry:last-child { grid-column: span 2; }
-  .arc-entry.wide .arc-frame,
-  .arc-entry:last-child .arc-frame { aspect-ratio: 16 / 9; flex: none; min-height: 0; }
+  .arc-entry.wide { grid-column: span 2; }
+  .arc-entry.wide .arc-frame { aspect-ratio: 16 / 9; flex: none; min-height: 0; }
 }
 @media (max-width: 560px) {
   .arc-grid { grid-template-columns: 1fr; gap: 2.75rem; }
-  .arc-entry.wide, .arc-entry:last-child { grid-column: auto; }
+  .arc-entry.wide { grid-column: auto; }
   .arc-frame { aspect-ratio: 1 / 1; flex: none; }
-  .arc-entry.wide .arc-frame,
-  .arc-entry:last-child .arc-frame { aspect-ratio: 4 / 3; }
+  .arc-entry.wide .arc-frame { aspect-ratio: 4 / 3; }
   .arc-top { gap: 0.7rem; }
   .arc-name { font-size: 1.0625rem; }
+}
+
+/* ---- archive index ledger — all pieces, one row each ---- */
+.arc-index {
+  margin-top: clamp(3rem, 6vw, 4.5rem);
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  overflow: hidden;
+  background: var(--surface);
+}
+.arc-index-head {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.1rem clamp(1.25rem, 3vw, 2.5rem);
+  font-size: 0.6875rem;
+  letter-spacing: 0.16em;
+  color: var(--faint);
+  background: var(--bg-2);
+}
+.arc-index-head .rule {
+  flex: 1;
+  height: 1px;
+  background: var(--grad-line);
+  opacity: 0.55;
+}
+.arc-row {
+  display: grid;
+  grid-template-columns: 2.5rem minmax(11rem, 1fr) minmax(0, 14rem) 3.5rem auto;
+  gap: 1.5rem;
+  align-items: baseline;
+  padding: 1.15rem clamp(1.25rem, 3vw, 2.5rem);
+  border-top: 1px solid var(--line);
+  position: relative;
+  transition: background 0.3s;
+}
+.arc-row::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: 2px;
+  background: var(--grad);
+  transform: scaleY(0);
+  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.arc-row:hover { background: rgba(124, 58, 237, 0.06); }
+.arc-row:hover::before { transform: scaleY(1); }
+.arc-row .no {
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  color: var(--cyan);
+  letter-spacing: 0.08em;
+}
+.arc-row .name {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1rem;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  transition: color 0.3s;
+}
+.arc-row:hover .name { color: var(--cyan-hi); }
+.arc-row .cat {
+  color: var(--muted);
+  font-size: 0.9375rem;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.arc-row .year {
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  color: var(--faint);
+}
+.arc-row .arr {
+  font-family: var(--font-mono);
+  font-size: 0.875rem;
+  color: var(--faint);
+  justify-self: end;
+  transition: color 0.3s, transform 0.3s;
+}
+.arc-row:hover .arr {
+  color: var(--cyan-hi);
+  transform: translateX(4px);
+}
+@media (max-width: 720px) {
+  .arc-row {
+    grid-template-columns: 2.5rem 1fr auto;
+    grid-template-areas:
+      'no name year'
+      'no meta arr';
+    row-gap: 0.2rem;
+    column-gap: 1rem;
+  }
+  .arc-row .no { grid-area: no; }
+  .arc-row .name { grid-area: name; white-space: normal; }
+  .arc-row .cat { grid-area: meta; font-size: 0.875rem; }
+  .arc-row .year { grid-area: year; justify-self: end; }
+  .arc-row .arr { grid-area: arr; }
 }
 
 /* ------------------------------------------------------------
@@ -1321,6 +1435,148 @@ html.js [data-reveal].is-in { opacity: 1; transform: none; }
   color: transparent;
 }
 .cs-nav .next-link { text-align: right; border-left: 1px solid var(--line); align-items: flex-end; }
+
+/* ------------------------------------------------------------
+   DESIGN ARCHIVE detail pages
+   ------------------------------------------------------------ */
+.cs-meta-row .cat-pill {
+  padding: 0.3rem 0.85rem;
+  border: 1px solid rgba(124, 58, 237, 0.45);
+  border-radius: 999px;
+  color: var(--violet-hi);
+}
+
+/* the piece itself — framed plate on the voltage grid */
+.ds-cover {
+  position: relative;
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  background: var(--surface);
+  overflow: hidden;
+  padding: clamp(1.25rem, 4vw, 3.5rem);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.ds-cover::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.045) 1px, transparent 1px);
+  background-size: 44px 44px;
+  -webkit-mask-image: radial-gradient(ellipse at center, black 30%, transparent 80%);
+  mask-image: radial-gradient(ellipse at center, black 30%, transparent 80%);
+  pointer-events: none;
+}
+.ds-cover::after {
+  content: '';
+  position: absolute;
+  inset: -30%;
+  background:
+    radial-gradient(circle at 22% 20%, rgba(124,58,237,0.22), transparent 42%),
+    radial-gradient(circle at 80% 82%, rgba(34,211,238,0.16), transparent 42%);
+  filter: blur(60px);
+  pointer-events: none;
+}
+.ds-cover img {
+  position: relative;
+  z-index: 1;
+  max-height: min(78vh, 52rem);
+  width: auto;
+  max-width: 100%;
+  border-radius: 10px;
+  box-shadow: 0 30px 80px -30px rgba(0, 0, 0, 0.8);
+}
+.ds-cover-tag {
+  position: absolute;
+  right: 1.25rem;
+  bottom: 1rem;
+  z-index: 1;
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--faint);
+}
+@media (max-width: 560px) {
+  .ds-cover { padding: 1rem 1rem 2.6rem; }
+  .ds-cover-tag { right: 1rem; bottom: 0.9rem; }
+}
+
+/* body — centered editorial column */
+.ds-body {
+  display: flex;
+  justify-content: center;
+  padding-block: clamp(3rem, 7vw, 5.5rem);
+}
+.ds-body .prose { width: 100%; }
+
+/* process figures — sketch-to-render gallery */
+.ds-figs-sec { padding-bottom: clamp(4rem, 9vw, 7rem); }
+.ds-figs-head {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: clamp(1.75rem, 3.5vw, 2.5rem);
+}
+.ds-figs-head .ds-figs-label { color: var(--cyan); letter-spacing: 0.16em; }
+.ds-figs-head .rule {
+  flex: 1;
+  height: 1px;
+  background: var(--grad-line);
+  opacity: 0.55;
+}
+.ds-figs-head .ds-figs-count { color: var(--faint); font-size: 0.6875rem; }
+
+.ds-figs {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: clamp(1.75rem, 3.5vw, 2.75rem) clamp(1.1rem, 2vw, 1.75rem);
+}
+.ds-fig { min-width: 0; }
+.ds-fig-frame {
+  position: relative;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  overflow: hidden;
+  background: var(--surface);
+  aspect-ratio: 4 / 3;
+  transition: border-color 0.35s, box-shadow 0.35s;
+}
+.ds-fig-frame img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.ds-fig:hover .ds-fig-frame {
+  border-color: rgba(103, 232, 249, 0.45);
+  box-shadow:
+    0 0 0 1px rgba(103, 232, 249, 0.18),
+    0 22px 60px -26px rgba(124, 58, 237, 0.55);
+}
+.ds-fig:hover .ds-fig-frame img { transform: scale(1.035); }
+.ds-fig figcaption {
+  margin-top: 0.8rem;
+  color: var(--muted);
+  font-size: 0.9375rem;
+  line-height: 1.5;
+}
+.ds-fig figcaption .fig-no {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--cyan);
+  margin-right: 0.65rem;
+}
+@media (max-width: 720px) {
+  .ds-figs { grid-template-columns: 1fr; gap: 2.25rem; }
+}
 
 /* ------------------------------------------------------------
    Reduced motion
