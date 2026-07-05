@@ -149,22 +149,43 @@ const heroTitle = ['Builds', 'things', 'that ship.'];
       <div class="wrap">
         <div class="archive-intro">
           <h2 class="sec-label"><span>Design archive</span></h2>
-          <p data-reveal>Design was the first language — twelve pieces from the years before the code.</p>
+          <span class="stamp-chip">12 pieces ★ 2021–2024</span>
         </div>
+        <p class="archive-line" data-reveal>
+          Design was the <span class="mark">first language</span> — twelve real
+          pieces from the years before the code.
+        </p>
         <ul class="archive-grid">
-          {site.archive.map((a, i) => (
-            <li class={`tile c${(i % 4) + 1}`} data-reveal style={`--d:${(i % 4) * 0.06}s`}>
-              <div class="tile-frame">
-                <div class="tile-img">
-                  <img src={withBase(a.image)} alt={`${a.title} — ${a.category}`} loading="lazy" width="400" height="500" />
+          {site.archive.map((a, i) => {
+            const featured = [0, 5, 6, 11].includes(i);
+            return (
+              <li
+                class={`tile c${(i % 4) + 1}${featured ? ' featured' : ''}`}
+                data-reveal
+                style={`--d:${(i % 4) * 0.06}s`}
+              >
+                <div class="tile-frame">
+                  <div class="tile-top">
+                    <span class="no">№ {String(i + 1).padStart(2, '0')}</span>
+                    <span class="yr">{a.year}</span>
+                  </div>
+                  <div class="tile-img">
+                    <img
+                      src={withBase(a.image)}
+                      alt={`${a.title} — ${a.category}`}
+                      loading="lazy"
+                      width={featured ? 800 : 400}
+                      height={500}
+                    />
+                  </div>
+                  <div class="tile-cap">
+                    <span class="t">{a.title}</span>
+                    <span class="m">{a.category} · {a.year}</span>
+                  </div>
                 </div>
-                <div class="tile-cap">
-                  <span class="t">{a.title}</span>
-                  <span class="m">{a.category} · {a.year}</span>
-                </div>
-              </div>
-            </li>
-          ))}
+              </li>
+            );
+          })}
         </ul>
       </div>
     </section>
