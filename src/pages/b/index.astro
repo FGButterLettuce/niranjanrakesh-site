@@ -143,39 +143,51 @@ const pad = (n: number) => String(n).padStart(2, '0');
     </div>
   </section>
 
-  <!-- ============ DESIGN ARCHIVE ============ -->
+  <!-- ============ DESIGN ARCHIVE — catalogue raisonné ============ -->
   <section class="b-archive" id="archive">
     <div class="b-wrap">
       <div class="b-sechead r">
         <span class="no">№ 04</span>
         <h2>The Design Archive</h2>
         <span class="tail" aria-hidden="true"></span>
-        <span class="aside">Twelve plates, 2021–2024</span>
+        <span class="aside">Catalogue raisonné · Pl. I–XII</span>
       </div>
       <p class="intro r">
-        Design was my first language — posters, editorial layouts, branding,
-        renders. The archive below is where the eye was trained before the
-        engineering took over.
+        Design was the first practice. Twelve plates — editorial, branding,
+        3D, film, and apparel, 2021–2024 — catalogued here as the
+        apprenticeship every build since has had to answer to.
       </p>
-      <div class="b-plates">
-        {site.archive.map((piece, i) => (
-          <figure class="b-plate r" style={`--d:${(i % 3) * 0.07}s`}>
-            <div class="mount" data-parallax={10 + (i % 3) * 5}>
-              <div class="frame">
-                <img
-                  src={withBase(piece.image)}
-                  alt={`${piece.title} — ${piece.category}`}
-                  loading={i < 3 ? 'eager' : 'lazy'}
-                  decoding="async"
-                />
+      <div class="b-cat">
+        {site.archive.map((piece, i) => {
+          const wide = i === 1 || i === 3 || i === 8;
+          return (
+            <figure
+              class={`b-entry${wide ? ' b-entry--wide' : ''} r`}
+              style={`--d:${(i % 3) * 0.07}s`}
+            >
+              <div class="entry-head">
+                <span class="pl">Pl. {roman[i]}</span>
+                <span class="tail" aria-hidden="true"></span>
+                <span class="spec b-meta">{piece.category} · {piece.year}</span>
               </div>
-              <figcaption>
-                <span class="pl"><i>Pl. {roman[i]}</i>{piece.title}</span>
-                <span class="cat b-meta">{piece.category} · {piece.year}</span>
+              <div class="mount">
+                <div class="frame">
+                  <img
+                    src={withBase(piece.image)}
+                    alt={`${piece.title} — ${piece.category}`}
+                    loading="lazy"
+                    decoding="async"
+                    width={wide ? 1000 : 600}
+                    height={wide ? 600 : 750}
+                  />
+                </div>
+              </div>
+              <figcaption class="entry-caption">
+                <h3 class="entry-title">{piece.title}</h3>
               </figcaption>
-            </div>
-          </figure>
-        ))}
+            </figure>
+          );
+        })}
       </div>
     </div>
   </section>

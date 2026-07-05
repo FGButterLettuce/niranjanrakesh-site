@@ -590,7 +590,7 @@ section[id], footer[id] { scroll-margin-top: 1.25rem; }
 }
 
 /* ============================================================
-   ARCHIVE — plate gallery
+   ARCHIVE — catalogue raisonné
    ============================================================ */
 
 .b-archive {
@@ -599,58 +599,103 @@ section[id], footer[id] { scroll-margin-top: 1.25rem; }
   border-block: 1px solid var(--hair);
 }
 .b-archive .intro {
-  margin-top: clamp(1.75rem, 4vh, 2.75rem);
+  margin-top: clamp(2rem, 4.5vh, 3.25rem);
   font-family: var(--serif);
   font-style: italic;
-  font-weight: 430;
-  font-size: clamp(1.1rem, 2vw, 1.35rem);
+  font-weight: 440;
+  font-size: clamp(1.3rem, 2.7vw, 1.9rem);
+  line-height: 1.4;
   color: var(--ink-soft);
-  max-width: 44ch;
+  max-width: 40ch;
   text-wrap: pretty;
 }
-.b-plates {
-  margin-top: clamp(2.5rem, 5vh, 4rem);
-  columns: 3;
-  column-gap: clamp(1.5rem, 3vw, 2.75rem);
-}
-@media (max-width: 980px) { .b-plates { columns: 2; } }
-@media (max-width: 600px) { .b-plates { columns: 1; } }
 
-.b-plate {
-  break-inside: avoid;
-  margin-bottom: clamp(2rem, 4vh, 3.25rem);
+.b-cat {
+  margin-top: clamp(2.75rem, 6vh, 4.5rem);
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  column-gap: clamp(1.5rem, 3vw, 2.75rem);
+  row-gap: clamp(3rem, 6vh, 4.75rem);
+  align-items: start;
 }
-.b-plate .mount {
+.b-entry--wide { grid-column: span 2; }
+
+/* catalogue-entry spec header: Pl. II ——— Category · Year */
+.b-entry .entry-head {
+  display: flex;
+  align-items: baseline;
+  gap: 0.9rem;
+  border-top: 1px solid var(--hair-strong);
+  padding-block: 0.7rem 0.95rem;
+}
+.b-entry .pl {
+  font-family: var(--serif);
+  font-style: italic;
+  font-weight: 520;
+  font-size: 1rem;
+  color: var(--verm);
+  white-space: nowrap;
+}
+.b-entry .entry-head .tail {
+  flex: 1;
+  border-top: 1px solid var(--hair);
+  align-self: center;
+  min-width: 1rem;
+}
+.b-entry .spec {
+  font-size: 0.625rem;
+  white-space: nowrap;
+  text-align: right;
+}
+
+/* the plate itself — paper mount, hairline frame */
+.b-entry .mount {
   background: var(--paper);
   border: 1px solid var(--hair);
   padding: clamp(0.6rem, 1.2vw, 0.9rem);
-  box-shadow: 0 1px 0 rgba(28, 25, 23, 0.06), 0 12px 28px -18px rgba(28, 25, 23, 0.35);
+  box-shadow: 0 1px 0 rgba(28, 25, 23, 0.06), 0 14px 32px -18px rgba(28, 25, 23, 0.35);
   transition: box-shadow 0.45s ease, translate 0.45s cubic-bezier(0.22, 1, 0.36, 1);
-  will-change: transform;
 }
-.b-plate:hover .mount {
+.b-entry:hover .mount {
   translate: 0 -4px;
-  box-shadow: 0 1px 0 rgba(28, 25, 23, 0.06), 0 22px 40px -20px rgba(28, 25, 23, 0.45);
+  box-shadow: 0 1px 0 rgba(28, 25, 23, 0.06), 0 24px 44px -20px rgba(28, 25, 23, 0.45);
 }
-.b-plate .frame { overflow: hidden; }
-.b-plate img {
+.b-entry .frame { overflow: hidden; }
+.b-entry img {
   width: 100%;
+  height: auto;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
   transition: transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
 }
-.b-plate:hover img { transform: scale(1.025); }
-.b-plate figcaption {
-  display: flex;
-  justify-content: space-between;
-  align-items: baseline;
-  gap: 1rem;
-  padding-top: 0.8rem;
-}
-.b-plate .pl {
+/* featured plates run wide — landscape crop matched to row height */
+.b-entry--wide img { aspect-ratio: 7 / 4; }
+.b-entry:hover img { transform: scale(1.025); }
+
+/* catalogue caption — a real title, not an afterthought */
+.b-entry .entry-caption { padding-top: 1rem; }
+.b-entry .entry-title {
   font-family: var(--serif);
-  font-size: 0.95rem;
+  font-weight: 660;
+  font-size: clamp(1.3rem, 2.2vw, 1.75rem);
+  line-height: 1.12;
+  letter-spacing: -0.015em;
+  text-wrap: balance;
 }
-.b-plate .pl i { color: var(--verm); font-style: italic; margin-right: 0.45rem; }
-.b-plate .cat { white-space: nowrap; font-size: 0.625rem; }
+.b-entry--wide .entry-title { font-size: clamp(1.7rem, 3vw, 2.5rem); }
+
+@media (max-width: 980px) {
+  .b-cat { grid-template-columns: repeat(2, minmax(0, 1fr)); row-gap: clamp(2.5rem, 5vh, 3.5rem); }
+  .b-entry--wide { grid-column: span 1; }
+  .b-entry--wide img { aspect-ratio: 4 / 5; }
+  .b-entry--wide .entry-title { font-size: clamp(1.3rem, 2.2vw, 1.75rem); }
+}
+@media (max-width: 600px) {
+  .b-cat { grid-template-columns: 1fr; row-gap: 2.75rem; }
+  .b-entry--wide img { aspect-ratio: 4 / 3; }
+  .b-entry--wide .entry-title { font-size: 1.7rem; }
+  .b-entry .entry-title { font-size: 1.45rem; }
+}
 
 /* ============================================================
    COLOPHON / CONTACT
