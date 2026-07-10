@@ -23,7 +23,9 @@ highlights:
 flavor: "product"
 ---
 
-Every couple has the same graveyard of places they said they'd go, buried in chat threads and screenshots. Twogether is a private space for two people where anything either of you shares becomes a pinned place card, ready to sort into lists, plan a day around, and file away as a memory after you've been.
+Twogether started with my girlfriend and me losing places. We collected them in a notes app, and every entry aged into a pasted link with no context: no photos, no hours, no memory of why we saved it. Planning a day out meant re-researching our own list. The breaking point was finding out, a day late, that we'd been standing right next to a place on our list and walked somewhere else instead.
+
+So this is the fix, built for us and for anyone with the same problem: a private space for two people where anything either of you shares becomes a pinned place card, ready to sort into lists, plan a day around, and file away as a memory after you've been.
 
 ## Nothing bounces
 

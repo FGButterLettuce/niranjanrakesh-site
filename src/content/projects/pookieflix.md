@@ -19,7 +19,7 @@ highlights:
 flavor: "engineering"
 ---
 
-Watch-party plugins break, and the streaming service never has the thing you actually want to watch. PookieFlix skips the middleman entirely: your own server, your own video files, and sync that holds up on real connections.
+PookieFlix started with miserable movie nights from two different places: one side buffering while the other played on, pauses that paused only one player with the other side none the wiser, and endless counting down from three to get back in sync. So I built us a cinema we run ourselves: one server, a shared library, and sync that treats two unequal connections as the normal case. Movie night now works whenever, wherever.
 
 ## Sync that respects reality
 
