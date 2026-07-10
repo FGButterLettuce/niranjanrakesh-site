@@ -7,4 +7,4 @@ image: "images/nhk-psa.webp"
 featured: true
 ---
 
-A poster study in retro Japanese broadcast graphics — VHS-era NHK aesthetics rebuilt from scratch: warm sunset gradient bars, katakana display type, and deliberately degraded print texture. The tagline does the PSA work: *"Don't overthink it. You can do it."*
+A poster study in retro Japanese broadcast graphics: VHS-era NHK rebuilt from scratch, with warm sunset gradient bars, katakana display type, and deliberately degraded print texture. The tagline does the PSA work: *"Don't overthink it. You can do it."*

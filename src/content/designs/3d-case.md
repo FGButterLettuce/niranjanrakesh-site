@@ -6,4 +6,4 @@ order: 12
 image: "images/thumb-3d-case.png"
 ---
 
-A fully custom 3D-printed computer case designed from scratch — a modular, open-frame design optimized for airflow, with the internal components showcased as a feature rather than hidden. CAD-modelled, printed, and actually built.
+A custom 3D-printed computer case: modular, open-frame, designed around airflow, with the internals on display instead of hidden away. CAD-modelled, printed, and actually built.

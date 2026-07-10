@@ -32,8 +32,6 @@ const flavorAccent: Record<string, string> = {
   tool: 'var(--ink)',
 };
 
-const roman = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X', 'XI', 'XII'];
-
 const pad = (n: number) => String(n).padStart(2, '0');
 ---
 <Base
@@ -50,7 +48,7 @@ const pad = (n: number) => String(n).padStart(2, '0');
       <div class="sub-row r" style="--d:.18s">
         <div class="scrollcue">
           <span class="ornament" aria-hidden="true">✳</span>
-          <a class="b-meta u-draw" href="#work">Scroll — the work below</a>
+          <a class="b-meta u-draw" href="#work">Scroll for the work</a>
         </div>
         <p class="subline">{site.hero.subline}</p>
       </div>
@@ -72,7 +70,7 @@ const pad = (n: number) => String(n).padStart(2, '0');
         <span class="no">№ 01</span>
         <h2>Selected Work</h2>
         <span class="tail" aria-hidden="true"></span>
-        <span class="aside">Three case studies, shipped &amp; in use</span>
+        <span class="aside">// three case studies, all in production</span>
       </div>
 
       {projects.map((p, i) => (
@@ -83,7 +81,7 @@ const pad = (n: number) => String(n).padStart(2, '0');
           <div class="ghost" aria-hidden="true">{pad(i + 1)}</div>
           <div class="main">
             <span class="kick b-meta">
-              <span class="st">{p.data.year}</span> — {p.data.status}
+              <span class="st">{p.data.year}</span> · {p.data.status}
             </span>
             <h3><a href={withBase(`b/work/${p.id}`)}>{p.data.title}</a></h3>
             <p class="standfirst">{p.data.tagline}</p>
@@ -107,9 +105,9 @@ const pad = (n: number) => String(n).padStart(2, '0');
     <div class="b-wrap">
       <div class="b-sechead r">
         <span class="no">№ 02</span>
-        <h2>Marginalia</h2>
+        <h2>Smaller Builds</h2>
         <span class="tail" aria-hidden="true"></span>
-        <span class="aside">Smaller builds, still real</span>
+        <span class="aside">// tools built for myself, in daily use</span>
       </div>
       <div class="rows">
         {site.smallerBuilds.map((b, i) => (
@@ -131,7 +129,7 @@ const pad = (n: number) => String(n).padStart(2, '0');
         <span class="no">№ 03</span>
         <h2>About</h2>
         <span class="tail" aria-hidden="true"></span>
-        <span class="aside">{site.role} · {site.location}</span>
+        <span class="aside">// {site.role} · {site.location}</span>
       </div>
       <p class="lead r">{site.about.lead}</p>
       <div class="cols r" style="--d:.1s">
@@ -148,20 +146,20 @@ const pad = (n: number) => String(n).padStart(2, '0');
     </div>
   </section>
 
-  <!-- ============ DESIGN ARCHIVE — catalogue raisonné ============ -->
+  <!-- ============ THE ARCHIVE — pre-code work ============ -->
   <section class="b-archive" id="archive">
     <div class="b-wrap">
       <div class="b-sechead r">
         <span class="no">№ 04</span>
-        <h2>The Design Archive</h2>
+        <h2>The Archive</h2>
         <span class="tail" aria-hidden="true"></span>
-        <span class="aside">Catalogue raisonné · Pl. I–XII</span>
+        <span class="aside">// before the code: design, video, 3D · 2021–2024</span>
       </div>
       <p class="intro r">
-        Design was the first practice. Twelve plates — editorial, branding,
-        3D, film, and apparel, 2021–2024 — catalogued here as the
-        apprenticeship every build since has had to answer to. Each plate
-        opens its own entry.
+        I was making things long before I was shipping code: posters,
+        magazine layouts, brand systems, a car account, a room designed
+        in 3D and actually built. Twelve of those live here, each with
+        its own page.
       </p>
       <div class="b-cat">
         {featured.map((piece, i) => {
@@ -174,7 +172,7 @@ const pad = (n: number) => String(n).padStart(2, '0');
               href={withBase(`b/design/${piece.id}`)}
             >
               <span class="entry-head">
-                <span class="pl">Pl. {roman[piece.data.order - 1]}</span>
+                <span class="pl">№ {pad(piece.data.order)}</span>
                 <span class="tail" aria-hidden="true"></span>
                 <span class="spec b-meta">{piece.data.category} · {piece.data.year}</span>
               </span>
@@ -199,10 +197,10 @@ const pad = (n: number) => String(n).padStart(2, '0');
         })}
       </div>
 
-      <!-- complete catalogue index — every plate, ruled-table style -->
+      <!-- full archive index, ruled-table style -->
       <div class="b-catindex r">
         <div class="idx-head b-doubles">
-          <span class="b-meta">Plate</span>
+          <span class="b-meta">№</span>
           <span class="b-meta">Title</span>
           <span class="b-meta cat">Category</span>
           <span class="b-meta yr">Year</span>
@@ -213,7 +211,7 @@ const pad = (n: number) => String(n).padStart(2, '0');
             style={`--d:${i * 0.035}s`}
             href={withBase(`b/design/${d.id}`)}
           >
-            <span class="pl">Pl. {roman[d.data.order - 1]}</span>
+            <span class="pl">{pad(d.data.order)}</span>
             <span class="name">{d.data.title}</span>
             <span class="cat">{d.data.category}</span>
             <span class="yr b-meta">{d.data.year}</span>
@@ -224,14 +222,14 @@ const pad = (n: number) => String(n).padStart(2, '0');
     </div>
   </section>
 
-  <!-- ============ COLOPHON / CONTACT ============ -->
+  <!-- ============ CONTACT ============ -->
   <footer class="b-colophon" id="contact">
     <div class="b-wrap">
       <div class="b-sechead r">
         <span class="no">№ 05</span>
-        <h2>Colophon</h2>
+        <h2>Contact</h2>
         <span class="tail" aria-hidden="true"></span>
-        <span class="aside">Correspondence welcome</span>
+        <span class="aside">// email is fastest</span>
       </div>
       <p class="cta-line r">{site.contact.cta}</p>
       <a class="email u-draw r" style="--d:.08s" href={`mailto:${site.contact.email}`}>
@@ -245,8 +243,11 @@ const pad = (n: number) => String(n).padStart(2, '0');
       </div>
       <div class="b-foot">
         <div class="row">
-          <span class="line">{site.footer.line}</span>
-          <span class="set b-meta">Set in Fraunces &amp; DM Sans · MMXXVI</span>
+          <span class="line">
+            {site.footer.line}
+            <a class="u-drawn" href={site.footer.sourceUrl} target="_blank" rel="noopener noreferrer">View the source ↗</a>
+          </span>
+          <span class="set b-meta">Astro · Fraunces &amp; DM Sans · 2026</span>
         </div>
       </div>
     </div>

@@ -6,4 +6,4 @@ order: 11
 image: "images/thumb-slice.webp"
 ---
 
-A mobile UI/UX concept for Slice, a food-delivery app focused on simplicity and speed of ordering — a clean, intuitive interface where the path from hungry to ordered is as short as possible.
+A mobile UI concept for Slice, a food-delivery app. The design goal was speed: as few steps as possible between opening the app and having food on the way.

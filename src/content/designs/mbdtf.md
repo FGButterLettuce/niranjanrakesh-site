@@ -6,4 +6,4 @@ order: 7
 image: "images/mbdtf.webp"
 ---
 
-A tribute poster to *My Beautiful Dark Twisted Fantasy* — the album art tradition reinterpreted in fabric and print texture, deep reds on red, with the artwork treated like a relic rather than a thumbnail.
+A tribute poster to *My Beautiful Dark Twisted Fantasy*: deep reds on red, fabric and print texture, and the artwork treated like a relic instead of a thumbnail.

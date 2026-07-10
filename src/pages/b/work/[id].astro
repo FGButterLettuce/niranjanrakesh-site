@@ -26,9 +26,9 @@ const { Content } = await render(entry);
 
 const pad = (n: number) => String(n).padStart(2, '0');
 const flavorLabel: Record<string, string> = {
-  product: 'A product feature',
-  engineering: 'An engineering feature',
-  tool: 'A tooling feature',
+  product: 'Shipped product',
+  engineering: 'Engineering build',
+  tool: 'Personal tool',
 };
 ---
 <Base
@@ -41,7 +41,7 @@ const flavorLabel: Record<string, string> = {
   <header class="b-articlehead">
     <div class="b-wrap">
       <p class="kick b-meta r">
-        <strong>{flavorLabel[entry.data.flavor] ?? 'A feature'}</strong>
+        <strong>{flavorLabel[entry.data.flavor] ?? 'Project'}</strong>
       </p>
       <h1 class="r" style="--d:.08s">{entry.data.title}</h1>
       <p class="standfirst r" style="--d:.16s">{entry.data.tagline}</p>
@@ -61,7 +61,7 @@ const flavorLabel: Record<string, string> = {
           <span class="val">{entry.data.status}</span>
         </div>
         <div class="cell">
-          <span class="lbl b-meta">Author</span>
+          <span class="lbl b-meta">Built by</span>
           <span class="val">{site.name}, solo</span>
         </div>
         {entry.data.liveUrl && (
@@ -118,7 +118,7 @@ const flavorLabel: Record<string, string> = {
     <div class="b-wrap">
       <div class="row">
         <a class="b-cta" href={withBase('b/')}>
-          <span class="arr" aria-hidden="true">←</span> Back to the front page
+          <span class="arr" aria-hidden="true">←</span> Back to all work
         </a>
         <span class="b-meta">{site.footer.line}</span>
       </div>

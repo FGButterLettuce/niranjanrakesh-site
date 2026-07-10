@@ -6,4 +6,4 @@ order: 3
 image: "images/work-stardust.webp"
 ---
 
-A branding exploration around celestial themes with a modern minimalist approach. The identity system runs on a dark palette with subtle star motifs — restrained marks that read premium rather than cosmic-kitsch, with typography doing most of the talking.
+A branding exploration around a celestial theme. Dark palette, small star motifs, and type doing most of the work. The goal was an identity that reads premium without tipping into space kitsch.

@@ -4,32 +4,32 @@
   "location": "Sharjah, United Arab Emirates",
   "hero": {
     "headline": "Builds things that ship.",
-    "subline": "Full-stack products, native apps, and the infrastructure under them — taken from idea to something real people use.",
-    "kicker": "Niranjan Rakesh — engineer, based in the UAE"
+    "subline": "Full-stack products, native apps, and the infrastructure under them, built solo and taken all the way to real users.",
+    "kicker": "Niranjan Rakesh, engineer in the UAE"
   },
   "about": {
-    "lead": "I build complete things. Not demos, not prototypes that die in a folder — products with users, uptime, and edges that have been sanded by real use.",
+    "lead": "I build complete things: products with real users, uptime to keep, and rough edges worn down by actual use. Prototypes that die in a folder don't count.",
     "body": [
-      "Trained in Computer Science, comfortable at the layer below the framework: I've shipped a production backend with zero npm dependencies, hand-rolled drag-and-drop from raw pointer events, and tuned video sync algorithms for connections that don't behave.",
-      "The through-line is judgment about how things should feel — inputs that never bounce, apps that boot straight into the point, tools that meet you where you already are. Design was my first language; engineering is how I make it real."
+      "I trained in Computer Science and I'm comfortable below the framework: I've shipped a production backend with zero npm dependencies, hand-rolled drag-and-drop from raw pointer events, and tuned video sync for connections that misbehave.",
+      "I started out in design, and it still decides what I build. Most of my engineering time goes into how things feel to use, like an input that accepts whatever you paste into it, or an app that opens straight to the point."
     ],
     "themes": [
-      { "title": "Ships complete things", "detail": "Idea → product → production infrastructure, end to end, solo." },
-      { "title": "Depth over glue", "detail": "Zero-dependency servers, custom sync logic, raw pointer events — building below the framework when it's better." },
-      { "title": "Product judgment", "detail": "Decisions driven by how the thing feels to use, not by what's easiest to wire together." }
+      { "title": "Ships complete things", "detail": "Takes an idea to a running product with real infrastructure under it, end to end, solo." },
+      { "title": "Depth over glue", "detail": "Zero-dependency servers, custom sync logic, raw pointer events. Goes below the framework when the framework is the problem." },
+      { "title": "Product judgment", "detail": "Decides by how the thing feels to use, not by what's easiest to wire together." }
     ]
   },
   "smallerBuilds": [
-    { "name": "Mac Transcoder", "year": "2026", "line": "Native macOS drag-and-drop video transcoder using hardware VideoToolbox encoding — MP4s out, zero settings." },
+    { "name": "Mac Transcoder", "year": "2026", "line": "Native macOS drag-and-drop video transcoder on hardware VideoToolbox encoding. Files in, MP4s out, nothing to configure." },
     { "name": "PerfectTasks", "year": "2026", "line": "Full-stack task manager (Next.js, Drizzle, Clerk) designed, planned, and built test-first in a single day." },
-    { "name": "orbit-core", "year": "2025", "line": "NestJS + Prisma backend for time management — OAuth, Google Calendar sync, multi-device conflict resolution, BullMQ jobs." }
+    { "name": "orbit-core", "year": "2025", "line": "NestJS + Prisma backend for time management: OAuth, Google Calendar sync, multi-device conflict resolution, BullMQ jobs." }
   ],
   "archive": [
     { "title": "Football Magazine", "category": "Editorial design", "year": "2022", "image": "images/work-football.webp" },
     { "title": "The Studio", "category": "3D & interior", "year": "2024", "image": "images/work-the-studio.png" },
     { "title": "Stardust", "category": "Branding", "year": "2022", "image": "images/work-stardust.webp" },
     { "title": "Product Souq", "category": "Landing page", "year": "2022", "image": "images/work-product-souq.webp" },
-    { "title": "Fairlady Aiko", "category": "Videography", "year": "2022", "image": "images/work-fairlady.webp" },
+    { "title": "Fairlady Aiko", "category": "Social media & video", "year": "2022", "image": "images/work-fairlady.webp" },
     { "title": "NHK PSA", "category": "Poster", "year": "2021", "image": "images/nhk-psa.webp" },
     { "title": "MBDTF", "category": "Poster", "year": "2021", "image": "images/mbdtf.webp" },
     { "title": "Picasso", "category": "Apparel", "year": "2021", "image": "images/picasso.webp" },
@@ -44,6 +44,7 @@
     "cta": "Have something worth building?"
   },
   "footer": {
-    "line": "Designed and built by Niranjan Rakesh — no templates, no site builder."
+    "line": "Designed and built from scratch by Niranjan Rakesh.",
+    "sourceUrl": "https://github.com/FGButterLettuce/niranjanrakesh-site"
   }
 }

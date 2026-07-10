@@ -7,6 +7,6 @@ image: "images/work-football.webp"
 featured: true
 ---
 
-A magazine layout built around one idea: football media should hit as hard as the sport. Bold condensed typography stacked tight against dynamic player imagery, headlines that behave like chants, and a grid that flexes for the drama of the photo rather than forcing photos into the grid.
+A magazine layout built on one idea: football media should hit as hard as the sport does. Condensed type stacked tight against player imagery, with a grid that bends around the drama of the photo instead of forcing the photo into the grid.
 
-The spread shown — a feature on Arda Güler — leans on torn-paper texture, aggressive crops, and a two-tone treatment inspired by modern sports media and vintage terrace culture in equal parts.
+The spread shown is a feature on Arda Güler. It leans on torn-paper texture, aggressive crops, and a two-tone treatment that owes as much to vintage terrace culture as to modern sports media.

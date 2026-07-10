@@ -24,18 +24,18 @@ export async function getStaticPaths() {
 const { entry, total, prev, next } = Astro.props;
 const { Content } = await render(entry);
 
-const roman = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X', 'XI', 'XII'];
-const pl = roman[entry.data.order - 1] ?? String(entry.data.order);
-const plTotal = roman[total - 1] ?? String(total);
+const pad = (n: number) => String(n).padStart(2, '0');
+const no = pad(entry.data.order);
+const noTotal = pad(total);
 const figures = entry.data.figures;
 ---
 <Base
-  title={`${entry.data.title} — ${entry.data.category} · Ink & Ochre — Niranjan Rakesh`}
-  description={`${entry.data.title} — ${entry.data.category}, ${entry.data.year}. Plate ${pl} of ${plTotal} from the design archive, a catalogue raisonné of earlier design work.`}
+  title={`${entry.data.title} · Ink & Ochre — Niranjan Rakesh`}
+  description={`${entry.data.title}: ${entry.data.category.toLowerCase()}, ${entry.data.year}. № ${no} of ${noTotal} from the archive of work made before the code.`}
 >
   <Masthead
     variant="article"
-    slug={`Pl. ${pl} / ${plTotal}`}
+    slug={`Archive № ${no} / ${noTotal}`}
     backHref={withBase('b/') + '#archive'}
     backLabel="← The archive"
   />
@@ -44,7 +44,7 @@ const figures = entry.data.figures;
   <header class="b-articlehead">
     <div class="b-wrap">
       <p class="kick b-meta r">
-        <strong>From the design archive</strong>
+        <strong>From the archive</strong>
       </p>
       <h1 class="r" style="--d:.08s">{entry.data.title}</h1>
     </div>
@@ -55,8 +55,8 @@ const figures = entry.data.figures;
     <div class="b-byline r">
       <div class="cells">
         <div class="cell">
-          <span class="lbl b-meta">Plate</span>
-          <span class="val">Pl. {pl}</span>
+          <span class="lbl b-meta">Entry</span>
+          <span class="val">№ {no}</span>
         </div>
         <div class="cell">
           <span class="lbl b-meta">Category</span>
@@ -86,7 +86,7 @@ const figures = entry.data.figures;
         </div>
       </div>
       <figcaption>
-        <span class="no">Pl. {pl}</span>
+        <span class="no">№ {no}</span>
         <span class="cap">{entry.data.title} · {entry.data.category}, {entry.data.year}</span>
       </figcaption>
     </figure>
@@ -105,9 +105,9 @@ const figures = entry.data.figures;
       <div class="b-wrap">
         <div class="b-sechead r">
           <span class="no">Fig. 1–{figures.length}</span>
-          <h2>The Figures</h2>
+          <h2>Process</h2>
           <span class="tail" aria-hidden="true"></span>
-          <span class="aside">Process, in order of making</span>
+          <span class="aside">// in order of making</span>
         </div>
         <div class="b-figgrid">
           {figures.map((f, i) => (
@@ -136,15 +136,15 @@ const figures = entry.data.figures;
   )}
 
   <!-- ============ PREV / NEXT ============ -->
-  <nav class="b-pn" aria-label="More plates">
+  <nav class="b-pn" aria-label="More from the archive">
     <div class="b-wrap">
       <div class="cells">
         <a href={withBase(`b/design/${prev.id}`)}>
-          <span class="lbl b-meta">← Previous plate</span>
+          <span class="lbl b-meta">← Previous</span>
           <span class="ttl">{prev.data.title}</span>
         </a>
         <a href={withBase(`b/design/${next.id}`)}>
-          <span class="lbl b-meta">Next plate →</span>
+          <span class="lbl b-meta">Next →</span>
           <span class="ttl">{next.data.title}</span>
         </a>
       </div>
