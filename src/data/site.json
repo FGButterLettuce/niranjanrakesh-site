@@ -1,23 +1,23 @@
 {
   "name": "Niranjan Rakesh",
-  "role": "Full-stack product engineer",
+  "role": "Engineer",
   "location": "Sharjah, United Arab Emirates",
   "hero": {
     "headline": "Builds things that ship.",
-    "subline": "Full-stack product engineer who covers the whole surface: product design, web, native iOS and macOS, backend, and the production infrastructure under it all.",
-    "kicker": "Niranjan Rakesh · Full-stack product engineer · UAE"
+    "subline": "I design, build, and run my own products: web, native iOS and macOS, backend, and the infrastructure under them.",
+    "kicker": "Engineer, based in the UAE"
   },
   "about": {
-    "lead": "Most engineers hand off at the edge of their layer. I don't have one: I design the product, build the web and native apps, write the backend, and run the servers it ships on. Everything on this site is live, in use, and built alone.",
+    "lead": "I like building complete things: I design them, build the web and native apps, write the backend, and run the servers they ship on. Everything on this site is live and in use.",
     "body": [
-      "The day job is engineering at Kharetah, a UAE fintech, with a remit that reads like several jobs: product engineering across its platforms, LLM-powered internal tooling, the Azure cloud everything runs on, the security work that comes with financial data, and the company's IT.",
-      "The personal work on this page holds the same standard, in production. A couples app with a zero-dependency Node backend and a native SwiftUI client submitted to the App Store. A self-hosted streaming platform with a custom sync protocol, distributed as a prebuilt Docker image. A signed, notarized macOS utility. Each one designed, built, deployed, and maintained by one person.",
-      "I trained in Computer Science and started in design, and it shows at both ends. I'll hand-roll drag-and-drop from raw pointer events or tune an HLS pipeline for iOS quirks, and I'll also be the one who notices the type is wrong. Teams usually hire separate people for those. I'm the overlap."
+      "The day job is engineering at Kharetah, a UAE fintech, where I work across product engineering, LLM-powered internal tooling, the Azure cloud, security, and IT.",
+      "The personal work here is all in production: a couples app with a zero-dependency Node backend and a native SwiftUI client submitted to the App Store, a self-hosted streaming platform with a custom sync protocol, and a signed, notarized macOS utility.",
+      "I trained in Computer Science and started in design. In practice that means I'll hand-roll drag-and-drop from raw pointer events or tune an HLS pipeline for iOS quirks, and I care whether the type is right."
     ],
     "themes": [
-      { "title": "Owns products end to end", "detail": "One person from first sketch to systemd service: design, web, native iOS and macOS, backend, infrastructure, and the App Store paperwork." },
-      { "title": "Ships, then keeps shipping", "detail": "Everything here runs in production with real users and a maintenance history: bug fixes from daily use, migrations, uptime to keep." },
-      { "title": "Depth below the framework", "detail": "Zero-dependency servers, custom sync protocols, raw pointer events, scrypt auth without a library. Goes low-level when the framework is the problem." }
+      { "title": "End to end", "detail": "Idea, design, code, infrastructure, release. Each project here went through all of it." },
+      { "title": "In production", "detail": "Real use, uptime, migrations, and bug fixes from daily driving, not demos." },
+      { "title": "Below the framework", "detail": "Zero-dependency servers, custom sync protocols, raw pointer events, scrypt auth without a library." }
     ]
   },
   "smallerBuilds": [
@@ -41,10 +41,10 @@
   "contact": {
     "email": "niranjanrakesh64@gmail.com",
     "phone": "+971 55 668 7534",
-    "cta": "Hiring someone who can ship the whole thing?"
+    "cta": "Say hello."
   },
   "footer": {
-    "line": "Designed and built from scratch by Niranjan Rakesh.",
+    "line": "Designed and built from scratch.",
     "sourceUrl": "https://github.com/FGButterLettuce/niranjanrakesh-site"
   }
 }
