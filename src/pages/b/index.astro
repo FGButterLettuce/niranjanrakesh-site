@@ -75,7 +75,7 @@ const pad = (n: number) => String(n).padStart(2, '0');
 
       {projects.map((p, i) => (
         <article
-          class={`b-spread ${i % 2 === 0 ? 'b-spread--odd' : 'b-spread--even'} r`}
+          class={`b-spread ${i % 2 === 0 ? 'b-spread--odd' : 'b-spread--even'}${p.data.image ? ' b-spread--media' : ''} r`}
           style={`--acc:${flavorAccent[p.data.flavor] ?? 'var(--verm)'}`}
         >
           <div class="ghost" aria-hidden="true">{pad(i + 1)}</div>
@@ -86,21 +86,32 @@ const pad = (n: number) => String(n).padStart(2, '0');
             <h3><a href={withBase(`b/work/${p.id}`)}>{p.data.title}</a></h3>
             <p class="standfirst">{p.data.tagline}</p>
           </div>
-          <div class="aside">
-            {p.data.image && (
-              <a
-                class="visual"
-                href={withBase(`b/work/${p.id}`)}
-                tabindex="-1"
-                aria-hidden="true"
-              >
-                <span class="mount">
-                  <span class="frame">
+          {p.data.image && (
+            <a
+              class={`visual ${p.data.figuresLayout === 'phones' ? 'visual--phone' : 'visual--web'}`}
+              href={withBase(`b/work/${p.id}`)}
+              tabindex="-1"
+              aria-hidden="true"
+            >
+              {p.data.figuresLayout === 'phones' ? (
+                <span class="b-device">
+                  <span class="screen">
                     <img src={withBase(p.data.image)} alt="" loading="lazy" decoding="async" />
                   </span>
                 </span>
-              </a>
-            )}
+              ) : (
+                <span class="b-window">
+                  <span class="bar">
+                    <span class="dot"></span>
+                    <span class="dot"></span>
+                    <span class="dot"></span>
+                  </span>
+                  <img src={withBase(p.data.image)} alt="" loading="lazy" decoding="async" />
+                </span>
+              )}
+            </a>
+          )}
+          <div class="aside">
             <ul class="stacklist">
               {p.data.stack.slice(0, 4).map((s) => <li>{s.replace(/\s*\(.*\)$/, '')}</li>)}
               {p.data.stack.length > 4 && <li>+ {p.data.stack.length - 4} more</li>}

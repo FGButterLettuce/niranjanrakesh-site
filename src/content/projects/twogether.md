@@ -6,13 +6,13 @@ order: 1
 status: "Live in production"
 stack: ["Node.js (zero dependencies)", "SQLite", "React", "PWA", "SwiftUI", "Google Places API", "Server-Sent Events", "Caddy + systemd"]
 liveUrl: "https://try2gether.app"
-image: "images/projects/twogether-01-places.webp"
+image: "images/projects/twogether-raw-01-places.webp"
 figures:
-  - src: "images/projects/twogether-01-places.webp"
+  - src: "images/projects/twogether-raw-01-places.webp"
     caption: "Places: everything either of you shares, resolved into pinned cards"
-  - src: "images/projects/twogether-02-place-detail.webp"
+  - src: "images/projects/twogether-raw-02-place-detail.webp"
     caption: "A place card: photos, hours, rating, and the couple's own notes"
-  - src: "images/projects/twogether-04-memories.webp"
+  - src: "images/projects/twogether-raw-04-memories.webp"
     caption: "Memories: the timeline a place joins after you've been"
 figuresLayout: "phones"
 highlights:

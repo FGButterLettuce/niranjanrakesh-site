@@ -5,7 +5,7 @@ year: "2026"
 order: 2
 status: "Self-hosted, in use"
 stack: ["TypeScript", "Fastify", "React", "WebSockets", "HLS", "FFmpeg", "SQLite", "Docker", "Cloudflare Tunnel"]
-image: "images/projects/pookieflix-hero.webp"
+image: "images/projects/pookieflix-library.webp"
 figures:
   - src: "images/projects/pookieflix-hero.webp"
     caption: "The front door: self-hosted, open source, one Docker container"

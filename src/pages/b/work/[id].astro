@@ -110,12 +110,23 @@ const flavorLabel: Record<string, string> = {
         </div>
         <div class={`b-figgrid b-figgrid--product${entry.data.figuresLayout === 'phones' ? ' b-figgrid--phones' : ''}`}>
           {entry.data.figures.map((f, i) => (
-            <figure class="b-fig r" style={`--d:${(i % 3) * 0.08}s`}>
-              <div class="mount">
-                <div class="frame">
+            <figure class="b-fig b-fig--product r" style={`--d:${(i % 3) * 0.08}s`}>
+              {entry.data.figuresLayout === 'phones' ? (
+                <span class="b-device">
+                  <span class="screen">
+                    <img src={withBase(f.src)} alt={f.caption} loading="lazy" decoding="async" />
+                  </span>
+                </span>
+              ) : (
+                <span class="b-window">
+                  <span class="bar" aria-hidden="true">
+                    <span class="dot"></span>
+                    <span class="dot"></span>
+                    <span class="dot"></span>
+                  </span>
                   <img src={withBase(f.src)} alt={f.caption} loading="lazy" decoding="async" />
-                </div>
-              </div>
+                </span>
+              )}
               <figcaption>
                 <span class="no">Fig. {i + 1}</span>
                 <span class="cap">{f.caption}</span>
