@@ -2,7 +2,7 @@
 title: "Stardust"
 category: "Branding"
 year: "2022"
-order: 3
+order: 2
 image: "images/work-stardust.webp"
 ---
 

@@ -2,7 +2,7 @@
 title: "Picasso"
 category: "Apparel"
 year: "2021"
-order: 8
+order: 7
 image: "images/picasso.webp"
 ---
 

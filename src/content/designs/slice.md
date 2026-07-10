@@ -2,7 +2,7 @@
 title: "Slice"
 category: "App UI"
 year: "2022"
-order: 11
+order: 10
 image: "images/thumb-slice.webp"
 ---
 

@@ -14,6 +14,14 @@ const projects = defineCollection({
     highlights: z.array(z.string()),
     // one-word flavor a theme MAY use for per-project accenting
     flavor: z.string(),
+    // optional lead visual shown on home spreads, path under public/
+    image: z.string().optional(),
+    // optional product screenshots rendered after the article body
+    figures: z
+      .array(z.object({ src: z.string(), caption: z.string() }))
+      .default([]),
+    // 'phones' lays figures out three-up for tall app-store shots
+    figuresLayout: z.enum(['wide', 'phones']).default('wide'),
   }),
 });
 

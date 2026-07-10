@@ -70,7 +70,7 @@ const pad = (n: number) => String(n).padStart(2, '0');
         <span class="no">№ 01</span>
         <h2>Selected Work</h2>
         <span class="tail" aria-hidden="true"></span>
-        <span class="aside">// three case studies, all in production</span>
+        <span class="aside">// three products, in production, built solo</span>
       </div>
 
       {projects.map((p, i) => (
@@ -87,12 +87,26 @@ const pad = (n: number) => String(n).padStart(2, '0');
             <p class="standfirst">{p.data.tagline}</p>
           </div>
           <div class="aside">
+            {p.data.image && (
+              <a
+                class="visual"
+                href={withBase(`b/work/${p.id}`)}
+                tabindex="-1"
+                aria-hidden="true"
+              >
+                <span class="mount">
+                  <span class="frame">
+                    <img src={withBase(p.data.image)} alt="" loading="lazy" decoding="async" />
+                  </span>
+                </span>
+              </a>
+            )}
             <ul class="stacklist">
               {p.data.stack.slice(0, 4).map((s) => <li>{s.replace(/\s*\(.*\)$/, '')}</li>)}
               {p.data.stack.length > 4 && <li>+ {p.data.stack.length - 4} more</li>}
             </ul>
             <a class="b-cta" href={withBase(`b/work/${p.id}`)}>
-              Read the case study <span class="arr" aria-hidden="true">→</span>
+              Read the write-up <span class="arr" aria-hidden="true">→</span>
             </a>
           </div>
         </article>
@@ -157,9 +171,9 @@ const pad = (n: number) => String(n).padStart(2, '0');
       </div>
       <p class="intro r">
         I was making things long before I was shipping code: posters,
-        magazine layouts, brand systems, a car account, a room designed
-        in 3D and actually built. Twelve of those live here, each with
-        its own page.
+        brand systems, a car account, a room designed in 3D and actually
+        built. That history is why the products above feel finished.
+        Eleven pieces, each with its own page.
       </p>
       <div class="b-cat">
         {featured.map((piece, i) => {

@@ -2,7 +2,7 @@
 title: "Paradigm"
 category: "Poster"
 year: "2021"
-order: 10
+order: 9
 image: "images/paradigm.png"
 ---
 

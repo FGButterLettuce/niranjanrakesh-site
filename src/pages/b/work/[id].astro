@@ -35,7 +35,7 @@ const flavorLabel: Record<string, string> = {
   title={`${entry.data.title} · Ink & Ochre — Niranjan Rakesh`}
   description={entry.data.tagline}
 >
-  <Masthead variant="article" slug={`Case study № ${pad(index + 1)} / ${pad(total)}`} />
+  <Masthead variant="article" slug={`Project № ${pad(index + 1)} / ${pad(total)}`} />
 
   <!-- ============ ARTICLE HEAD ============ -->
   <header class="b-articlehead">
@@ -98,8 +98,37 @@ const flavorLabel: Record<string, string> = {
     </div>
   </div>
 
+  <!-- ============ PRODUCT FIGURES ============ -->
+  {entry.data.figures.length > 0 && (
+    <section class="b-figs">
+      <div class="b-wrap">
+        <div class="b-sechead r">
+          <span class="no">Fig. 1–{entry.data.figures.length}</span>
+          <h2>The Product</h2>
+          <span class="tail" aria-hidden="true"></span>
+          <span class="aside">// screenshots from the shipping app</span>
+        </div>
+        <div class={`b-figgrid b-figgrid--product${entry.data.figuresLayout === 'phones' ? ' b-figgrid--phones' : ''}`}>
+          {entry.data.figures.map((f, i) => (
+            <figure class="b-fig r" style={`--d:${(i % 3) * 0.08}s`}>
+              <div class="mount">
+                <div class="frame">
+                  <img src={withBase(f.src)} alt={f.caption} loading="lazy" decoding="async" />
+                </div>
+              </div>
+              <figcaption>
+                <span class="no">Fig. {i + 1}</span>
+                <span class="cap">{f.caption}</span>
+              </figcaption>
+            </figure>
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+
   <!-- ============ PREV / NEXT ============ -->
-  <nav class="b-pn" aria-label="More case studies">
+  <nav class="b-pn" aria-label="More projects">
     <div class="b-wrap">
       <div class="cells">
         <a href={withBase(`b/work/${prev.id}`)}>

@@ -447,6 +447,28 @@ section[id], footer[id] { scroll-margin-top: 1.25rem; }
 }
 .b-spread--even .aside { grid-column: 1 / span 3; grid-row: 1; align-items: flex-start; }
 
+/* product visual — small mounted screenshot in the spread aside */
+.b-spread .visual {
+  display: block;
+  width: 100%;
+  max-width: 17rem;
+  text-decoration: none;
+}
+.b-spread .visual .mount {
+  display: block;
+  background: var(--paper-2);
+  border: 1px solid var(--hair);
+  padding: 0.55rem;
+  box-shadow: 0 1px 0 rgba(28, 25, 23, 0.06), 0 14px 32px -18px rgba(28, 25, 23, 0.35);
+  transition: translate 0.45s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.45s ease;
+}
+.b-spread .visual:hover .mount {
+  translate: 0 -4px;
+  box-shadow: 0 1px 0 rgba(28, 25, 23, 0.06), 0 24px 44px -20px rgba(28, 25, 23, 0.45);
+}
+.b-spread .visual .frame { display: block; overflow: hidden; }
+.b-spread .visual img { width: 100%; height: auto; display: block; }
+
 .b-spread .stacklist {
   list-style: none;
   border-top: 1px solid var(--hair);
@@ -1234,6 +1256,14 @@ a.b-entry {
   gap: 0.9rem;
   padding-top: 0.85rem;
 }
+/* product screenshots — natural aspect, never cropped */
+.b-figgrid--product .b-fig img { aspect-ratio: auto; object-fit: unset; }
+
+/* tall app-store shots run three-up */
+.b-figgrid--phones { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+
 @media (max-width: 780px) {
   .b-figgrid { grid-template-columns: 1fr; row-gap: 2.25rem; }
+  .b-figgrid--phones { grid-template-columns: 1fr; }
+  .b-figgrid--phones .b-fig { max-width: 22rem; margin-inline: auto; width: 100%; }
 }

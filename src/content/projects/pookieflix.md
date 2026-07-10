@@ -5,6 +5,12 @@ year: "2026"
 order: 2
 status: "Self-hosted, in use"
 stack: ["TypeScript", "Fastify", "React", "WebSockets", "HLS", "FFmpeg", "SQLite", "Docker", "Cloudflare Tunnel"]
+image: "images/projects/pookieflix-hero.webp"
+figures:
+  - src: "images/projects/pookieflix-hero.webp"
+    caption: "The front door: self-hosted, open source, one Docker container"
+  - src: "images/projects/pookieflix-library.webp"
+    caption: "The library: drop in MP4s, thumbnails and HLS renditions generate in the background"
 highlights:
   - "Buffer-aware sync: playback pauses for whoever is behind, resumes when both are ready"
   - "The sync protocol is a pure state machine with no I/O, driven by 500ms client heartbeats"

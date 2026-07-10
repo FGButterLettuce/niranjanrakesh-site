@@ -2,7 +2,7 @@
 title: "3D Printed Computer Case"
 category: "Industrial design"
 year: "2021"
-order: 12
+order: 11
 image: "images/thumb-3d-case.png"
 ---
 

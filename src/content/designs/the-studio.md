@@ -2,7 +2,7 @@
 title: "The Studio"
 category: "3D & interior"
 year: "2024"
-order: 2
+order: 1
 image: "images/work-the-studio.png"
 featured: true
 figures:

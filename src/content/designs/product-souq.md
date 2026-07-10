@@ -2,7 +2,7 @@
 title: "Product Souq"
 category: "Landing page"
 year: "2022"
-order: 4
+order: 3
 image: "images/work-product-souq.webp"
 featured: true
 ---

@@ -2,7 +2,7 @@
 title: "Fairlady Aiko"
 category: "Social media & video"
 year: "2022"
-order: 5
+order: 4
 image: "images/work-fairlady.webp"
 ---
 

@@ -1,22 +1,23 @@
 {
   "name": "Niranjan Rakesh",
-  "role": "Builder · Engineer",
+  "role": "Full-stack product engineer",
   "location": "Sharjah, United Arab Emirates",
   "hero": {
     "headline": "Builds things that ship.",
-    "subline": "Full-stack products, native apps, and the infrastructure under them, built solo and taken all the way to real users.",
-    "kicker": "Niranjan Rakesh, engineer in the UAE"
+    "subline": "Full-stack product engineer who covers the whole surface: product design, web, native iOS and macOS, backend, and the production infrastructure under it all.",
+    "kicker": "Niranjan Rakesh · Full-stack product engineer · UAE"
   },
   "about": {
-    "lead": "I build complete things: products with real users, uptime to keep, and rough edges worn down by actual use. Prototypes that die in a folder don't count.",
+    "lead": "Most engineers hand off at the edge of their layer. I don't have one: I design the product, build the web and native apps, write the backend, and run the servers it ships on. Everything on this site is live, in use, and built alone.",
     "body": [
-      "I trained in Computer Science and I'm comfortable below the framework: I've shipped a production backend with zero npm dependencies, hand-rolled drag-and-drop from raw pointer events, and tuned video sync for connections that misbehave.",
-      "I started out in design, and it still decides what I build. Most of my engineering time goes into how things feel to use, like an input that accepts whatever you paste into it, or an app that opens straight to the point."
+      "The day job is engineering at Kharetah, a UAE fintech, with a remit that reads like several jobs: product engineering across its platforms, LLM-powered internal tooling, the Azure cloud everything runs on, the security work that comes with financial data, and the company's IT.",
+      "The personal work on this page holds the same standard, in production. A couples app with a zero-dependency Node backend and a native SwiftUI client submitted to the App Store. A self-hosted streaming platform with a custom sync protocol, distributed as a prebuilt Docker image. A signed, notarized macOS utility. Each one designed, built, deployed, and maintained by one person.",
+      "I trained in Computer Science and started in design, and it shows at both ends. I'll hand-roll drag-and-drop from raw pointer events or tune an HLS pipeline for iOS quirks, and I'll also be the one who notices the type is wrong. Teams usually hire separate people for those. I'm the overlap."
     ],
     "themes": [
-      { "title": "Ships complete things", "detail": "Takes an idea to a running product with real infrastructure under it, end to end, solo." },
-      { "title": "Depth over glue", "detail": "Zero-dependency servers, custom sync logic, raw pointer events. Goes below the framework when the framework is the problem." },
-      { "title": "Product judgment", "detail": "Decides by how the thing feels to use, not by what's easiest to wire together." }
+      { "title": "Owns products end to end", "detail": "One person from first sketch to systemd service: design, web, native iOS and macOS, backend, infrastructure, and the App Store paperwork." },
+      { "title": "Ships, then keeps shipping", "detail": "Everything here runs in production with real users and a maintenance history: bug fixes from daily use, migrations, uptime to keep." },
+      { "title": "Depth below the framework", "detail": "Zero-dependency servers, custom sync protocols, raw pointer events, scrypt auth without a library. Goes low-level when the framework is the problem." }
     ]
   },
   "smallerBuilds": [
@@ -25,7 +26,6 @@
     { "name": "orbit-core", "year": "2025", "line": "NestJS + Prisma backend for time management: OAuth, Google Calendar sync, multi-device conflict resolution, BullMQ jobs." }
   ],
   "archive": [
-    { "title": "Football Magazine", "category": "Editorial design", "year": "2022", "image": "images/work-football.webp" },
     { "title": "The Studio", "category": "3D & interior", "year": "2024", "image": "images/work-the-studio.png" },
     { "title": "Stardust", "category": "Branding", "year": "2022", "image": "images/work-stardust.webp" },
     { "title": "Product Souq", "category": "Landing page", "year": "2022", "image": "images/work-product-souq.webp" },
@@ -41,7 +41,7 @@
   "contact": {
     "email": "niranjanrakesh64@gmail.com",
     "phone": "+971 55 668 7534",
-    "cta": "Have something worth building?"
+    "cta": "Hiring someone who can ship the whole thing?"
   },
   "footer": {
     "line": "Designed and built from scratch by Niranjan Rakesh.",
