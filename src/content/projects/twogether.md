@@ -23,9 +23,9 @@ highlights:
 flavor: "product"
 ---
 
-Twogether started with my girlfriend and me losing places. We collected them in a notes app, and every entry aged into a pasted link with no context: no photos, no hours, no memory of why we saved it. Planning a day out meant re-researching our own list. The breaking point was finding out, a day late, that we'd been standing right next to a place on our list and walked somewhere else instead.
+My girlfriend and I kept a notes-app list of places we wanted to go. It never worked. A month on, a saved link is just a link: no photo, no hours, no clue why we saved it, so every plan started with re-googling our own list. Then one evening we were out, walked right past a place we'd saved, and picked somewhere else nearby. We found out the next day. That one stung.
 
-So this is the fix, built for us and for anyone with the same problem: a private space for two people where anything either of you shares becomes a pinned place card, ready to sort into lists, plan a day around, and file away as a memory after you've been.
+Twogether is what I built after that, for us and for anyone with the same problem: a private space for two people where anything either of you shares becomes a real place card, ready to sort into lists, plan a day around, and keep as a memory after you've been.
 
 ## Nothing bounces
 
