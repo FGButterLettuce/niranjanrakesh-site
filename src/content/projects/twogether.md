@@ -23,7 +23,7 @@ highlights:
 flavor: "product"
 ---
 
-My girlfriend and I kept a notes-app list of places we wanted to go. It never worked. A month on, a saved link is just a link: no photo, no hours, no clue why we saved it, so every plan started with re-googling our own list. Then one evening we were out, walked right past a place we'd saved, and picked somewhere else nearby. We found out the next day. That one stung.
+My girlfriend and I used to keep a notes-app list of places we wanted to go, and it never really worked: a month later a saved link is just a link, with no photo or opening hours attached and no memory of why we saved it, so planning a day out meant re-googling our own list. The last straw was the evening we walked right past a place we'd saved and picked somewhere else nearby, then found out the next morning what we had missed.
 
 Twogether is what I built after that, for us and for anyone with the same problem: a private space for two people where anything either of you shares becomes a real place card, ready to sort into lists, plan a day around, and keep as a memory after you've been.
 

@@ -19,7 +19,7 @@ highlights:
 flavor: "engineering"
 ---
 
-Movie nights from two places used to be a mess. One of us buffers, the other keeps playing. Someone pauses and the other side doesn't, and nobody notices until the scenes stop matching. Count down from three, press play, drift apart again. We lost half the movie to the tooling.
+Movie nights from two places used to be a mess: one of us would buffer while the other kept playing, and a pause on one side never paused the other, so nobody noticed anything was wrong until the scenes stopped matching. We spent half of every movie counting down from three and pressing play together, then drifting apart again anyway.
 
 PookieFlix is what I built to end that: our own server, a shared library, and a sync engine that assumes the two connections are never equal. Movie night now works whenever, wherever.
 
@@ -37,4 +37,4 @@ It ships as a prebuilt Docker image: one `docker run` and it's up. First run ope
 
 ## One site, two audiences
 
-My favorite part of the packaging is the marketing site, because this product genuinely has two users: the person who wants movie night to work, and the person who has to run a server for that to happen. So the site has a toggle. Pookie mode is lilac and lowercase, names the pain ("why is watching a movie together so hard??"), and ends with one job: send this to your techie. Techie mode flips the same page dark and talks setup: open source, one Docker container, running in five minutes. Same product, two readers, one switch.
+My favorite part of the packaging is the marketing site, because this product genuinely has two users: the person who wants movie night to work, and the person who has to run a server for that to happen. The site carries a toggle for exactly that split. Pookie mode is lilac and lowercase, walks through the misery ("why is watching a movie together so hard??"), and ends with a single call to action: send this page to your techie. Flip the toggle and Techie mode turns the same page dark and talks setup, from the open-source repo to the one Docker container it runs in.
