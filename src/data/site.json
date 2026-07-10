@@ -20,7 +20,7 @@
     ]
   },
   "smallerBuilds": [
-    { "name": "Mac Transcoder", "year": "2026", "line": "Native macOS drag-and-drop video transcoder on hardware VideoToolbox encoding. Files in, MP4s out, nothing to configure." },
+    { "name": "Flixify", "year": "2026", "line": "Native macOS drag-and-drop video transcoder: hardware VideoToolbox H.264, bundled ffmpeg, shipped as a signed and notarized DMG." },
     { "name": "PerfectTasks", "year": "2026", "line": "Full-stack task manager (Next.js, Drizzle, Clerk) designed, planned, and built test-first in a single day." },
     { "name": "orbit-core", "year": "2025", "line": "NestJS + Prisma backend for time management: OAuth, Google Calendar sync, multi-device conflict resolution, BullMQ jobs." }
   ],
