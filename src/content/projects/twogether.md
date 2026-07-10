@@ -6,7 +6,7 @@ order: 1
 status: "Live in production"
 stack: ["Node.js (zero dependencies)", "SQLite", "React", "PWA", "SwiftUI", "Google Places API", "Server-Sent Events", "Caddy + systemd"]
 liveUrl: "https://try2gether.app"
-image: "images/projects/twogether-raw-01-places.webp"
+image: "images/projects/twogether-detail.webp"
 figures:
   - src: "images/projects/twogether-raw-01-places.webp"
     caption: "Places: everything either of you shares, resolved into pinned cards"

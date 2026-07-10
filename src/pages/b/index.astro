@@ -75,75 +75,52 @@ const pad = (n: number) => String(n).padStart(2, '0');
 
       {projects.map((p, i) => (
         <article
-          class={`b-spread ${i % 2 === 0 ? 'b-spread--odd' : 'b-spread--even'}${p.data.image ? ' b-spread--media' : ''} r`}
+          class={`b-feat${i % 2 === 1 ? ' b-feat--flip' : ''}${p.data.image ? '' : ' b-feat--noimg'} r`}
           style={`--acc:${flavorAccent[p.data.flavor] ?? 'var(--verm)'}`}
         >
-          <div class="ghost" aria-hidden="true">{pad(i + 1)}</div>
-          <div class="main">
+          <div class="txt">
             <span class="kick b-meta">
-              <span class="st">{p.data.year}</span> · {p.data.status}
+              <span class="st">№ {pad(i + 1)}</span> · {p.data.year} · {p.data.status}
             </span>
             <h3><a href={withBase(`b/work/${p.id}`)}>{p.data.title}</a></h3>
             <p class="standfirst">{p.data.tagline}</p>
-          </div>
-          {p.data.image && (
-            <a
-              class={`visual ${p.data.figuresLayout === 'phones' ? 'visual--phone' : 'visual--web'}`}
-              href={withBase(`b/work/${p.id}`)}
-              tabindex="-1"
-              aria-hidden="true"
-            >
-              {p.data.figuresLayout === 'phones' ? (
-                <span class="b-device">
-                  <span class="screen">
-                    <img src={withBase(p.data.image)} alt="" loading="lazy" decoding="async" />
-                  </span>
-                </span>
-              ) : (
-                <span class="b-window">
-                  <span class="bar">
-                    <span class="dot"></span>
-                    <span class="dot"></span>
-                    <span class="dot"></span>
-                  </span>
-                  <img src={withBase(p.data.image)} alt="" loading="lazy" decoding="async" />
-                </span>
-              )}
-            </a>
-          )}
-          <div class="aside">
-            <ul class="stacklist">
-              {p.data.stack.slice(0, 4).map((s) => <li>{s.replace(/\s*\(.*\)$/, '')}</li>)}
-              {p.data.stack.length > 4 && <li>+ {p.data.stack.length - 4} more</li>}
+            <ul class="points">
+              {p.data.highlights.slice(0, 3).map((h) => <li>{h}</li>)}
             </ul>
             <a class="b-cta" href={withBase(`b/work/${p.id}`)}>
               Read the write-up <span class="arr" aria-hidden="true">→</span>
             </a>
           </div>
+          <div class="side">
+            {p.data.image && (
+              <a
+                class="plate"
+                href={withBase(`b/work/${p.id}`)}
+                tabindex="-1"
+                aria-hidden="true"
+              >
+                {p.data.figuresLayout === 'phones' ? (
+                  <span class="b-shot">
+                    <img src={withBase(p.data.image)} alt="" loading="lazy" decoding="async" />
+                  </span>
+                ) : (
+                  <span class="b-window">
+                    <span class="bar">
+                      <span class="dot"></span>
+                      <span class="dot"></span>
+                      <span class="dot"></span>
+                    </span>
+                    <img src={withBase(p.data.image)} alt="" loading="lazy" decoding="async" />
+                  </span>
+                )}
+              </a>
+            )}
+            <p class="stackrow">
+              {p.data.stack.map((s) => s.replace(/\s*\(.*\)$/, '')).join(' · ')}
+            </p>
+          </div>
         </article>
       ))}
-    </div>
-  </section>
-
-  <!-- ============ SMALLER BUILDS ============ -->
-  <section class="b-builds" id="builds">
-    <div class="b-wrap">
-      <div class="b-sechead r">
-        <span class="no">№ 02</span>
-        <h2>Smaller Builds</h2>
-        <span class="tail" aria-hidden="true"></span>
-        <span class="aside">// tools built for myself, in daily use</span>
-      </div>
-      <div class="rows">
-        {site.smallerBuilds.map((b, i) => (
-          <div class="b-buildrow r" style={`--d:${i * 0.07}s`}>
-            <span class="idx">{pad(i + 1)}</span>
-            <span class="name">{b.name}</span>
-            <span class="line">{b.line}</span>
-            <span class="yr b-meta">{b.year}</span>
-          </div>
-        ))}
-      </div>
     </div>
   </section>
 
@@ -151,7 +128,7 @@ const pad = (n: number) => String(n).padStart(2, '0');
   <section class="b-about" id="about">
     <div class="b-wrap">
       <div class="b-sechead r">
-        <span class="no">№ 03</span>
+        <span class="no">№ 02</span>
         <h2>About</h2>
         <span class="tail" aria-hidden="true"></span>
         <span class="aside">// {site.role} · {site.location}</span>
@@ -168,6 +145,28 @@ const pad = (n: number) => String(n).padStart(2, '0');
           </li>
         ))}
       </ul>
+    </div>
+  </section>
+
+  <!-- ============ SMALLER BUILDS ============ -->
+  <section class="b-builds" id="builds">
+    <div class="b-wrap">
+      <div class="b-sechead r">
+        <span class="no">№ 03</span>
+        <h2>Smaller Builds</h2>
+        <span class="tail" aria-hidden="true"></span>
+        <span class="aside">// tools built for myself, in daily use</span>
+      </div>
+      <div class="rows">
+        {site.smallerBuilds.map((b, i) => (
+          <div class="b-buildrow r" style={`--d:${i * 0.07}s`}>
+            <span class="idx">{pad(i + 1)}</span>
+            <span class="name">{b.name}</span>
+            <span class="line">{b.line}</span>
+            <span class="yr b-meta">{b.year}</span>
+          </div>
+        ))}
+      </div>
     </div>
   </section>
 
