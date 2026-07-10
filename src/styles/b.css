@@ -1049,15 +1049,14 @@ a.b-entry {
   color: #2c2825;
 }
 .b-body > p { margin-bottom: 1.5rem; text-wrap: pretty; }
-.b-body > p:first-child::first-letter {
+/* opening paragraph reads as a deck — larger serif, no drop cap */
+.b-body > p:first-child {
   font-family: var(--serif);
-  font-weight: 740;
-  font-style: normal;
-  float: left;
-  font-size: 4.4em;
-  line-height: 0.78;
-  padding: 0.06em 0.12em 0 0;
-  color: var(--verm);
+  font-weight: 460;
+  font-size: 1.35rem;
+  line-height: 1.6;
+  color: var(--ink);
+  margin-bottom: 1.75rem;
 }
 .b-body h2 {
   font-family: var(--serif);
