@@ -2,8 +2,17 @@
 import { getCollection, render } from 'astro:content';
 import Base from '../../../layouts/b/Base.astro';
 import Masthead from '../../../components/b/Masthead.astro';
+import PookieModes from '../../../components/b/demos/PookieModes.astro';
+import TwogetherIngest from '../../../components/b/demos/TwogetherIngest.astro';
+import PipelineFlow from '../../../components/b/demos/PipelineFlow.astro';
 import { withBase } from '../../../lib/url';
 import site from '../../../data/site.json';
+
+const demos: Record<string, { title: string; aside: string }> = {
+  twogether: { title: 'Nothing Bounces, Live', aside: '// a working miniature' },
+  pookieflix: { title: 'The Toggle, Live', aside: '// the real two-mode pitch' },
+  'thought-pipeline': { title: 'The Pipeline, Live', aside: '// a working miniature' },
+};
 
 export async function getStaticPaths() {
   const projects = (await getCollection('projects')).sort(
@@ -97,6 +106,25 @@ const flavorLabel: Record<string, string> = {
       </aside>
     </div>
   </div>
+
+  <!-- ============ LIVE DEMO ============ -->
+  {demos[entry.id] && (
+    <section class="b-demo">
+      <div class="b-wrap">
+        <div class="b-sechead r">
+          <span class="no">Demo</span>
+          <h2>{demos[entry.id].title}</h2>
+          <span class="tail" aria-hidden="true"></span>
+          <span class="aside">{demos[entry.id].aside}</span>
+        </div>
+        <div class="b-demobody r">
+          {entry.id === 'twogether' && <TwogetherIngest />}
+          {entry.id === 'pookieflix' && <PookieModes />}
+          {entry.id === 'thought-pipeline' && <PipelineFlow />}
+        </div>
+      </div>
+    </section>
+  )}
 
   <!-- ============ PRODUCT FIGURES ============ -->
   {entry.data.figures.length > 0 && (

@@ -1,0 +1,160 @@
+---
+// A working miniature of Twogether's ingestion promise: four kinds of
+// input, each resolving into a place card, one of them a loose find.
+import { withBase } from '../../../lib/url';
+
+const steps = [
+  {
+    input: 'maps.app.goo.gl/xK7fQ2…',
+    kind: 'a Google Maps link',
+    card: { photo: 'images/projects/demo-cherry-house.webp', title: 'Cherry House', chips: ['Café', '★ 4.7', '$$', 'Open now'], note: null },
+  },
+  {
+    input: 'instagram.com/reel/dXf3aa…',
+    kind: 'an Instagram reel',
+    card: { photo: 'images/projects/demo-chamoyah.webp', title: 'Chamoyah', chips: ['Dessert', '★ 4.4', '$', 'Open now'], note: null },
+  },
+  {
+    input: 'that bakery near the ferry building',
+    kind: 'plain text',
+    card: { photo: 'images/projects/demo-tartine.webp', title: 'Tartine Bakery', chips: ['Bakery', '★ 4.6', '$$', 'Closed now'], note: '"the morning bun place!!"' },
+  },
+  {
+    input: 'someblog.net/twelve-hidden-cafes',
+    kind: 'a link that resolves to nothing',
+    card: { photo: null, title: 'Twelve hidden cafes', chips: ['Loose find'], note: 'Saved to pin later. Nothing bounces.' },
+  },
+];
+---
+<div class="tg-demo b-shot">
+  <div class="tg-stage">
+    <div class="tg-in">
+      <span class="tg-pill">
+        <span class="tg-input" id="tg-input">{steps[0].input}</span>
+        <span class="tg-add" aria-hidden="true">＋</span>
+      </span>
+      <span class="tg-kind b-meta" id="tg-kind">{steps[0].kind}</span>
+    </div>
+    <div class="tg-arrow" aria-hidden="true">↓</div>
+    <div class="tg-card" id="tg-card">
+      <div class="tg-photo" id="tg-photo">
+        <img src={withBase(steps[0].card.photo)} alt="" id="tg-img" />
+      </div>
+      <div class="tg-body">
+        <div class="tg-title" id="tg-title">{steps[0].card.title}</div>
+        <div class="tg-chips" id="tg-chips">
+          {steps[0].card.chips.map((c) => <span class="tg-chip">{c}</span>)}
+        </div>
+        <p class="tg-note" id="tg-note" hidden></p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script define:vars={{ steps }}>
+  const demo = document.querySelector('.tg-demo');
+  if (demo) {
+    const el = (id) => demo.querySelector('#' + id);
+    const base = el('tg-img').src.replace(/images\/projects\/.*$/, '');
+    let i = 0;
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const apply = (s) => {
+      el('tg-input').textContent = s.input;
+      el('tg-kind').textContent = s.kind;
+      el('tg-title').textContent = s.card.title;
+      el('tg-chips').innerHTML = s.card.chips
+        .map((c) => `<span class="tg-chip${c === 'Loose find' ? ' tg-chip--loose' : ''}">${c}</span>`)
+        .join('');
+      const note = el('tg-note');
+      note.hidden = !s.card.note;
+      note.textContent = s.card.note || '';
+      const photo = el('tg-photo');
+      photo.hidden = !s.card.photo;
+      if (s.card.photo) el('tg-img').src = base + s.card.photo;
+    };
+    if (!reduced) {
+      setInterval(() => {
+        i = (i + 1) % steps.length;
+        const card = el('tg-card');
+        demo.classList.add('is-swapping');
+        setTimeout(() => {
+          apply(steps[i]);
+          demo.classList.remove('is-swapping');
+        }, 260);
+      }, 3200);
+    }
+  }
+</script>
+
+<style>
+  .tg-demo { max-width: 26rem; }
+  .tg-stage {
+    background: #faf3e6;
+    padding: 1.4rem 1.4rem 1.6rem;
+  }
+  .tg-in { display: flex; flex-direction: column; gap: 0.45rem; align-items: flex-start; }
+  .tg-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.7rem;
+    max-width: 100%;
+    background: #fff;
+    border: 1.5px solid #1c1917;
+    border-radius: 999px;
+    padding: 0.5rem 0.55rem 0.5rem 1rem;
+    box-shadow: 3px 3px 0 rgba(28, 25, 23, 0.14);
+  }
+  .tg-input {
+    font-family: var(--mono);
+    font-size: 0.78rem;
+    color: #57534e;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    transition: opacity 0.25s ease;
+  }
+  .tg-add {
+    flex: none;
+    display: grid;
+    place-items: center;
+    width: 1.5rem;
+    height: 1.5rem;
+    border-radius: 50%;
+    background: #e5484d;
+    color: #fff;
+    font-size: 0.9rem;
+    line-height: 1;
+  }
+  .tg-kind { font-size: 0.625rem; transition: opacity 0.25s ease; }
+  .tg-arrow { margin: 0.7rem 0 0.7rem 1.1rem; color: #a16207; font-size: 1rem; }
+  .tg-card {
+    background: #fff;
+    border: 1.5px solid #1c1917;
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 4px 4px 0 rgba(28, 25, 23, 0.16);
+    transition: opacity 0.25s ease, transform 0.25s ease;
+  }
+  .is-swapping .tg-card, .is-swapping .tg-input, .is-swapping .tg-kind { opacity: 0; }
+  .is-swapping .tg-card { transform: translateY(4px); }
+  .tg-photo[hidden] { display: none; }
+  .tg-photo img { width: 100%; height: auto; display: block; }
+  .tg-body { padding: 0.85rem 1rem 1rem; }
+  .tg-title { font-weight: 700; font-size: 1rem; color: #1c1917; }
+  .tg-chips { display: flex; flex-wrap: wrap; gap: 0.35rem; margin-top: 0.5rem; }
+  :global(.tg-chip) {
+    font-size: 0.6875rem;
+    font-weight: 600;
+    padding: 0.22rem 0.6rem;
+    border-radius: 999px;
+    background: #f5d982;
+    color: #1c1917;
+  }
+  :global(.tg-chip--loose) { background: #ece3cd; color: #57534e; }
+  .tg-note {
+    margin-top: 0.55rem;
+    font-size: 0.8125rem;
+    font-style: italic;
+    color: #57534e;
+  }
+</style>

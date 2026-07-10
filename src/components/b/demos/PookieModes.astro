@@ -1,0 +1,163 @@
+---
+// A working miniature of the PookieFlix marketing site's mode toggle.
+// Palette tokens and copy are lifted verbatim from the real site.
+---
+<div class="pf-demo b-window" data-pfmode="pookie">
+  <span class="bar" aria-hidden="true">
+    <span class="dot"></span>
+    <span class="dot"></span>
+    <span class="dot"></span>
+  </span>
+  <div class="pf-stage">
+    <div class="pf-toggle" role="tablist" aria-label="Site mode">
+      <button class="pf-btn is-on" data-mode="pookie" role="tab" aria-selected="true">💕 Pookie</button>
+      <button class="pf-btn" data-mode="you" role="tab" aria-selected="false">Techie 🤓</button>
+    </div>
+
+    <div class="pf-panel pf-panel--pookie" role="tabpanel">
+      <p class="pf-eyebrow">okay so real talk 💬</p>
+      <h4 class="pf-head">why is watching a movie together so hard?? 😭</h4>
+      <p class="pf-body">the app babysits the timing — pauses, plays, wifi tantrums, it all gets sorted automatically. nobody gets a spoiler, nobody waits alone.</p>
+      <div class="pf-cta">send this to my techie 💌</div>
+      <p class="pf-share">"please please pleeeeaseeee can you set up pookie flix for us my god pleeeeaaaaseeee, here is the link… hehehe"</p>
+    </div>
+
+    <div class="pf-panel pf-panel--you" role="tabpanel" hidden>
+      <p class="pf-eyebrow">self-hosted · open source</p>
+      <h4 class="pf-head">Watch movies together. From your own server.</h4>
+      <p class="pf-body">One Docker container, a setup wizard instead of config files, and sync that assumes the two connections are never equal.</p>
+      <code class="pf-code">docker run ghcr.io/fgbutterlettuce/pookieflix</code>
+      <p class="pf-links">
+        <a href="https://github.com/FGButterLettuce/pookieflix" target="_blank" rel="noopener noreferrer">GitHub ↗</a>
+      </p>
+    </div>
+  </div>
+</div>
+
+<style>
+  .pf-demo { max-width: 44rem; }
+  .pf-demo[data-pfmode="pookie"] {
+    --pf-bg: #eae6ef;
+    --pf-text: #34203f;
+    --pf-muted: #6b566f;
+    --pf-accent: #e0457f;
+    --pf-pill: rgba(52, 32, 63, 0.08);
+    --pf-pill-on: #34203f;
+    --pf-pill-on-text: #fff5ef;
+  }
+  .pf-demo[data-pfmode="you"] {
+    --pf-bg: #130b1c;
+    --pf-text: #fff5ef;
+    --pf-muted: #b89bd1;
+    --pf-accent: #ff7fab;
+    --pf-pill: rgba(255, 245, 239, 0.08);
+    --pf-pill-on: rgba(255, 245, 239, 0.16);
+    --pf-pill-on-text: #fff5ef;
+  }
+  .pf-stage {
+    background: var(--pf-bg);
+    color: var(--pf-text);
+    padding: clamp(1.5rem, 3.5vw, 2.5rem);
+    text-align: center;
+    transition: background 0.35s ease, color 0.35s ease;
+  }
+  .pf-toggle {
+    display: inline-flex;
+    gap: 0.2rem;
+    padding: 0.25rem;
+    border-radius: 999px;
+    background: var(--pf-pill);
+    margin-bottom: 1.6rem;
+    transition: background 0.35s ease;
+  }
+  .pf-btn {
+    font: inherit;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    padding: 0.45rem 1rem;
+    border: 0;
+    border-radius: 999px;
+    background: transparent;
+    color: var(--pf-muted);
+    cursor: pointer;
+    transition: background 0.3s ease, color 0.3s ease;
+  }
+  .pf-btn.is-on { background: var(--pf-pill-on); color: var(--pf-pill-on-text); }
+  .pf-eyebrow {
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    color: var(--pf-accent);
+    margin-bottom: 0.7rem;
+  }
+  .pf-head {
+    font-size: clamp(1.3rem, 2.6vw, 1.7rem);
+    font-weight: 700;
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+    max-width: 24ch;
+    margin-inline: auto;
+    text-wrap: balance;
+  }
+  .pf-body {
+    margin-top: 0.8rem;
+    font-size: 0.9375rem;
+    line-height: 1.6;
+    color: var(--pf-muted);
+    max-width: 44ch;
+    margin-inline: auto;
+    text-wrap: pretty;
+  }
+  .pf-cta {
+    display: inline-block;
+    margin-top: 1.2rem;
+    padding: 0.6rem 1.3rem;
+    border-radius: 999px;
+    background: var(--pf-accent);
+    color: #fff5ef;
+    font-size: 0.875rem;
+    font-weight: 600;
+  }
+  .pf-share {
+    margin-top: 1rem;
+    font-size: 0.8125rem;
+    font-style: italic;
+    color: var(--pf-muted);
+    max-width: 46ch;
+    margin-inline: auto;
+  }
+  .pf-code {
+    display: inline-block;
+    margin-top: 1.2rem;
+    font-family: var(--mono);
+    font-size: 0.78rem;
+    padding: 0.55rem 0.9rem;
+    border-radius: 8px;
+    background: rgba(255, 245, 239, 0.07);
+    border: 1px solid rgba(255, 245, 239, 0.14);
+    color: var(--pf-text);
+  }
+  .pf-links { margin-top: 1rem; font-size: 0.8125rem; font-weight: 600; }
+  .pf-links a { color: var(--pf-accent); text-decoration: none; }
+  .pf-links a:hover { text-decoration: underline; }
+</style>
+
+<script>
+  for (const demo of document.querySelectorAll('.pf-demo')) {
+    const pookiePanel = demo.querySelector('.pf-panel--pookie');
+    const youPanel = demo.querySelector('.pf-panel--you');
+    for (const btn of demo.querySelectorAll('.pf-btn')) {
+      btn.addEventListener('click', () => {
+        const mode = btn.getAttribute('data-mode');
+        demo.setAttribute('data-pfmode', mode);
+        for (const b of demo.querySelectorAll('.pf-btn')) {
+          const on = b === btn;
+          b.classList.toggle('is-on', on);
+          b.setAttribute('aria-selected', String(on));
+        }
+        pookiePanel.hidden = mode !== 'pookie';
+        youPanel.hidden = mode !== 'you';
+      });
+    }
+  }
+</script>

@@ -1,0 +1,105 @@
+---
+// The Thought Pipeline in miniature: a voice note becomes a transcript,
+// joins a topic cluster, and comes out as a scheduled draft.
+---
+<div class="tp-demo b-shot">
+  <ol class="tp-flow">
+    <li class="tp-step" data-step="0">
+      <span class="tp-lbl">voice note</span>
+      <span class="tp-box tp-voice">
+        <span class="tp-mic" aria-hidden="true">🎙</span>
+        <span class="tp-wave" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>
+        <span class="tp-dur">0:42</span>
+      </span>
+    </li>
+    <li class="tp-sep" aria-hidden="true">→ whisper, locally</li>
+    <li class="tp-step" data-step="1">
+      <span class="tp-lbl">transcript</span>
+      <span class="tp-box tp-text">"…the thing nobody tells you about zero-dependency backends is how fast the tests get…"</span>
+    </li>
+    <li class="tp-sep" aria-hidden="true">→ clustered</li>
+    <li class="tp-step" data-step="2">
+      <span class="tp-lbl">topic</span>
+      <span class="tp-box tp-topic">writing-less-code <em>· 3 fragments</em></span>
+    </li>
+    <li class="tp-sep" aria-hidden="true">→ drafted</li>
+    <li class="tp-step" data-step="3">
+      <span class="tp-lbl">draft</span>
+      <span class="tp-box tp-draft">
+        <span class="tp-draft-head">LinkedIn draft · v2</span>
+        Scheduled for Tuesday, 9:00
+      </span>
+    </li>
+  </ol>
+</div>
+
+<script>
+  const demo = document.querySelector('.tp-demo');
+  if (demo && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    const stepEls = demo.querySelectorAll('.tp-step');
+    let i = 0;
+    stepEls[0].classList.add('is-live');
+    setInterval(() => {
+      stepEls[i].classList.remove('is-live');
+      i = (i + 1) % stepEls.length;
+      stepEls[i].classList.add('is-live');
+    }, 1600);
+  }
+</script>
+
+<style>
+  .tp-demo { max-width: 44rem; }
+  .tp-flow {
+    list-style: none;
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.9rem;
+    background: #14140f;
+    padding: clamp(1.25rem, 3vw, 2rem);
+  }
+  .tp-step { display: flex; flex-direction: column; gap: 0.45rem; opacity: 0.55; transition: opacity 0.4s ease; }
+  .tp-step.is-live { opacity: 1; }
+  .tp-lbl {
+    font-family: var(--mono);
+    font-size: 0.625rem;
+    letter-spacing: 0.06em;
+    color: #8f8f7a;
+  }
+  .tp-box {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    border: 1px solid #3a3a2e;
+    border-radius: 10px;
+    background: #1d1d15;
+    color: #e8e6d9;
+    padding: 0.55rem 0.8rem;
+    font-size: 0.8125rem;
+    line-height: 1.45;
+    max-width: 15rem;
+  }
+  .tp-step.is-live .tp-box { border-color: #4ade80; }
+  .tp-wave { display: inline-flex; align-items: center; gap: 2px; }
+  .tp-wave i { width: 2px; border-radius: 1px; background: #4ade80; display: block; }
+  .tp-wave i:nth-child(1) { height: 6px; }
+  .tp-wave i:nth-child(2) { height: 12px; }
+  .tp-wave i:nth-child(3) { height: 8px; }
+  .tp-wave i:nth-child(4) { height: 14px; }
+  .tp-wave i:nth-child(5) { height: 7px; }
+  .tp-wave i:nth-child(6) { height: 11px; }
+  .tp-wave i:nth-child(7) { height: 5px; }
+  .tp-dur { font-family: var(--mono); font-size: 0.7rem; color: #8f8f7a; }
+  .tp-text { font-style: italic; }
+  .tp-topic { font-family: var(--mono); font-size: 0.75rem; }
+  .tp-topic em { font-style: normal; color: #8f8f7a; }
+  .tp-draft { flex-direction: column; align-items: flex-start; gap: 0.2rem; }
+  .tp-draft-head { font-weight: 600; color: #4ade80; font-size: 0.75rem; }
+  .tp-sep {
+    font-family: var(--mono);
+    font-size: 0.6875rem;
+    color: #8f8f7a;
+    white-space: nowrap;
+  }
+</style>

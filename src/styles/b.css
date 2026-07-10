@@ -1256,6 +1256,10 @@ a.b-entry {
   padding-block: clamp(2.5rem, 6vh, 4.25rem) clamp(3rem, 7vh, 5rem);
 }
 
+/* live demo — a working miniature of the product */
+.b-demo { padding-block: 0 clamp(3rem, 7vh, 5rem); }
+.b-demo .b-demobody { margin-top: clamp(2rem, 5vh, 3.25rem); }
+
 /* figures — captioned process plates */
 .b-figs { padding-block: 0 clamp(3.5rem, 8vh, 6rem); }
 .b-figgrid {

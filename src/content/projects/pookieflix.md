@@ -38,3 +38,5 @@ It ships as a prebuilt Docker image: one `docker run` and it's up. First run ope
 ## One site, two audiences
 
 My favorite part of the packaging is the marketing site, because this product genuinely has two users: the person who wants movie night to work, and the person who has to run a server for that to happen. The site carries a toggle for exactly that split. Pookie mode is lilac and lowercase, walks through the misery ("why is watching a movie together so hard??"), and ends with a single call to action: send this page to your techie. Flip the toggle and Techie mode turns the same page dark and talks setup, from the open-source repo to the one Docker container it runs in.
+
+The share button is the whole distribution plan. Tapping it copies a pre-written message that begs, verbatim: *"please please pleeeeaseeee can you set up pookie flix for us my god pleeeeaaaaseeee"*, with the link attached. Self-hosted software only ever spreads from the person who wants it to the person who can run it, so the site is built to make that handoff one tap long. Try both sides below.
