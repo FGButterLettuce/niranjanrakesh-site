@@ -6,9 +6,10 @@ interface Props {
   description: string;
   ogImage?: string; // path under public/, e.g. "images/og.png"
   themeColor?: string; // browser-chrome tint; should match the page background
+  themeColorDark?: string; // optional dark-appearance tint
 }
 
-const { title, description, ogImage = 'images/og.png', themeColor = '#0a0a0a' } = Astro.props;
+const { title, description, ogImage = 'images/og.png', themeColor = '#0a0a0a', themeColorDark } = Astro.props;
 const ogUrl = new URL(withBase(ogImage), Astro.site);
 ---
 <meta charset="utf-8" />
@@ -21,4 +22,11 @@ const ogUrl = new URL(withBase(ogImage), Astro.site);
 <meta property="og:description" content={description} />
 <meta property="og:image" content={ogUrl} />
 <meta name="twitter:card" content="summary_large_image" />
-<meta name="theme-color" content={themeColor} />
+{themeColorDark ? (
+  <>
+    <meta name="theme-color" media="(prefers-color-scheme: light)" content={themeColor} />
+    <meta name="theme-color" media="(prefers-color-scheme: dark)" content={themeColorDark} />
+  </>
+) : (
+  <meta name="theme-color" content={themeColor} />
+)}

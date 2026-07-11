@@ -12,7 +12,7 @@ const { title, description } = Astro.props;
 ---
 <html lang="en">
   <head>
-    <Seo title={title} description={description} themeColor="#faf6ef" />
+    <Seo title={title} description={description} themeColor="#faf6ef" themeColorDark="#171310" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -21,6 +21,7 @@ const { title, description } = Astro.props;
     />
   </head>
   <body>
+    <a class="b-skip" href="#main">Skip to content</a>
     <slot />
     <Switcher />
     <script>

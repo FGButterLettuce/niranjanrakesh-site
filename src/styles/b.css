@@ -5,16 +5,22 @@
    ============================================================ */
 
 :root {
+  /* semantic palette — every pair verified ≥4.5:1 (see repo history) */
   --paper: #faf6ef;
   --paper-2: #f2ecdd;
   --paper-3: #ece3cd;
   --ink: #1c1917;
+  --ink-body: #2c2825;
   --ink-soft: #57534e;
-  --ink-faint: #6e675c; /* ≥4.5:1 on paper & paper-2 (was #8a8378 @ 3.5:1) */
-  --verm: #c2410c;
+  --ink-faint: #6e675c;
+  --verm: #b0380a; /* 5.7:1 on paper, 5.2:1 on paper-2 */
   --ochre: #a16207;
   --hair: rgba(28, 25, 23, 0.18);
   --hair-strong: rgba(28, 25, 23, 0.85);
+  --shadow-rgb: 28, 25, 23;
+  --grain-dot: rgba(28, 25, 23, 0.028);
+  --grain-line: rgba(28, 25, 23, 0.012);
+  color-scheme: light;
 
   --serif: "Fraunces", "Iowan Old Style", Georgia, serif;
   --sans: "DM Sans", "Helvetica Neue", Arial, sans-serif;
@@ -23,6 +29,34 @@
   --measure: 62ch;
   --gutter: clamp(1.25rem, 4vw, 4rem);
   --maxw: 84rem;
+}
+
+/* dark appearance — follows the system setting, per platform convention.
+   not an inversion: warm near-black paper, cream ink, brighter accents.
+   body text 12:1, secondary ≥5:1, accents ≥5.1:1 on every surface. */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --paper: #171310;
+    --paper-2: #1f1a15;
+    --paper-3: #292219;
+    --ink: #ede4d3;
+    --ink-body: #d9cfbd;
+    --ink-soft: #b5aa95;
+    --ink-faint: #9b9080;
+    --verm: #f2683a;
+    --ochre: #d9a03c;
+    --hair: rgba(237, 228, 211, 0.16);
+    --hair-strong: rgba(237, 228, 211, 0.78);
+    --shadow-rgb: 0, 0, 0;
+    --grain-dot: rgba(237, 228, 211, 0.03);
+    --grain-line: rgba(237, 228, 211, 0.014);
+    color-scheme: dark;
+  }
+
+  /* soften bright artwork and screenshots so they don't glow */
+  .b-entry img, .b-plate img, .b-fig img, .b-shot img, .b-window img {
+    filter: brightness(0.92);
+  }
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -43,8 +77,8 @@ body {
   -webkit-font-smoothing: antialiased;
   /* faint laid-paper grain */
   background-image:
-    radial-gradient(rgba(28, 25, 23, 0.028) 1px, transparent 1px),
-    linear-gradient(rgba(28, 25, 23, 0.012) 1px, transparent 1px);
+    radial-gradient(var(--grain-dot) 1px, transparent 1px),
+    linear-gradient(var(--grain-line) 1px, transparent 1px);
   background-size: 5px 5px, 100% 28px;
 }
 
@@ -59,6 +93,23 @@ a { color: inherit; }
   outline: 2px solid var(--verm);
   outline-offset: 3px;
 }
+
+/* skip link — hidden until keyboard focus */
+.b-skip {
+  position: absolute;
+  top: -3rem;
+  left: var(--gutter);
+  z-index: 100;
+  background: var(--ink);
+  color: var(--paper);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  text-decoration: none;
+  padding: 0.6rem 1rem;
+  border-radius: 0 0 6px 6px;
+  transition: top 0.2s ease;
+}
+.b-skip:focus-visible { top: 0; }
 
 /* ---------- shared furniture ---------- */
 
@@ -236,8 +287,12 @@ html.js .r.is-in { opacity: 1; transform: none; }
   letter-spacing: 0.18em;
   text-transform: uppercase;
   color: var(--ink-soft);
+  /* enlarge the hit area without moving the layout */
+  padding: 0.65rem 0.25rem;
+  margin: -0.65rem -0.25rem;
 }
 .b-nav a:hover { color: var(--ink); }
+.b-topline a { padding-block: 0.45rem; margin-block: -0.45rem; }
 @media (max-width: 640px) {
   .b-masthead .b-wrap { padding-block: 0.9rem; }
   .b-nav { gap: 0.9rem; }
@@ -426,7 +481,7 @@ section[id], footer[id] { scroll-margin-top: 1.25rem; }
   border-top: 1px solid var(--hair);
   font-size: 0.9375rem;
   line-height: 1.55;
-  color: #2c2825;
+  color: var(--ink-body);
   text-wrap: pretty;
 }
 .b-feat .points li:last-child { border-bottom: 1px solid var(--hair); }
@@ -449,7 +504,7 @@ section[id], footer[id] { scroll-margin-top: 1.25rem; }
   border-radius: 2.6rem;
   padding: 0.5rem;
   background: var(--paper);
-  box-shadow: 0 1px 0 rgba(28, 25, 23, 0.06), 0 26px 48px -24px rgba(28, 25, 23, 0.5);
+  box-shadow: 0 1px 0 rgba(var(--shadow-rgb), 0.06), 0 26px 48px -24px rgba(var(--shadow-rgb), 0.5);
 }
 .b-device .screen {
   display: block;
@@ -465,7 +520,7 @@ section[id], footer[id] { scroll-margin-top: 1.25rem; }
   border-radius: 0.65rem;
   overflow: hidden;
   background: var(--paper);
-  box-shadow: 0 1px 0 rgba(28, 25, 23, 0.06), 0 26px 48px -24px rgba(28, 25, 23, 0.5);
+  box-shadow: 0 1px 0 rgba(var(--shadow-rgb), 0.06), 0 26px 48px -24px rgba(var(--shadow-rgb), 0.5);
 }
 .b-window .bar {
   display: flex;
@@ -490,7 +545,7 @@ section[id], footer[id] { scroll-margin-top: 1.25rem; }
   border-radius: 0.65rem;
   overflow: hidden;
   background: var(--paper);
-  box-shadow: 0 1px 0 rgba(28, 25, 23, 0.06), 0 26px 48px -24px rgba(28, 25, 23, 0.5);
+  box-shadow: 0 1px 0 rgba(var(--shadow-rgb), 0.06), 0 26px 48px -24px rgba(var(--shadow-rgb), 0.5);
 }
 .b-shot img { width: 100%; height: auto; display: block; }
 
@@ -724,12 +779,12 @@ a.b-entry {
   background: var(--paper);
   border: 1px solid var(--hair);
   padding: clamp(0.6rem, 1.2vw, 0.9rem);
-  box-shadow: 0 1px 0 rgba(28, 25, 23, 0.06), 0 14px 32px -18px rgba(28, 25, 23, 0.35);
+  box-shadow: 0 1px 0 rgba(var(--shadow-rgb), 0.06), 0 14px 32px -18px rgba(var(--shadow-rgb), 0.35);
   transition: box-shadow 0.45s ease, translate 0.45s cubic-bezier(0.22, 1, 0.36, 1);
 }
 .b-entry:hover .mount {
   translate: 0 -4px;
-  box-shadow: 0 1px 0 rgba(28, 25, 23, 0.06), 0 24px 44px -20px rgba(28, 25, 23, 0.45);
+  box-shadow: 0 1px 0 rgba(var(--shadow-rgb), 0.06), 0 24px 44px -20px rgba(var(--shadow-rgb), 0.45);
 }
 .b-entry .frame { overflow: hidden; }
 .b-entry img {
@@ -942,7 +997,7 @@ a.b-entry {
   border: 1px solid var(--hair-strong);
   border-radius: 999px;
   padding: 0.25rem;
-  box-shadow: 0 10px 26px -12px rgba(28, 25, 23, 0.4);
+  box-shadow: 0 10px 26px -12px rgba(var(--shadow-rgb), 0.4);
 }
 .b-switcher a {
   display: grid;
@@ -959,6 +1014,10 @@ a.b-entry {
 }
 .b-switcher a:hover { background: var(--paper-3); color: var(--ink); }
 .b-switcher a.is-active { background: var(--ink); color: var(--paper); }
+@media (max-width: 640px) {
+  /* 44pt touch targets on mobile */
+  .b-switcher a { width: 2.75rem; height: 2.75rem; }
+}
 
 /* ============================================================
    CASE STUDY — feature article
@@ -1046,7 +1105,7 @@ a.b-entry {
   max-width: var(--measure);
   font-size: 1.0938rem;
   line-height: 1.8;
-  color: #2c2825;
+  color: var(--ink-body);
 }
 .b-body > p { margin-bottom: 1.5rem; text-wrap: pretty; }
 /* opening paragraph reads as a deck — larger serif, no drop cap */
@@ -1220,7 +1279,7 @@ a.b-entry {
   background: var(--paper-2);
   border: 1px solid var(--hair);
   padding: clamp(0.8rem, 1.8vw, 1.4rem);
-  box-shadow: 0 1px 0 rgba(28, 25, 23, 0.06), 0 18px 40px -20px rgba(28, 25, 23, 0.38);
+  box-shadow: 0 1px 0 rgba(var(--shadow-rgb), 0.06), 0 18px 40px -20px rgba(var(--shadow-rgb), 0.38);
 }
 .b-plate .frame { overflow: hidden; }
 .b-plate img { width: 100%; height: auto; }
@@ -1274,7 +1333,7 @@ a.b-entry {
   background: var(--paper-2);
   border: 1px solid var(--hair);
   padding: clamp(0.6rem, 1.2vw, 0.9rem);
-  box-shadow: 0 1px 0 rgba(28, 25, 23, 0.06), 0 14px 32px -18px rgba(28, 25, 23, 0.35);
+  box-shadow: 0 1px 0 rgba(var(--shadow-rgb), 0.06), 0 14px 32px -18px rgba(var(--shadow-rgb), 0.35);
 }
 .b-fig .frame { overflow: hidden; }
 .b-fig img {
